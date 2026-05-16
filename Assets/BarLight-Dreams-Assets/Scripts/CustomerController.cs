@@ -1,13 +1,16 @@
+using Pathfinding;
 using UnityEngine;
 
 public class CustomerController : MonoBehaviour
 {
-    public float moveSpeed = 3f;
+    //public float moveSpeed = 3f;
 
     private Chair targetChair;
     private CustomerState currentState;
 
     private Animator animator;
+
+    private AIPath aiPath;
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.right;
@@ -15,6 +18,7 @@ public class CustomerController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        aiPath = GetComponent<AIPath>();
     }
 
     private void Start()
@@ -24,14 +28,10 @@ public class CustomerController : MonoBehaviour
 
     private void Update()
     {
-        switch (currentState)
-        {
-            case CustomerState.MovingToSeat:
-                MoveToSeat();
-                break;
-        }
-
+        UpdateMovementDirection();
         UpdateAnimator();
+
+        CheckReachedSeat();
     }
 
     void FindSeat()
@@ -46,39 +46,47 @@ public class CustomerController : MonoBehaviour
                 chair.Occupy();
 
                 currentState = CustomerState.MovingToSeat;
+
+                aiPath.destination = targetChair.sitPoint.position;
+
+                aiPath.canMove = true;
+
                 return;
             }
         }
-
-        Debug.Log("No empty chair");
     }
 
-    void MoveToSeat()
+    void CheckReachedSeat()
     {
-        Vector3 targetPos = targetChair.sitPoint.position;
+        if (currentState != CustomerState.MovingToSeat)
+            return;
 
-        Vector3 direction = (targetPos - transform.position).normalized;
-
-        moveDirection = direction;
-
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-
-        float distance = Vector3.Distance(transform.position, targetPos);
-
-        if (distance < 0.05f)
+        if (aiPath.reachedEndOfPath)
         {
-            transform.position = targetPos;
-
-            moveDirection = Vector2.zero;
-
-            currentState = CustomerState.Sitting;
-
-            animator.SetBool("IsSitting", true);
-
-            animator.SetInteger("SitDirection", targetChair.sitDirection == SitDirection.Left ? 0 : 1);
-
-            Debug.Log("Customer sitting");
+            SitDown();
         }
+    }
+
+    void SitDown()
+    {
+        currentState = CustomerState.Sitting;
+
+        aiPath.canMove = false;
+
+        moveDirection = Vector2.zero;
+
+        transform.position = targetChair.sitPoint.position;
+
+        animator.SetBool("IsSitting", true);
+
+        animator.SetInteger("SitDirection", targetChair.sitDirection == SitDirection.Left ? 0 : 1);
+
+        Debug.Log("Customer sitting");
+    }
+
+    void UpdateMovementDirection()
+    {
+        moveDirection = aiPath.desiredVelocity.normalized;
     }
 
     void UpdateAnimator()
