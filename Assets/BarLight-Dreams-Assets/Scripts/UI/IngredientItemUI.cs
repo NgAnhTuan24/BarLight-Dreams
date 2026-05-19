@@ -10,6 +10,6 @@ public class IngredientItemUI : MonoBehaviour
     public void Setup(IngredientData data)
     {
         iconImage.sprite = data.ingredientIcon;
-        nameText.text = data.ingredientName;
+        nameText.text = data.ingredientType.ToString().Replace("_", " "); ;
     }
 }

@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 110, y: 110}
+  m_CellSize: {x: 80, y: 80}
   m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -44127,7 +44127,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b3647fc97e6e843ade83604f3aab03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipes: []
+  recipes:
+  - {fileID: 11400000, guid: dd9f3822970893445950a5847c56f51f, type: 2}
+  - {fileID: 11400000, guid: 2d21f813b767ec240b1d9a60dd983cfd, type: 2}
+  - {fileID: 11400000, guid: 22a4451ae9f970d44960aca04a91a432, type: 2}
+  - {fileID: 11400000, guid: 3c0548c5b96ad5846b1d8533e8a40666, type: 2}
+  - {fileID: 11400000, guid: aaf0ae2de77c90e489941c4a99f70de8, type: 2}
+  - {fileID: 11400000, guid: 8a44b524737a1f340a463e23b5aee9eb, type: 2}
+  - {fileID: 11400000, guid: 4ea0abe636e9fb7438e1a275d8530360, type: 2}
+  - {fileID: 11400000, guid: 57b8c8cc475fba749934cc0facd87e51, type: 2}
+  - {fileID: 11400000, guid: 425bff0d3ea66a94cb444fd6a3fc1ae5, type: 2}
+  - {fileID: 11400000, guid: efbf877815de35e468083d9dd5778bda, type: 2}
+  - {fileID: 11400000, guid: 8907cb8fd38f9104a97e2dba4b985f10, type: 2}
+  - {fileID: 11400000, guid: 02e0feab9daa4f944892b896a5559d5e, type: 2}
+  - {fileID: 11400000, guid: 6950d6c28af5f6c4db24232c6594d48b, type: 2}
+  - {fileID: 11400000, guid: 8ce83a0ccb2405045b1805281f4a87d4, type: 2}
+  - {fileID: 11400000, guid: f3fa3e9da4ccedc4cb681c20caf88d54, type: 2}
+  - {fileID: 11400000, guid: ef7a74843d850154f90affdbd302ea19, type: 2}
+  - {fileID: 11400000, guid: f2e269f6f339307429b70af075022c88, type: 2}
+  - {fileID: 11400000, guid: 9b979dc6eb55a2847b531fd001ff7089, type: 2}
+  - {fileID: 11400000, guid: cfe0b3f245da62146b2f3de383d50f68, type: 2}
+  - {fileID: 11400000, guid: a13b6c518d153894d81dc89e6817b8f6, type: 2}
   recipeButtonParent: {fileID: 283960519}
   recipeButtonPrefab: {fileID: 5772214217220310561, guid: 818ceb4b71fc04242b74b773a0e106c0, type: 3}
   drinkIcon: {fileID: 124436904}
