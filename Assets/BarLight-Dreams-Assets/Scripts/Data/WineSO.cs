@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Wine Name", menuName = "Bar/Wine")]
-public class WineDataSO : MonoBehaviour
+public class WineSO : ScriptableObject
 {
     public IngredientType wineName;
-    public Sprite wineSprite;
+    public Sprite wineIcon;
 }

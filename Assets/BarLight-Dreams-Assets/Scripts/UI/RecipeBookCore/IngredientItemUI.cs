@@ -24,7 +24,7 @@ public class IngredientItemUI : MonoBehaviour
 
         iconImage.rectTransform.sizeDelta = GetIconSize(data.ingredientType);
 
-        nameText.text = data.ingredientType.ToString().Replace("_", " "); ;
+        nameText.text = data.ingredientType.ToString().Replace("_", " ");
     }
 
     private Vector2 GetIconSize(IngredientType type)
