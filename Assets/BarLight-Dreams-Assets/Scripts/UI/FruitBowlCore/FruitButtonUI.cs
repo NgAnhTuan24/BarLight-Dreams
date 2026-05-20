@@ -25,6 +25,6 @@ public class FruitButtonUI : MonoBehaviour
 
     private void OnClick()
     {
-
+        CounterBarUI.instance.AddIngredient(fruit.fruitIcon);
     }
 }

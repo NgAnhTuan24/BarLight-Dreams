@@ -25,6 +25,6 @@ public class WineButtonUI : MonoBehaviour
 
     private void OnClick()
     {
-
+        CounterBarUI.instance.AddIngredient(wine.wineIcon);
     }
 }
