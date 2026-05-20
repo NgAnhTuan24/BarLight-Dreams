@@ -10,8 +10,8 @@ public class UIPopup : MonoBehaviour
     [SerializeField] private GameObject[] hideObjects;
 
     [Header("Animation")]
-    [SerializeField] private float duration = 0.4f;
-    [SerializeField] private float hiddenY = -1000f;
+    [SerializeField] private float duration = 0.5f;
+    [SerializeField] private float hiddenY = -1080f;
 
     private Vector2 shownPosition;
     private Tween currentTween;
