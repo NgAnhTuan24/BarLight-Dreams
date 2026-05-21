@@ -36773,6 +36773,7 @@ MonoBehaviour:
   highlight: {fileID: 815259546}
   targetPopup: {fileID: 2004143313}
   interactKey: 102
+  cleanCounter: 0
 --- !u!1 &752118621
 GameObject:
   m_ObjectHideFlags: 0
@@ -39410,6 +39411,7 @@ MonoBehaviour:
   highlight: {fileID: 1885610180}
   targetPopup: {fileID: 0}
   interactKey: 102
+  cleanCounter: 0
 --- !u!1 &1129856418
 GameObject:
   m_ObjectHideFlags: 0
@@ -43458,6 +43460,7 @@ MonoBehaviour:
   highlight: {fileID: 105223537}
   targetPopup: {fileID: 0}
   interactKey: 102
+  cleanCounter: 0
 --- !u!1 &1868733868
 GameObject:
   m_ObjectHideFlags: 0
@@ -43696,6 +43699,7 @@ MonoBehaviour:
   highlight: {fileID: 77495965}
   targetPopup: {fileID: 0}
   interactKey: 102
+  cleanCounter: 1
 --- !u!1 &1885610180
 GameObject:
   m_ObjectHideFlags: 0
@@ -45076,6 +45080,7 @@ MonoBehaviour:
   highlight: {fileID: 1331785268}
   targetPopup: {fileID: 1091444173}
   interactKey: 102
+  cleanCounter: 0
 --- !u!1 &1961412908
 GameObject:
   m_ObjectHideFlags: 0

@@ -130,6 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5482838248609596450}
+  - component: {fileID: 667873838671163732}
   - component: {fileID: 4602266367396507503}
   m_Layer: 5
   m_Name: CounterSlot
@@ -158,6 +159,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &667873838671163732
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241912364278525251}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &4602266367396507503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconImage: {fileID: 953438943202753165}
+  removeButton: {fileID: 770408340983163849}
+  canvasGroup: {fileID: 667873838671163732}
+  moveDuration: 0.5
+  hiddenOffsetY: -100
 --- !u!1 &2836805705568060868
 GameObject:
   m_ObjectHideFlags: 0

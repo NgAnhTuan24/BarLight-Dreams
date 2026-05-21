@@ -7,6 +7,8 @@ public class InteractionHighlight : MonoBehaviour
     [SerializeField] private UIPopup targetPopup;
     [SerializeField] private KeyCode interactKey = KeyCode.F;
 
+    [SerializeField] private bool cleanCounter;
+
     private bool playerInRange;
 
     private void Start()
@@ -18,9 +20,17 @@ public class InteractionHighlight : MonoBehaviour
     {
         if (!playerInRange) return;
 
-        if (targetPopup != null && Input.GetKeyDown(interactKey))
+        if (Input.GetKeyDown(interactKey))
         {
-            targetPopup.Toggle();
+            if (targetPopup != null)
+            {
+                targetPopup.Toggle();
+            }
+
+            if (cleanCounter)
+            {
+                CounterBarUI.instance.CleanCounter();
+            }
         }
     }
 

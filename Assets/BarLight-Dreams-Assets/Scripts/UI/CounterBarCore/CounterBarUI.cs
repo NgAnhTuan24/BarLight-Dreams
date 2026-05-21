@@ -32,7 +32,16 @@ public class CounterBarUI : MonoBehaviour
         spawnedItems.Add(item.gameObject);
     }
 
-    public void ClearCounter()
+    public void RemoveIngredient(GameObject item)
+    {
+        if (spawnedItems.Contains(item))
+        {
+            spawnedItems.Remove(item);
+            Destroy(item);
+        }
+    }
+
+    public void CleanCounter()
     {
         foreach (GameObject item in spawnedItems)
         {
