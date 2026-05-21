@@ -25,6 +25,10 @@ public class FruitButtonUI : MonoBehaviour
 
     private void OnClick()
     {
-        CounterBarUI.instance.AddIngredient(fruit.fruitIcon);
+        CounterBarUI.instance.AddIngredient(
+            fruit.fruitIcon,
+            new Vector2(50,70),
+            20
+            );
     }
 }

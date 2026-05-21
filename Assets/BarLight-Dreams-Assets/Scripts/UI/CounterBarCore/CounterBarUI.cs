@@ -17,7 +17,7 @@ public class CounterBarUI : MonoBehaviour
         instance = this;
     }
 
-    public void AddIngredient(Sprite icon)
+    public void AddIngredient(Sprite icon, Vector2 size, float posY)
     {
         if (spawnedItems.Count >= maxItems)
         {
@@ -27,7 +27,7 @@ public class CounterBarUI : MonoBehaviour
 
         CounterIngredientUI item = Instantiate(itemPrefab, itemParent);
 
-        item.Setup(icon);
+        item.Setup(icon, size, posY);
 
         spawnedItems.Add(item.gameObject);
     }
