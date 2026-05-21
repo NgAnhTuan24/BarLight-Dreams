@@ -9,6 +9,9 @@ public class InteractionHighlight : MonoBehaviour
 
     [SerializeField] private bool cleanCounter;
 
+    [SerializeField] private bool giveIce;
+    [SerializeField] private Sprite iceSprite;
+
     private bool playerInRange;
 
     private void Start()
@@ -30,6 +33,15 @@ public class InteractionHighlight : MonoBehaviour
             if (cleanCounter)
             {
                 CounterBarUI.instance.CleanCounter();
+            }
+
+            if (giveIce)
+            {
+                CounterBarUI.instance.AddIngredient(
+                    iceSprite,
+                    new Vector2 (40, 50),
+                    17.5f
+                    );
             }
         }
     }
