@@ -7,10 +7,17 @@ public class InteractionHighlight : MonoBehaviour
     [SerializeField] private UIPopup targetPopup;
     [SerializeField] private KeyCode interactKey = KeyCode.F;
 
+    [Header("Remove All In Counter")]
     [SerializeField] private bool cleanCounter;
 
+    [Header("Give Ice")]
     [SerializeField] private bool giveIce;
     [SerializeField] private Sprite iceSprite;
+
+    [Header("Give Cup")]
+    [SerializeField] private bool giveCup;
+    [SerializeField] private Sprite cupSprite;
+
 
     private bool playerInRange;
 
@@ -33,6 +40,7 @@ public class InteractionHighlight : MonoBehaviour
             if (cleanCounter)
             {
                 CounterBarUI.instance.CleanCounter();
+                PlayerHoldItem.instance.Clear();
             }
 
             if (giveIce)
@@ -42,6 +50,14 @@ public class InteractionHighlight : MonoBehaviour
                     new Vector2 (40, 50),
                     17.5f
                     );
+            }
+
+            if (giveCup)
+            {
+                if (!PlayerHoldItem.instance.HasItem)
+                {
+                    PlayerHoldItem.instance.Hold(cupSprite);
+                }
             }
         }
     }
