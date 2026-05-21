@@ -18,12 +18,17 @@ public class InteractionHighlight : MonoBehaviour
     [SerializeField] private bool giveCup;
     [SerializeField] private Sprite cupSprite;
 
+    [Header("Mix Drink")]
+    [SerializeField] private DrinkMixer drinkMixer;
 
     private bool playerInRange;
 
     private void Start()
     {
-        highlight.SetActive(false);
+        if (highlight != null)
+        {
+            highlight.SetActive(false);
+        }
     }
 
     private void Update()
@@ -46,6 +51,7 @@ public class InteractionHighlight : MonoBehaviour
             if (giveIce)
             {
                 CounterBarUI.instance.AddIngredient(
+                    IngredientType.Ice,
                     iceSprite,
                     new Vector2 (40, 50),
                     17.5f
@@ -54,10 +60,15 @@ public class InteractionHighlight : MonoBehaviour
 
             if (giveCup)
             {
-                if (!PlayerHoldItem.instance.HasItem)
+                if (PlayerHoldItem.instance.IsEmpty())
                 {
-                    PlayerHoldItem.instance.Hold(cupSprite);
+                    PlayerHoldItem.instance.Hold(cupSprite, HoldItemType.Cup);
                 }
+            }
+
+            if (drinkMixer != null)
+            {
+                drinkMixer.Mix();
             }
         }
     }
@@ -67,7 +78,10 @@ public class InteractionHighlight : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = true;
-            highlight.SetActive(true);
+            if (highlight != null)
+            {
+                highlight.SetActive(true);
+            }
         }
     }
 
@@ -76,7 +90,10 @@ public class InteractionHighlight : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = false;
-            highlight.SetActive(false);
+            if (highlight != null)
+            {
+                highlight.SetActive(false);
+            }
 
             if (targetPopup != null && targetPopup.IsOpen)
             {

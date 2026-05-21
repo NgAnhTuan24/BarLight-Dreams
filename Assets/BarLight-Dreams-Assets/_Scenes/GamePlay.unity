@@ -1563,6 +1563,9 @@ GameObject:
   - component: {fileID: 401920915}
   - component: {fileID: 401920914}
   - component: {fileID: 401920913}
+  - component: {fileID: 401920918}
+  - component: {fileID: 401920917}
+  - component: {fileID: 401920916}
   m_Layer: 8
   m_Name: WoodenCounter
   m_TagString: Untagged
@@ -1684,6 +1687,96 @@ Transform:
   - {fileID: 1152753879}
   m_Father: {fileID: 1988822966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &401920916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401920912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3a900e0474adc47bb5443800e4cd98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipes:
+  - {fileID: 11400000, guid: 3c0548c5b96ad5846b1d8533e8a40666, type: 2}
+  - {fileID: 11400000, guid: 22a4451ae9f970d44960aca04a91a432, type: 2}
+  - {fileID: 11400000, guid: dd9f3822970893445950a5847c56f51f, type: 2}
+  - {fileID: 11400000, guid: 2d21f813b767ec240b1d9a60dd983cfd, type: 2}
+  - {fileID: 11400000, guid: aaf0ae2de77c90e489941c4a99f70de8, type: 2}
+  - {fileID: 11400000, guid: 4ea0abe636e9fb7438e1a275d8530360, type: 2}
+  - {fileID: 11400000, guid: 8a44b524737a1f340a463e23b5aee9eb, type: 2}
+  - {fileID: 11400000, guid: 57b8c8cc475fba749934cc0facd87e51, type: 2}
+  - {fileID: 11400000, guid: 425bff0d3ea66a94cb444fd6a3fc1ae5, type: 2}
+  - {fileID: 11400000, guid: 02e0feab9daa4f944892b896a5559d5e, type: 2}
+  - {fileID: 11400000, guid: efbf877815de35e468083d9dd5778bda, type: 2}
+  - {fileID: 11400000, guid: 8907cb8fd38f9104a97e2dba4b985f10, type: 2}
+  - {fileID: 11400000, guid: 6950d6c28af5f6c4db24232c6594d48b, type: 2}
+  - {fileID: 11400000, guid: 8ce83a0ccb2405045b1805281f4a87d4, type: 2}
+  - {fileID: 11400000, guid: f3fa3e9da4ccedc4cb681c20caf88d54, type: 2}
+  - {fileID: 11400000, guid: ef7a74843d850154f90affdbd302ea19, type: 2}
+  - {fileID: 11400000, guid: f2e269f6f339307429b70af075022c88, type: 2}
+  - {fileID: 11400000, guid: cfe0b3f245da62146b2f3de383d50f68, type: 2}
+  - {fileID: 11400000, guid: a13b6c518d153894d81dc89e6817b8f6, type: 2}
+  - {fileID: 11400000, guid: 9b979dc6eb55a2847b531fd001ff7089, type: 2}
+  resultDrinkSprite: {fileID: 0}
+--- !u!114 &401920917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401920912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ef2b0311b51c0442ad5c48366c3a58c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlight: {fileID: 0}
+  targetPopup: {fileID: 0}
+  interactKey: 102
+  cleanCounter: 0
+  giveIce: 0
+  iceSprite: {fileID: 0}
+  giveCup: 0
+  cupSprite: {fileID: 0}
+  drinkMixer: {fileID: 401920916}
+--- !u!70 &401920918
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401920912}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 6.125, y: 1.3125}
+  m_Direction: 1
 --- !u!1 &417380314
 GameObject:
   m_ObjectHideFlags: 0
@@ -36836,6 +36929,7 @@ MonoBehaviour:
   iceSprite: {fileID: 0}
   giveCup: 0
   cupSprite: {fileID: 0}
+  drinkMixer: {fileID: 0}
 --- !u!1 &752118621
 GameObject:
   m_ObjectHideFlags: 0
@@ -39478,6 +39572,7 @@ MonoBehaviour:
   iceSprite: {fileID: -1552573982, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
   giveCup: 0
   cupSprite: {fileID: 0}
+  drinkMixer: {fileID: 0}
 --- !u!1 &1129856418
 GameObject:
   m_ObjectHideFlags: 0
@@ -43531,6 +43626,7 @@ MonoBehaviour:
   iceSprite: {fileID: 0}
   giveCup: 1
   cupSprite: {fileID: -719357237, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkMixer: {fileID: 0}
 --- !u!1 &1868733868
 GameObject:
   m_ObjectHideFlags: 0
@@ -43774,6 +43870,7 @@ MonoBehaviour:
   iceSprite: {fileID: 0}
   giveCup: 0
   cupSprite: {fileID: 0}
+  drinkMixer: {fileID: 0}
 --- !u!1 &1885610180
 GameObject:
   m_ObjectHideFlags: 0
@@ -45159,6 +45256,7 @@ MonoBehaviour:
   iceSprite: {fileID: 0}
   giveCup: 0
   cupSprite: {fileID: 0}
+  drinkMixer: {fileID: 0}
 --- !u!1 &1961412908
 GameObject:
   m_ObjectHideFlags: 0

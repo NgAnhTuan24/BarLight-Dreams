@@ -4,7 +4,7 @@ public class PlayerHoldItem : MonoBehaviour
 {
     public static PlayerHoldItem instance;
 
-    public bool HasItem { get; private set; }
+    public HoldItemType CurrentType { get; private set; }
 
     private Sprite currentIcon;
 
@@ -13,19 +13,36 @@ public class PlayerHoldItem : MonoBehaviour
         instance = this;
     }
 
-    public void Hold(Sprite icon)
+    public void Hold(Sprite icon, HoldItemType type)
     {
-        HasItem = true;
         currentIcon = icon;
+
+        CurrentType = type;
 
         ActiveSlotUI.instance.Show(icon);
     }
 
     public void Clear()
     {
-        HasItem = false;
         currentIcon = null;
 
+        CurrentType = HoldItemType.None;
+
         ActiveSlotUI.instance.Clear();
+    }
+
+    public bool HasCup()
+    {
+        return CurrentType == HoldItemType.Cup;
+    }
+
+    public bool HasDrink()
+    {
+        return CurrentType == HoldItemType.Drink;
+    }
+
+    public bool IsEmpty()
+    {
+        return CurrentType == HoldItemType.None;
     }
 }
