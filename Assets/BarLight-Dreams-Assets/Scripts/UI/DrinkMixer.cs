@@ -26,7 +26,7 @@ public class DrinkMixer : MonoBehaviour
 
                 CounterBarUI.instance.CleanCounter();
 
-                PlayerHoldItem.instance.Hold(recipe.drinkIcon, HoldItemType.Drink);
+                PlayerHoldItem.instance.HoldDrink(recipe);
 
                 return;
             }
