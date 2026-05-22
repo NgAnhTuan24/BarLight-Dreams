@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77eebf2246c6764d8775ac190f7ae42, type: 3}
+  m_Name: Obsidian Gin
+  m_EditorClassIdentifier: 
+  wineName: 12
+  wineIcon: {fileID: -1377475584, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
