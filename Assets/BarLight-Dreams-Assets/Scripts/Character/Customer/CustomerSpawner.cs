@@ -42,8 +42,6 @@ public class CustomerSpawner : MonoBehaviour
         Vector3 spawnPos = GetRandomSpawnPosition();
 
         Instantiate(customerPrefab, spawnPos, Quaternion.identity);
-
-        Debug.Log("Spawn Position: " + spawnPos);
     }
 
     Vector3 GetRandomSpawnPosition()

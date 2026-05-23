@@ -55,8 +55,6 @@ public class CustomerController : MonoBehaviour
 
         aiPath.canMove = false;
 
-        Debug.Log("Customer Enter");
-
         StartCoroutine(EnterDelay());
     }
 
@@ -110,8 +108,6 @@ public class CustomerController : MonoBehaviour
         animator.SetBool("IsSitting", true);
 
         animator.SetInteger("SitDirection", targetChair.sitDirection == SitDirection.Left ? 0 : 1);
-
-        Debug.Log("Customer sitting");
     }
 
     void UpdateMovementDirection()
@@ -137,6 +133,11 @@ public enum CustomerState
     Enter,
     FindSeat,
     MovingToSeat,
+
     Sitting,
+    WaitingOrder,
+    WaitingDrink,
+    DrinkReceived,
+
     Leaving
 }
