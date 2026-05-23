@@ -1896,9 +1896,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &417380318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4686,7 +4686,7 @@ MonoBehaviour:
   spawnRangeX: 1
   spawnRangeY: 3
   spawnInterval: 3
-  maxCustomers: 12
+  maxCustomers: 1
 --- !u!4 &498973301
 Transform:
   m_ObjectHideFlags: 0
@@ -4865,9 +4865,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &535144917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5752,9 +5752,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &655410768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45215,9 +45215,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1279802093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45962,9 +45962,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1422242017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46580,9 +46580,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1542055889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46716,9 +46716,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1550466724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47043,9 +47043,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1603428964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47720,9 +47720,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1774506305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48017,9 +48017,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &1812110683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51085,9 +51085,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &2069413786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51575,9 +51575,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
 --- !u!114 &2135604044
 MonoBehaviour:
   m_ObjectHideFlags: 0

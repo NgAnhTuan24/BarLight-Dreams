@@ -5,6 +5,20 @@ using UnityEngine;
 public class CustomerController : MonoBehaviour
 {
     //public float moveSpeed = 3f;
+    #region Order
+    [Header("Order")]
+    [SerializeField] private DrinkRecipeSO[] possibleOrders;
+    [SerializeField] private DrinkRecipeSO currentOrder;
+
+    [Header("Bubble")]
+    [SerializeField] private GameObject bubbleRoot;
+    [SerializeField] private SpriteRenderer bubbleDrinkIcon;
+
+    public DrinkRecipeSO CurrentOrder => currentOrder;
+    public CustomerState CurrentState => currentState;
+    #endregion
+
+    public bool HasOrdered { get; private set; }
 
     private Chair targetChair;
     private CustomerState currentState;
@@ -108,6 +122,81 @@ public class CustomerController : MonoBehaviour
         animator.SetBool("IsSitting", true);
 
         animator.SetInteger("SitDirection", targetChair.sitDirection == SitDirection.Left ? 0 : 1);
+
+        StartCoroutine(SitRoutine());
+    }
+
+    IEnumerator SitRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        currentState = CustomerState.WaitingOrder;
+    }
+
+    public void TakeOrder()
+    {
+        if (currentState != CustomerState.WaitingOrder)
+            return;
+
+        currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
+
+        HasOrdered = true;
+
+        Debug.Log("Customer ordered: " + currentOrder.drinkName);
+
+        ShowOrderBubble();
+
+        currentState = CustomerState.WaitingDrink;
+    }
+
+    void ShowOrderBubble()
+    {
+        bubbleRoot.SetActive(true);
+
+        bubbleDrinkIcon.sprite = currentOrder.drinkIcon;
+    }
+
+    public void TryGiveDrink()
+    {
+        if (currentState != CustomerState.WaitingDrink)
+            return;
+
+        if (!PlayerHoldItem.instance.HasDrink())
+            return;
+
+        DrinkData drinkData = PlayerHoldItem.instance.CurrentDrinkData;
+
+        if (drinkData == null)
+            return;
+
+        if (drinkData.recipe == currentOrder)
+        {
+            ReceiveDrink();
+        }
+        else
+        {
+            Debug.Log("Wrong drink!");
+        }
+    }
+
+    void ReceiveDrink()
+    {
+        Debug.Log("Correct Drink!");
+
+        PlayerHoldItem.instance.Clear();
+
+        bubbleRoot.SetActive(false);
+
+        currentState = CustomerState.DrinkReceived;
+
+        StartCoroutine(DrinkRoutine());
+    }
+
+    IEnumerator DrinkRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        //LeaveBar();
     }
 
     void UpdateMovementDirection()
