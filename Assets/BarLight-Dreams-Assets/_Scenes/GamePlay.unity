@@ -4686,7 +4686,7 @@ MonoBehaviour:
   spawnRangeX: 1
   spawnRangeY: 3
   spawnInterval: 3
-  maxCustomers: 1
+  maxCustomers: 5
 --- !u!4 &498973301
 Transform:
   m_ObjectHideFlags: 0
@@ -36980,6 +36980,37 @@ MonoBehaviour:
   giveCup: 0
   cupSprite: {fileID: 0}
   drinkMixer: {fileID: 0}
+--- !u!1 &751302285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751302286}
+  m_Layer: 0
+  m_Name: LeavePoint
+  m_TagString: ExitPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &751302286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751302285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20, y: -4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &752118621
 GameObject:
   m_ObjectHideFlags: 0
@@ -44025,7 +44056,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 78}
+  m_SizeDelta: {x: 56, y: 78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1088716393
 MonoBehaviour:
@@ -51614,6 +51645,7 @@ SceneRoots:
   - {fileID: 718021560}
   - {fileID: 1988822966}
   - {fileID: 993686695}
+  - {fileID: 751302286}
   - {fileID: 1974614294}
   - {fileID: 1957590136}
   - {fileID: 1882605543}

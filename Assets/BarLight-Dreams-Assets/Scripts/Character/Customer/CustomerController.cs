@@ -18,6 +18,9 @@ public class CustomerController : MonoBehaviour
     public CustomerState CurrentState => currentState;
     #endregion
 
+    [Header("Leave")]
+    [SerializeField] private Transform leavePoint;
+
     public bool HasOrdered { get; private set; }
 
     private Chair targetChair;
@@ -38,6 +41,8 @@ public class CustomerController : MonoBehaviour
 
     private void Start()
     {
+        leavePoint = GameObject.FindGameObjectWithTag("ExitPoint").transform;
+
         EnterBar();
     }
 
@@ -59,6 +64,10 @@ public class CustomerController : MonoBehaviour
 
             case CustomerState.MovingToSeat:
                 CheckReachedSeat();
+                break;
+
+            case CustomerState.Leaving:
+                CheckReachedExit();
                 break;
         }
     }
@@ -196,7 +205,34 @@ public class CustomerController : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        //LeaveBar();
+        LeaveBar();
+    }
+
+    void LeaveBar()
+    {
+        currentState = CustomerState.Leaving;
+
+        animator.SetBool("IsSitting", false);
+
+        if (targetChair != null)
+        {
+            targetChair.Leave();
+        }
+
+        aiPath.canMove = true;
+        aiPath.destination = leavePoint.position;
+        aiPath.SearchPath();
+    }
+
+    void CheckReachedExit()
+    {
+        if (aiPath.pathPending)
+            return;
+
+        if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
+            return;
+
+        Destroy(gameObject);
     }
 
     void UpdateMovementDirection()
