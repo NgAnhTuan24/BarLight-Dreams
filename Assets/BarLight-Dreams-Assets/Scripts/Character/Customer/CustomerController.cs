@@ -1,4 +1,5 @@
 using Pathfinding;
+using System.Collections;
 using UnityEngine;
 
 public class CustomerController : MonoBehaviour
@@ -13,7 +14,7 @@ public class CustomerController : MonoBehaviour
     private AIPath aiPath;
 
     private Vector2 moveDirection;
-    private Vector2 lastMoveDirection = Vector2.right;
+    private Vector2 lastMoveDirection = Vector2.left;
 
     private void Awake()
     {
@@ -23,15 +24,47 @@ public class CustomerController : MonoBehaviour
 
     private void Start()
     {
-        FindSeat();
+        EnterBar();
     }
 
     private void Update()
     {
+        UpdateState();
+
         UpdateMovementDirection();
         UpdateAnimator();
+    }
 
-        CheckReachedSeat();
+    void UpdateState()
+    {
+        switch (currentState)
+        {
+            case CustomerState.FindSeat:
+                FindSeat();
+                break;
+
+            case CustomerState.MovingToSeat:
+                CheckReachedSeat();
+                break;
+        }
+    }
+
+    void EnterBar()
+    {
+        currentState = CustomerState.Enter;
+
+        aiPath.canMove = false;
+
+        Debug.Log("Customer Enter");
+
+        StartCoroutine(EnterDelay());
+    }
+
+    IEnumerator EnterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        currentState = CustomerState.FindSeat;
     }
 
     void FindSeat()
@@ -58,13 +91,10 @@ public class CustomerController : MonoBehaviour
 
     void CheckReachedSeat()
     {
-        if (currentState != CustomerState.MovingToSeat)
+        if (!aiPath.reachedEndOfPath)
             return;
 
-        if (aiPath.reachedEndOfPath)
-        {
-            SitDown();
-        }
+        SitDown();
     }
 
     void SitDown()
