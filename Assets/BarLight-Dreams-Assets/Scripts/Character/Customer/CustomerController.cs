@@ -129,9 +129,11 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator SitRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
 
         currentState = CustomerState.WaitingOrder;
+
+        GetComponent<CustomerOrder>().ShowAlertBubble();
     }
 
     public void OnDrinkReceived()
@@ -143,7 +145,7 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator DrinkRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         LeaveBar();
     }

@@ -7,7 +7,10 @@ public class CustomerOrder : MonoBehaviour
 
     [SerializeField] private DrinkRecipeSO currentOrder;
 
-    [Header("Bubble")]
+    [Header("Alert Bubble")]
+    [SerializeField] private GameObject alertBubble;
+
+    [Header("Order Bubble")]
     [SerializeField] private GameObject bubbleRoot;
     [SerializeField] private SpriteRenderer bubbleDrinkIcon;
 
@@ -19,12 +22,22 @@ public class CustomerOrder : MonoBehaviour
     private void Awake()
     {
         customer = GetComponent<CustomerController>();
+
+        bubbleRoot.SetActive(false);
+        alertBubble.SetActive(false);
+    }
+
+    public void ShowAlertBubble()
+    {
+        alertBubble.SetActive(true);
     }
 
     public void TakeOrder()
     {
         if (customer.CurrentState != CustomerState.WaitingOrder)
             return;
+
+        alertBubble.SetActive(false);
 
         currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
 
