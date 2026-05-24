@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customer: {fileID: 4001223003319005604}
+  customerOrder: {fileID: 3187973371364477111}
   interactKey: 102
 --- !u!1 &8235343048381222228
 GameObject:
@@ -277,6 +278,7 @@ GameObject:
   - component: {fileID: 8982946766104050703}
   - component: {fileID: 6283787226458294265}
   - component: {fileID: 4001223003319005604}
+  - component: {fileID: 3187973371364477111}
   m_Layer: 7
   m_Name: Customer1
   m_TagString: NPC
@@ -516,6 +518,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57f5de75b59231740b13cfbe565b6fd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leavePoint: {fileID: 0}
+--- !u!114 &3187973371364477111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235343048381222228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b7c0a123343644181c70a7fb20986a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   possibleOrders:

@@ -3,6 +3,7 @@ using UnityEngine;
 public class CustomerInteraction : MonoBehaviour
 {
     [SerializeField] private CustomerController customer;
+    [SerializeField] private CustomerOrder customerOrder;
 
     [SerializeField] private KeyCode interactKey = KeyCode.F;
 
@@ -22,11 +23,11 @@ public class CustomerInteraction : MonoBehaviour
     {
         if (customer.CurrentState == CustomerState.WaitingOrder)
         {
-            customer.TakeOrder();
+            customerOrder.TakeOrder();
         }
         else if (customer.CurrentState == CustomerState.WaitingDrink)
         {
-            customer.TryGiveDrink();
+            customerOrder.TryGiveDrink();
         }
     }
 
