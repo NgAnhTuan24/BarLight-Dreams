@@ -12,8 +12,10 @@ public class CustomerController : MonoBehaviour
     private CustomerState currentState;
 
     private Animator animator;
-
     private AIPath aiPath;
+    private CustomerOrder order;
+    private CustomerPatience patience;
+
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
@@ -24,6 +26,8 @@ public class CustomerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         aiPath = GetComponent<AIPath>();
+        order = GetComponent<CustomerOrder>();
+        patience = GetComponent<CustomerPatience>();
     }
 
     private void Start()
@@ -129,11 +133,13 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator SitRoutine()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
 
         currentState = CustomerState.WaitingOrder;
 
-        GetComponent<CustomerOrder>().ShowAlertBubble();
+        order.ShowAlertBubble();
+
+        patience.StartWaitingOrder();
     }
 
     public void OnDrinkReceived()
@@ -146,6 +152,23 @@ public class CustomerController : MonoBehaviour
     IEnumerator DrinkRoutine()
     {
         yield return new WaitForSeconds(3f);
+
+        LeaveBar();
+    }
+
+    public void LeaveAngry()
+    {
+        order.AlertBubble.SetActive(false);
+        order.DrinkBubble.SetActive(false);
+
+        StartCoroutine(LeaveAngryRoutine());
+    }
+
+    IEnumerator LeaveAngryRoutine()
+    {
+        order.ShowAngryBubble();
+
+        yield return new WaitForSeconds(1f);
 
         LeaveBar();
     }

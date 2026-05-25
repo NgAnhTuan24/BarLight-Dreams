@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CustomerOrder : MonoBehaviour
@@ -11,25 +12,57 @@ public class CustomerOrder : MonoBehaviour
     [SerializeField] private GameObject alertBubble;
 
     [Header("Order Bubble")]
-    [SerializeField] private GameObject bubbleRoot;
-    [SerializeField] private SpriteRenderer bubbleDrinkIcon;
+    [SerializeField] private GameObject drinkBubble;
+    [SerializeField] private SpriteRenderer drinkIcon;
+
+    [Header("Emotes Bubble")]
+    [SerializeField] private GameObject happyBubble;
+    [SerializeField] private GameObject angryBubble;
 
     private CustomerController customer;
+    private CustomerPatience patience;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public bool HasOrdered { get; private set; }
+    public GameObject AlertBubble => alertBubble;
+    public GameObject DrinkBubble => drinkBubble;
 
     private void Awake()
     {
         customer = GetComponent<CustomerController>();
+        patience = GetComponent<CustomerPatience>();
 
-        bubbleRoot.SetActive(false);
         alertBubble.SetActive(false);
+        drinkBubble.SetActive(false);
+
+        happyBubble.SetActive(false);
+        angryBubble.SetActive(false);
     }
 
     public void ShowAlertBubble()
     {
         alertBubble.SetActive(true);
+    }
+
+    public void ShowHappyBubble()
+    {
+        happyBubble.SetActive(true);
+
+        StartCoroutine(HideBubbleRoutine(happyBubble));
+    }
+
+    public void ShowAngryBubble()
+    {
+        angryBubble.SetActive(true);
+
+        StartCoroutine(HideBubbleRoutine(angryBubble));
+    }
+
+    IEnumerator HideBubbleRoutine(GameObject target)
+    {
+        yield return new WaitForSeconds(3f);
+
+        target.SetActive(false);
     }
 
     public void TakeOrder()
@@ -48,13 +81,15 @@ public class CustomerOrder : MonoBehaviour
         Debug.Log("Customer ordered: " + currentOrder.drinkName);
 
         customer.ChangeState(CustomerState.WaitingDrink);
+
+        patience.StartWaitingDrink();
     }
 
     void ShowOrderBubble()
     {
-        bubbleRoot.SetActive(true);
+        drinkBubble.SetActive(true);
 
-        bubbleDrinkIcon.sprite = currentOrder.drinkIcon;
+        drinkIcon.sprite = currentOrder.drinkIcon;
     }
 
     public void TryGiveDrink()
@@ -86,7 +121,11 @@ public class CustomerOrder : MonoBehaviour
 
         PlayerHoldItem.instance.Clear();
 
-        bubbleRoot.SetActive(false);
+        drinkBubble.SetActive(false);
+
+        patience.StopPatience();
+
+        ShowHappyBubble();
 
         customer.OnDrinkReceived();
     }
