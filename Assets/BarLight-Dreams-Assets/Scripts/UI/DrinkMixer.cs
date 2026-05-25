@@ -37,18 +37,20 @@ public class DrinkMixer : MonoBehaviour
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)
     {
-        if (recipe.ingredients.Count != current.Count) return false;
-
-        List<IngredientType> recipeList = new();
-
-        foreach (IngredientData data in recipe.ingredients)
+        if (recipe.ingredients.Count != current.Count)
         {
-            recipeList.Add(data.ingredientType);
+            return false;
         }
 
-        foreach (IngredientType type in recipeList)
+        for (int i = 0; i < recipe.ingredients.Count; i++)
         {
-            if (!current.Contains(type))
+            IngredientType recipeIngredient =
+                recipe.ingredients[i].ingredientType;
+
+            IngredientType currentIngredient =
+                current[i];
+
+            if (recipeIngredient != currentIngredient)
             {
                 return false;
             }

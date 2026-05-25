@@ -16,6 +16,8 @@ public class UIPopup : MonoBehaviour
     private Vector2 shownPosition;
     private Tween currentTween;
 
+    private static UIPopup currentOpenPopup;
+
     public bool IsOpen { get; private set; }
 
     private void Awake()
@@ -26,6 +28,13 @@ public class UIPopup : MonoBehaviour
     public void Open()
     {
         if (IsOpen) return;
+
+        if (currentOpenPopup != null && currentOpenPopup != this)
+        {
+            return;
+        }
+
+        currentOpenPopup = this;
 
         IsOpen = true;
 
@@ -48,6 +57,11 @@ public class UIPopup : MonoBehaviour
         if (!IsOpen) return;
 
         IsOpen = false;
+
+        if (currentOpenPopup == this)
+        {
+            currentOpenPopup = null;
+        }
 
         currentTween?.Kill();
 
