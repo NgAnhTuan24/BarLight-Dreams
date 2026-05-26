@@ -5,6 +5,7 @@ public class CustomerOrder : MonoBehaviour
 {
     [Header("Order")]
     [SerializeField] private DrinkRecipeSO[] possibleOrders;
+    [SerializeField] private AudioClip[] orderVoices;
 
     [SerializeField] private DrinkRecipeSO currentOrder;
 
@@ -65,6 +66,15 @@ public class CustomerOrder : MonoBehaviour
         target.SetActive(false);
     }
 
+    void PlayOrderVoice()
+    {
+        if (orderVoices.Length == 0) return;
+
+        AudioClip clip = orderVoices[Random.Range(0, orderVoices.Length)];
+
+        AudioManager.instance.PlaySFX(clip);
+    }
+
     public void TakeOrder()
     {
         if (customer.CurrentState != CustomerState.WaitingOrder)
@@ -77,6 +87,8 @@ public class CustomerOrder : MonoBehaviour
         HasOrdered = true;
 
         ShowOrderBubble();
+
+        PlayOrderVoice();
 
         Debug.Log("Customer ordered: " + currentOrder.drinkName);
 

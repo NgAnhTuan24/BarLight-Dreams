@@ -897,6 +897,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cfe0b3f245da62146b2f3de383d50f68, type: 2}
   - {fileID: 11400000, guid: a13b6c518d153894d81dc89e6817b8f6, type: 2}
   - {fileID: 11400000, guid: 9b979dc6eb55a2847b531fd001ff7089, type: 2}
+  orderVoices:
+  - {fileID: 8300000, guid: 86f94a372bc681b4abf6dda00511173c, type: 3}
+  - {fileID: 8300000, guid: 43d5d04de934d0e4f8b7bfc2376512e1, type: 3}
+  - {fileID: 8300000, guid: 56ef655760967db4e9e027736b169f9d, type: 3}
+  - {fileID: 8300000, guid: ab42f1e2c19c47a4aa698d1e15ffce26, type: 3}
+  - {fileID: 8300000, guid: b716e5bef53762248a3ed6acdf392c90, type: 3}
   currentOrder: {fileID: 0}
   alertBubble: {fileID: 5796495073287061592}
   drinkBubble: {fileID: 6244840336098316782}
