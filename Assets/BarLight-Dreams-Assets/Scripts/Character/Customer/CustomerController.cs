@@ -15,6 +15,7 @@ public class CustomerController : MonoBehaviour
     private AIPath aiPath;
     private CustomerOrder order;
     private CustomerPatience patience;
+    private CustomerPopupText popupText;
 
 
     private Vector2 moveDirection;
@@ -28,6 +29,7 @@ public class CustomerController : MonoBehaviour
         aiPath = GetComponent<AIPath>();
         order = GetComponent<CustomerOrder>();
         patience = GetComponent<CustomerPatience>();
+        popupText = GetComponentInChildren<CustomerPopupText>();
     }
 
     private void Start()
@@ -151,7 +153,7 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator DrinkRoutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
         LeaveBar();
     }
@@ -166,6 +168,8 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator LeaveAngryRoutine()
     {
+        popupText.ShowText("Too slow!");
+
         order.ShowAngryBubble();
 
         yield return new WaitForSeconds(1f);

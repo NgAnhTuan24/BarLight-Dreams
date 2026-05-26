@@ -22,6 +22,7 @@ public class CustomerOrder : MonoBehaviour
 
     private CustomerController customer;
     private CustomerPatience patience;
+    private CustomerPopupText popupText;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public bool HasOrdered { get; private set; }
@@ -32,6 +33,7 @@ public class CustomerOrder : MonoBehaviour
     {
         customer = GetComponent<CustomerController>();
         patience = GetComponent<CustomerPatience>();
+        popupText = GetComponentInChildren<CustomerPopupText>();
 
         alertBubble.SetActive(false);
         drinkBubble.SetActive(false);
@@ -136,6 +138,8 @@ public class CustomerOrder : MonoBehaviour
         drinkBubble.SetActive(false);
 
         patience.StopPatience();
+
+        popupText.ShowText("Thanks!");
 
         ShowHappyBubble();
 
