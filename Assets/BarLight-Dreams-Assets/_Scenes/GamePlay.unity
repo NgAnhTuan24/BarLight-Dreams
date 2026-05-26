@@ -576,6 +576,7 @@ MonoBehaviour:
   - {fileID: 103999837}
   duration: 0.5
   hiddenY: -1080
+  pauseGameplay: 1
 --- !u!1 &124436902
 GameObject:
   m_ObjectHideFlags: 0
@@ -44187,6 +44188,7 @@ MonoBehaviour:
   - {fileID: 2067128016}
   duration: 0.5
   hiddenY: -1080
+  pauseGameplay: 0
 --- !u!114 &1091444174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50770,6 +50772,7 @@ MonoBehaviour:
   - {fileID: 2067128016}
   duration: 0.5
   hiddenY: -1080
+  pauseGameplay: 0
 --- !u!114 &2004143314
 MonoBehaviour:
   m_ObjectHideFlags: 0
