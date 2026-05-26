@@ -8,6 +8,19 @@ public class DrinkMixer : MonoBehaviour
     [Header("Result")]
     [SerializeField] private Sprite resultDrinkSprite;
 
+    [SerializeField] private MixingMinigameUI minigameUI;
+
+    public void StartMixing()
+    {
+        if (!PlayerHoldItem.instance.HasCup())
+        {
+            Debug.Log("Need Cup!");
+            return;
+        }
+
+        minigameUI.StartGame(Mix);
+    }
+
     public void Mix()
     {
         if (!PlayerHoldItem.instance.HasCup())

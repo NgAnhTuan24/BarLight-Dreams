@@ -76,7 +76,7 @@ public class InteractionHighlight : MonoBehaviour
 
             if (drinkMixer != null)
             {
-                drinkMixer.Mix();
+                drinkMixer.StartMixing();
             }
         }
     }

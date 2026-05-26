@@ -33,3 +33,11 @@ public enum HoldItemType
     Cup,
     Drink
 }
+
+public enum ArrowType
+{
+    Up,
+    Down,
+    Left,
+    Right
+}
