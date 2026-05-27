@@ -5029,6 +5029,7 @@ MonoBehaviour:
   spawnRangeY: 3
   spawnInterval: 3
   maxCustomers: 5
+  customerCountText: {fileID: 1360352530}
 --- !u!4 &498973301
 Transform:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
@@ -16,32 +17,40 @@ public class CustomerSpawner : MonoBehaviour
 
     [SerializeField] private int maxCustomers = 5;
 
+    [SerializeField] private TextMeshProUGUI customerCountText;
+
     private float timer;
+
+    private int totalSpawnedCustomers;
+
+    private void Start()
+    {
+        UpdateCustomerUI();
+    }
 
     private void Update()
     {
+        if (totalSpawnedCustomers >= maxCustomers) return;
+
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval)
         {
             timer = 0f;
 
-            TrySpawnCustomer();
+            SpawnCustomer();
         }
     }
 
-    void TrySpawnCustomer()
+    void SpawnCustomer()
     {
-        CustomerController[] customers = FindObjectsOfType<CustomerController>();
-
-        if (customers.Length >= maxCustomers)
-        {
-            return;
-        }
-
         Vector3 spawnPos = GetRandomSpawnPosition();
 
         Instantiate(customerPrefab, spawnPos, Quaternion.identity);
+
+        totalSpawnedCustomers++;
+
+        UpdateCustomerUI();
     }
 
     Vector3 GetRandomSpawnPosition()
@@ -51,6 +60,13 @@ public class CustomerSpawner : MonoBehaviour
         float randomY = Random.Range(spawnCenter.y - spawnRangeY, spawnCenter.y + spawnRangeY);
 
         return new Vector3(randomX, randomY, 0f);
+    }
+
+    void UpdateCustomerUI()
+    {
+        CustomerController[] customers = FindObjectsOfType<CustomerController>();
+
+        customerCountText.text = customers.Length + "/" + maxCustomers + " Customers";
     }
 
     private void OnDrawGizmos()
