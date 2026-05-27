@@ -5029,7 +5029,6 @@ MonoBehaviour:
   spawnRangeY: 3
   spawnInterval: 3
   maxCustomers: 5
-  customerCountText: {fileID: 1360352530}
 --- !u!4 &498973301
 Transform:
   m_ObjectHideFlags: 0
@@ -5056,6 +5055,7 @@ GameObject:
   - component: {fileID: 502266748}
   - component: {fileID: 502266747}
   - component: {fileID: 502266749}
+  - component: {fileID: 502266750}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5104,6 +5104,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeBookPopup: {fileID: 124120692}
   recipeKey: 99
+--- !u!114 &502266750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502266746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f5a3f185327ab4088f3ef7392a6982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clockText: {fileID: 652633869}
+  dayText: {fileID: 472000397}
+  realSecondsPerGameMinute: 1
+  startHour: 18
+  startMinute: 0
+  closingHour: 0
+  closingMinute: 0
 --- !u!1 &535144913
 GameObject:
   m_ObjectHideFlags: 0
@@ -46871,7 +46890,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/0 Customers
+  m_text: 0/0 Seats Taken
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 50441eb4818ef88468c9feb20de5f6dc, type: 2}
   m_sharedMaterial: {fileID: 5643581185491955977, guid: 50441eb4818ef88468c9feb20de5f6dc, type: 2}

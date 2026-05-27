@@ -17,40 +17,32 @@ public class CustomerSpawner : MonoBehaviour
 
     [SerializeField] private int maxCustomers = 5;
 
-    [SerializeField] private TextMeshProUGUI customerCountText;
-
     private float timer;
-
-    private int totalSpawnedCustomers;
-
-    private void Start()
-    {
-        UpdateCustomerUI();
-    }
 
     private void Update()
     {
-        if (totalSpawnedCustomers >= maxCustomers) return;
-
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval)
         {
             timer = 0f;
 
-            SpawnCustomer();
+            TrySpawnCustomer();
         }
     }
 
-    void SpawnCustomer()
+    void TrySpawnCustomer()
     {
+        CustomerController[] customers = FindObjectsOfType<CustomerController>();
+
+        if (customers.Length >= maxCustomers)
+        {
+            return;
+        }
+
         Vector3 spawnPos = GetRandomSpawnPosition();
 
         Instantiate(customerPrefab, spawnPos, Quaternion.identity);
-
-        totalSpawnedCustomers++;
-
-        UpdateCustomerUI();
     }
 
     Vector3 GetRandomSpawnPosition()
@@ -62,17 +54,10 @@ public class CustomerSpawner : MonoBehaviour
         return new Vector3(randomX, randomY, 0f);
     }
 
-    void UpdateCustomerUI()
-    {
-        CustomerController[] customers = FindObjectsOfType<CustomerController>();
-
-        customerCountText.text = customers.Length + "/" + maxCustomers + " Customers";
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawWireCube(spawnCenter, new Vector3(spawnRangeX * 2, spawnRangeY * 2,0.1f));
+        Gizmos.DrawWireCube(spawnCenter, new Vector3(spawnRangeX * 2, spawnRangeY * 2, 0.1f));
     }
 }
