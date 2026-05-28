@@ -5053,6 +5053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 502266748}
+  - component: {fileID: 502266751}
   - component: {fileID: 502266747}
   - component: {fileID: 502266749}
   - component: {fileID: 502266750}
@@ -5123,6 +5124,18 @@ MonoBehaviour:
   startMinute: 0
   closingHour: 0
   closingMinute: 0
+--- !u!114 &502266751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502266746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4015a3e5bf1c6dc429ab6f00ea114032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &535144913
 GameObject:
   m_ObjectHideFlags: 0
@@ -46890,7 +46903,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/0 Seats Taken
+  m_text: 0/0 Customers
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 50441eb4818ef88468c9feb20de5f6dc, type: 2}
   m_sharedMaterial: {fileID: 5643581185491955977, guid: 50441eb4818ef88468c9feb20de5f6dc, type: 2}

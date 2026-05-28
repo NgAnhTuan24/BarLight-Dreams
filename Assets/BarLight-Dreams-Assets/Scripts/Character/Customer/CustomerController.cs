@@ -88,24 +88,20 @@ public class CustomerController : MonoBehaviour
 
     void FindSeat()
     {
-        Chair[] chairs = FindObjectsOfType<Chair>();
+        Chair chair = ChairManager.Instance.GetAvailableChair();
 
-        foreach (Chair chair in chairs)
-        {
-            if (!chair.IsOccupied)
-            {
-                targetChair = chair;
-                chair.Occupy();
+        if (chair == null)
+            return;
 
-                currentState = CustomerState.MovingToSeat;
+        targetChair = chair;
 
-                aiPath.destination = targetChair.sitPoint.position;
+        chair.Occupy();
 
-                aiPath.canMove = true;
+        currentState = CustomerState.MovingToSeat;
 
-                return;
-            }
-        }
+        aiPath.destination = targetChair.sitPoint.position;
+
+        aiPath.canMove = true;
     }
 
     void CheckReachedSeat()

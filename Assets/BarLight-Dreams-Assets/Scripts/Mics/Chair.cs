@@ -8,6 +8,19 @@ public class Chair : MonoBehaviour
 
     public SitDirection sitDirection;
 
+    private void Awake()
+    {
+        ChairManager.Instance.RegisterChair(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (ChairManager.Instance != null)
+        {
+            ChairManager.Instance.UnregisterChair(this);
+        }
+    }
+
     public void Occupy()
     {
         IsOccupied = true;
