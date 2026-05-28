@@ -197,6 +197,8 @@ public class CustomerController : MonoBehaviour
         if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
             return;
 
+        CustomerManager.Instance.RemoveCustomer(this);
+
         Destroy(gameObject);
     }
 
@@ -215,6 +217,14 @@ public class CustomerController : MonoBehaviour
         animator.SetFloat("MoveX", lastMoveDirection.x);
         animator.SetFloat("MoveY", lastMoveDirection.y);
         animator.SetFloat("Speed", moveDirection.sqrMagnitude);
+    }
+
+    private void OnEnable()
+    {
+        if (CustomerManager.Instance != null)
+        {
+            CustomerManager.Instance.RegisterCustomer(this);
+        }
     }
 }
 

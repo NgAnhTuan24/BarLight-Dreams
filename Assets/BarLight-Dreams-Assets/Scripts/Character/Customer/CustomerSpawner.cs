@@ -79,9 +79,7 @@ public class CustomerSpawner : MonoBehaviour
             return;
         }
 
-        CustomerController[] customers = FindObjectsOfType<CustomerController>();
-
-        if (customers.Length >= maxCustomers)
+        if (CustomerManager.Instance.CurrentCustomerCount >= maxCustomers)
         {
             return;
         }
@@ -102,7 +100,7 @@ public class CustomerSpawner : MonoBehaviour
 
     void UpdateCustomerUI()
     {
-        int currentCustomers = FindObjectsOfType<CustomerController>().Length;
+        int currentCustomers = CustomerManager.Instance.CurrentCustomerCount;
 
         int totalChairs = ChairManager.Instance.GetChairCount();
 

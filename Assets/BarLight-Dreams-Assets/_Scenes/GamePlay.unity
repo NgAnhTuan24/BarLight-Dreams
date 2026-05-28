@@ -913,7 +913,7 @@ Tilemap:
       - {fileID: -629604430, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 1510131083, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 356604140, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
-      m_AnimationSpeed: 3
+      m_AnimationSpeed: 3.0000002
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -5059,6 +5059,7 @@ GameObject:
   m_Component:
   - component: {fileID: 502266748}
   - component: {fileID: 502266751}
+  - component: {fileID: 502266752}
   - component: {fileID: 502266747}
   - component: {fileID: 502266749}
   - component: {fileID: 502266750}
@@ -5139,6 +5140,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4015a3e5bf1c6dc429ab6f00ea114032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &502266752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502266746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de1dad11cac10045b23d4eedbd4a99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &535144913
