@@ -72,14 +72,14 @@ public class CustomerSpawner : MonoBehaviour
         int hour = GameClock.Instance.CurrentHour;
         int minute = GameClock.Instance.CurrentMinute;
 
-        bool stopReceivingCustomers = (hour == 23 && minute >= 45);
+        bool stopReceivingCustomers = (hour == 23 && minute >= 30);
 
         if (stopReceivingCustomers)
         {
             return;
         }
 
-        if (CustomerManager.Instance.CurrentCustomerCount >= maxCustomers)
+        if (CustomerManager.instance.CurrentCustomerCount >= maxCustomers)
         {
             return;
         }
@@ -100,9 +100,9 @@ public class CustomerSpawner : MonoBehaviour
 
     void UpdateCustomerUI()
     {
-        int currentCustomers = CustomerManager.Instance.CurrentCustomerCount;
+        int currentCustomers = CustomerManager.instance.CurrentCustomerCount;
 
-        int totalChairs = ChairManager.Instance.GetChairCount();
+        int totalChairs = ChairManager.instance.GetChairCount();
 
         customerCountText.text = currentCustomers + "/" + totalChairs + " Customer";
     }

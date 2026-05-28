@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class ChairManager : MonoBehaviour
 {
-    public static ChairManager Instance { get; private set; }
+    public static ChairManager instance { get; private set; }
 
     private List<Chair> chairs = new List<Chair>();
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         else
         {

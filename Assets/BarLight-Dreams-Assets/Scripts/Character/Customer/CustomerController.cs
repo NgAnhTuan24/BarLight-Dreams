@@ -17,7 +17,6 @@ public class CustomerController : MonoBehaviour
     private CustomerPatience patience;
     private CustomerPopupText popupText;
 
-
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
     
@@ -88,7 +87,7 @@ public class CustomerController : MonoBehaviour
 
     void FindSeat()
     {
-        Chair chair = ChairManager.Instance.GetAvailableChair();
+        Chair chair = ChairManager.instance.GetAvailableChair();
 
         if (chair == null)
             return;
@@ -168,6 +167,8 @@ public class CustomerController : MonoBehaviour
 
         order.ShowAngryBubble();
 
+        PlayerController.instance.health.TakeDamage(1);
+
         yield return new WaitForSeconds(1f);
 
         LeaveBar();
@@ -197,7 +198,7 @@ public class CustomerController : MonoBehaviour
         if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
             return;
 
-        CustomerManager.Instance.RemoveCustomer(this);
+        CustomerManager.instance.RemoveCustomer(this);
 
         Destroy(gameObject);
     }
@@ -221,9 +222,9 @@ public class CustomerController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (CustomerManager.Instance != null)
+        if (CustomerManager.instance != null)
         {
-            CustomerManager.Instance.RegisterCustomer(this);
+            CustomerManager.instance.RegisterCustomer(this);
         }
     }
 }

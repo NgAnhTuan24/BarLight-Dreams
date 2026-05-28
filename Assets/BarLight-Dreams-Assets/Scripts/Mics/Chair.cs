@@ -10,14 +10,14 @@ public class Chair : MonoBehaviour
 
     private void Start()
     {
-        ChairManager.Instance.RegisterChair(this);
+        ChairManager.instance.RegisterChair(this);
     }
 
     private void OnDisable()
     {
-        if (ChairManager.Instance != null)
+        if (ChairManager.instance != null)
         {
-            ChairManager.Instance.UnregisterChair(this);
+            ChairManager.instance.UnregisterChair(this);
         }
     }
 

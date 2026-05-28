@@ -106,12 +106,14 @@ namespace Pathfinding {
 			{ "URL:homepage", "http://arongranberg.com/astar/" }
 		};
 
+		// Comment lại đoạn này tránh hiển thị check update
+		/*
 		static AstarUpdateChecker() {
 			// Add a callback so that we can parse the message when it has been downloaded
 			EditorApplication.update += UpdateCheckLoop;
 			EditorBase.getDocumentationURL = () => GetURL("documentation");
 		}
-
+		*/
 
 		static void RefreshServerMessage () {
 			if (!hasParsedServerMessage) {

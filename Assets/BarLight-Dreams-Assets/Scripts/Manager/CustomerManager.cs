@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
 {
-    public static CustomerManager Instance { get; private set; }
+    public static CustomerManager instance { get; private set; }
 
     private List<CustomerController> customers = new List<CustomerController>();
 
@@ -11,7 +11,14 @@ public class CustomerManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void RegisterCustomer(CustomerController customer)
