@@ -42,14 +42,21 @@ public class ChairManager : MonoBehaviour
 
     public Chair GetAvailableChair()
     {
+        List<Chair> availableChairs = new List<Chair>();
+
         foreach (Chair chair in chairs)
         {
             if (!chair.IsOccupied)
             {
-                return chair;
+                availableChairs.Add(chair);
             }
         }
 
-        return null;
+        if (availableChairs.Count == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, availableChairs.Count);
+
+        return availableChairs[randomIndex];
     }
 }
