@@ -13,26 +13,72 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private float spawnRangeY = 7f;
 
     [Header("Time")]
-    [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private float[] spawnIntervals;
+    private float currentSpawnInterval;
 
-    [SerializeField] private int maxCustomers = 5;
+    [SerializeField] private int maxCustomers = 12;
+
+    [Header("UI")]
+    [SerializeField] private TMP_Text customerCountText;
 
     private float timer;
+
+    private void Start()
+    {
+        SetRandomSpawnInterval();
+        TrySpawnCustomer();
+        UpdateCustomerUI();
+    }
 
     private void Update()
     {
         timer += Time.deltaTime;
 
-        if (timer >= spawnInterval)
+        if (timer >= currentSpawnInterval)
         {
             timer = 0f;
 
             TrySpawnCustomer();
+
+            SetRandomSpawnInterval();
         }
+
+        UpdateCustomerUI();
+    }
+
+    void SetRandomSpawnInterval()
+    {
+        int hour = GameClock.Instance.CurrentHour;
+        int minute = GameClock.Instance.CurrentMinute;
+
+        bool isRushHour = (hour == 22) || (hour == 23 && minute <= 30);
+
+        if (isRushHour)
+        {
+            currentSpawnInterval = 10f;
+        }
+        else
+        {
+            int randomIndex = Random.Range(0, spawnIntervals.Length);
+
+            currentSpawnInterval = spawnIntervals[randomIndex];
+        }
+
+        Debug.Log("Next Spawn In: " + currentSpawnInterval);
     }
 
     void TrySpawnCustomer()
     {
+        int hour = GameClock.Instance.CurrentHour;
+        int minute = GameClock.Instance.CurrentMinute;
+
+        bool stopReceivingCustomers = (hour == 23 && minute >= 45);
+
+        if (stopReceivingCustomers)
+        {
+            return;
+        }
+
         CustomerController[] customers = FindObjectsOfType<CustomerController>();
 
         if (customers.Length >= maxCustomers)
@@ -52,6 +98,15 @@ public class CustomerSpawner : MonoBehaviour
         float randomY = Random.Range(spawnCenter.y - spawnRangeY, spawnCenter.y + spawnRangeY);
 
         return new Vector3(randomX, randomY, 0f);
+    }
+
+    void UpdateCustomerUI()
+    {
+        int currentCustomers = FindObjectsOfType<CustomerController>().Length;
+
+        int totalChairs = ChairManager.Instance.GetChairCount();
+
+        customerCountText.text = currentCustomers + "/" + totalChairs + " Customer";
     }
 
     private void OnDrawGizmos()

@@ -19,6 +19,11 @@ public class ChairManager : MonoBehaviour
         }
     }
 
+    public int GetChairCount()
+    {
+        return chairs.Count;
+    }
+
     public void RegisterChair(Chair chair)
     {
         if (!chairs.Contains(chair))

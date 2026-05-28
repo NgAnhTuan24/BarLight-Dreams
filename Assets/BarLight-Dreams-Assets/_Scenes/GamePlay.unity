@@ -5027,8 +5027,13 @@ MonoBehaviour:
   spawnCenter: {x: 21, y: -4}
   spawnRangeX: 1
   spawnRangeY: 3
-  spawnInterval: 3
-  maxCustomers: 5
+  spawnIntervals:
+  - 15
+  - 19
+  - 22
+  - 26
+  maxCustomers: 12
+  customerCountText: {fileID: 1360352530}
 --- !u!4 &498973301
 Transform:
   m_ObjectHideFlags: 0

@@ -8,12 +8,12 @@ public class Chair : MonoBehaviour
 
     public SitDirection sitDirection;
 
-    private void Awake()
+    private void Start()
     {
         ChairManager.Instance.RegisterChair(this);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         if (ChairManager.Instance != null)
         {
