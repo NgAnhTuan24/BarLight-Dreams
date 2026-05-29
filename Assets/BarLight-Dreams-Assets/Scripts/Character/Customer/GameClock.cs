@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameClock : MonoBehaviour
 {
-    public static GameClock Instance { get; private set; }
+    public static GameClock instance { get; private set; }
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI clockText;
@@ -21,6 +21,10 @@ public class GameClock : MonoBehaviour
     [SerializeField] private int closingHour = 0; // 12 AM
     [SerializeField] private int closingMinute = 0;
 
+    [Header("Test Time Speed")]
+    [SerializeField] private bool isFastForward;
+    [SerializeField] private float fastForwardMultiplier = 2f;
+
     private float timer;
 
     // Expose current time
@@ -30,18 +34,36 @@ public class GameClock : MonoBehaviour
     // Current Day
     public int CurrentDay { get; private set; } = 1;
 
+    public bool IsRushHour
+    {
+        get
+        {
+            return CurrentHour == 22 || (CurrentHour == 23 && CurrentMinute <= 30);
+        }
+    }
+
+    public bool CanReceiveCustomers
+    {
+        get
+        {
+            return !(CurrentHour == 23 && CurrentMinute >= 45);
+        }
+    }
+
     private bool dayEnded;
+
+    public event System.Action OnNewDayStarted;
 
     private void Awake()
     {
         // Singleton
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        instance = this;
     }
 
     private void Start()
@@ -54,9 +76,11 @@ public class GameClock : MonoBehaviour
         if (dayEnded)
             return;
 
-        timer += Time.deltaTime;
+        float speedMultiplier = isFastForward ? fastForwardMultiplier : 1f;
 
-        if (timer >= realSecondsPerGameMinute)
+        timer += Time.deltaTime * speedMultiplier;
+
+        while (timer >= realSecondsPerGameMinute)
         {
             timer -= realSecondsPerGameMinute;
 
@@ -160,6 +184,8 @@ public class GameClock : MonoBehaviour
         timer = 0f;
 
         UpdateClockUI();
+
+        OnNewDayStarted?.Invoke();
 
         Debug.Log($"Start Day {CurrentDay}");
     }

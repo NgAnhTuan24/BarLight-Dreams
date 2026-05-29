@@ -1143,8 +1143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543527adaa14452458ec8ca72a8abb84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitOrderTime: 30
-  waitDrinkTime: 60
+  waitOrderTime: 45
+  waitDrinkTime: 90
   timerBubble: {fileID: 6421336301803595188}
   timerIcon: {fileID: 8869494835456008008}
   timerFrames:
