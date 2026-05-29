@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InGame : MonoBehaviour
 {
@@ -7,5 +8,15 @@ public class InGame : MonoBehaviour
     void Start()
     {
         AudioManager.instance.PlayMusic(musicInGame);
+    }
+
+    public void Save()
+    {
+        Debug.Log("Đã nhấn nút save");
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
