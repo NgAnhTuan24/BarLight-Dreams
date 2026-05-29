@@ -143,6 +143,8 @@ public class CustomerOrder : MonoBehaviour
 
         ShowHappyBubble();
 
+        MoneyManager.instance.AddMoney(currentOrder.price);
+
         customer.OnDrinkReceived();
     }
 }

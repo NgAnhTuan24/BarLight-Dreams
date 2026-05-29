@@ -913,7 +913,7 @@ Tilemap:
       - {fileID: -629604430, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 1510131083, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 356604140, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
-      m_AnimationSpeed: 3
+      m_AnimationSpeed: 3.0000002
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -4975,6 +4975,7 @@ GameObject:
   - component: {fileID: 502266748}
   - component: {fileID: 502266751}
   - component: {fileID: 502266752}
+  - component: {fileID: 502266753}
   - component: {fileID: 502266747}
   - component: {fileID: 502266749}
   - component: {fileID: 502266750}
@@ -5067,6 +5068,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1de1dad11cac10045b23d4eedbd4a99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &502266753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502266746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bfc5e03236cfdd4897381223c773b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &535144913
@@ -39198,6 +39211,7 @@ GameObject:
   - component: {fileID: 926656736}
   - component: {fileID: 926656738}
   - component: {fileID: 926656737}
+  - component: {fileID: 926656739}
   m_Layer: 5
   m_Name: PlayerHUD
   m_TagString: Untagged
@@ -39264,6 +39278,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926656735}
   m_CullTransparentMesh: 1
+--- !u!114 &926656739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926656735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d342fc16529cdd14aa0b8b1e67dee3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyText: {fileID: 1710301154}
+  moneyRect: {fileID: 1710301153}
 --- !u!1 &934376825
 GameObject:
   m_ObjectHideFlags: 0
