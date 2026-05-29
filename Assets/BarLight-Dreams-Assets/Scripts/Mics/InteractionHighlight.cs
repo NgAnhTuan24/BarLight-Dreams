@@ -9,14 +9,17 @@ public class InteractionHighlight : MonoBehaviour
 
     [Header("Remove All In Counter")]
     [SerializeField] private bool cleanCounter;
+    [SerializeField] private AudioClip cleanSFX;
 
     [Header("Give Ice")]
     [SerializeField] private bool giveIce;
     [SerializeField] private Sprite iceSprite;
+    [SerializeField] private AudioClip iceSFX;
 
     [Header("Give Cup")]
     [SerializeField] private bool giveCup;
     [SerializeField] private Sprite cupSprite;
+    [SerializeField] private AudioClip cupSFX;
 
     [Header("Mix Drink")]
     [SerializeField] private DrinkMixer drinkMixer;
@@ -46,6 +49,7 @@ public class InteractionHighlight : MonoBehaviour
             {
                 CounterBarUI.instance.CleanCounter();
                 PlayerHoldItem.instance.Clear();
+                AudioManager.instance.PlaySFX(cleanSFX);
             }
 
             if (giveIce)
@@ -55,7 +59,9 @@ public class InteractionHighlight : MonoBehaviour
                     iceSprite,
                     new Vector2 (40, 50),
                     17.5f
-                    );
+                );
+
+                AudioManager.instance.PlaySFX(iceSFX);
             }
 
             if (giveCup)
@@ -63,12 +69,14 @@ public class InteractionHighlight : MonoBehaviour
                 if (PlayerHoldItem.instance.IsEmpty())
                 {
                     PlayerHoldItem.instance.Hold(cupSprite, HoldItemType.Cup);
+
+                    AudioManager.instance.PlaySFX(cupSFX);
                 }
             }
 
             if (drinkMixer != null)
             {
-                drinkMixer.Mix();
+                drinkMixer.StartMixing();
             }
         }
     }

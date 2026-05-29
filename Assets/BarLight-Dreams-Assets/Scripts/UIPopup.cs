@@ -13,6 +13,9 @@ public class UIPopup : MonoBehaviour
     [SerializeField] private float duration = 0.5f;
     [SerializeField] private float hiddenY = -1080f;
 
+    [Header("Pause")]
+    [SerializeField] private bool pauseGameplay = false;
+
     private Vector2 shownPosition;
     private Tween currentTween;
 
@@ -40,6 +43,11 @@ public class UIPopup : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        if (pauseGameplay)
+        {
+            Time.timeScale = 0f;
+        }
+
         foreach (GameObject obj in hideObjects)
         {
             obj.SetActive(false);
@@ -49,7 +57,7 @@ public class UIPopup : MonoBehaviour
 
         panel.anchoredPosition = new Vector2(shownPosition.x, hiddenY);
 
-        currentTween = panel.DOAnchorPos(shownPosition, duration).SetEase(Ease.OutCubic);
+        currentTween = panel.DOAnchorPos(shownPosition, duration).SetEase(Ease.OutCubic).SetUpdate(true);
     }
 
     public void Close()
@@ -63,10 +71,16 @@ public class UIPopup : MonoBehaviour
             currentOpenPopup = null;
         }
 
+        if (pauseGameplay)
+        {
+            Time.timeScale = 1f;
+        }
+
         currentTween?.Kill();
 
         currentTween = panel.DOAnchorPos(new Vector2(shownPosition.x, hiddenY), duration)
             .SetEase(Ease.InCubic)
+            .SetUpdate(true)
             .OnComplete(() =>
             {
                 foreach (GameObject obj in hideObjects)
@@ -84,5 +98,13 @@ public class UIPopup : MonoBehaviour
             Close();
         else
             Open();
+    }
+
+    private void OnDisable()
+    {
+        if (pauseGameplay)
+        {
+            Time.timeScale = 1f;
+        }
     }
 }

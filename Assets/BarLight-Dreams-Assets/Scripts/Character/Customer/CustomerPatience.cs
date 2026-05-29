@@ -4,8 +4,8 @@ using UnityEngine;
 public class CustomerPatience : MonoBehaviour
 {
     [Header("Patience Time")]
-    [SerializeField] private float waitOrderTime = 10f;
-    [SerializeField] private float waitDrinkTime = 20f;
+    [SerializeField] private float waitOrderTime = 30f;
+    [SerializeField] private float waitDrinkTime = 60f;
 
     [Header("Bubble")]
     [SerializeField] private GameObject timerBubble;

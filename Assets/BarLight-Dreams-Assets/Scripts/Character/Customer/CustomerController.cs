@@ -15,7 +15,7 @@ public class CustomerController : MonoBehaviour
     private AIPath aiPath;
     private CustomerOrder order;
     private CustomerPatience patience;
-
+    private CustomerPopupText popupText;
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
@@ -28,6 +28,7 @@ public class CustomerController : MonoBehaviour
         aiPath = GetComponent<AIPath>();
         order = GetComponent<CustomerOrder>();
         patience = GetComponent<CustomerPatience>();
+        popupText = GetComponentInChildren<CustomerPopupText>();
     }
 
     private void Start()
@@ -86,24 +87,20 @@ public class CustomerController : MonoBehaviour
 
     void FindSeat()
     {
-        Chair[] chairs = FindObjectsOfType<Chair>();
+        Chair chair = ChairManager.instance.GetAvailableChair();
 
-        foreach (Chair chair in chairs)
-        {
-            if (!chair.IsOccupied)
-            {
-                targetChair = chair;
-                chair.Occupy();
+        if (chair == null)
+            return;
 
-                currentState = CustomerState.MovingToSeat;
+        targetChair = chair;
 
-                aiPath.destination = targetChair.sitPoint.position;
+        chair.Occupy();
 
-                aiPath.canMove = true;
+        currentState = CustomerState.MovingToSeat;
 
-                return;
-            }
-        }
+        aiPath.destination = targetChair.sitPoint.position;
+
+        aiPath.canMove = true;
     }
 
     void CheckReachedSeat()
@@ -151,7 +148,7 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator DrinkRoutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
         LeaveBar();
     }
@@ -166,7 +163,11 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator LeaveAngryRoutine()
     {
+        popupText.ShowText("Too slow!");
+
         order.ShowAngryBubble();
+
+        PlayerController.instance.health.TakeDamage(1);
 
         yield return new WaitForSeconds(1f);
 
@@ -197,6 +198,8 @@ public class CustomerController : MonoBehaviour
         if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
             return;
 
+        CustomerManager.instance.RemoveCustomer(this);
+
         Destroy(gameObject);
     }
 
@@ -215,6 +218,14 @@ public class CustomerController : MonoBehaviour
         animator.SetFloat("MoveX", lastMoveDirection.x);
         animator.SetFloat("MoveY", lastMoveDirection.y);
         animator.SetFloat("Speed", moveDirection.sqrMagnitude);
+    }
+
+    private void OnEnable()
+    {
+        if (CustomerManager.instance != null)
+        {
+            CustomerManager.instance.RegisterCustomer(this);
+        }
     }
 }
 

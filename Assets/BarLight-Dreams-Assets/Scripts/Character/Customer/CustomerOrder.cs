@@ -5,6 +5,7 @@ public class CustomerOrder : MonoBehaviour
 {
     [Header("Order")]
     [SerializeField] private DrinkRecipeSO[] possibleOrders;
+    [SerializeField] private AudioClip[] orderVoices;
 
     [SerializeField] private DrinkRecipeSO currentOrder;
 
@@ -21,6 +22,7 @@ public class CustomerOrder : MonoBehaviour
 
     private CustomerController customer;
     private CustomerPatience patience;
+    private CustomerPopupText popupText;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public bool HasOrdered { get; private set; }
@@ -31,6 +33,7 @@ public class CustomerOrder : MonoBehaviour
     {
         customer = GetComponent<CustomerController>();
         patience = GetComponent<CustomerPatience>();
+        popupText = GetComponentInChildren<CustomerPopupText>();
 
         alertBubble.SetActive(false);
         drinkBubble.SetActive(false);
@@ -65,6 +68,15 @@ public class CustomerOrder : MonoBehaviour
         target.SetActive(false);
     }
 
+    void PlayOrderVoice()
+    {
+        if (orderVoices.Length == 0) return;
+
+        AudioClip clip = orderVoices[Random.Range(0, orderVoices.Length)];
+
+        AudioManager.instance.PlaySFX(clip);
+    }
+
     public void TakeOrder()
     {
         if (customer.CurrentState != CustomerState.WaitingOrder)
@@ -77,6 +89,8 @@ public class CustomerOrder : MonoBehaviour
         HasOrdered = true;
 
         ShowOrderBubble();
+
+        PlayOrderVoice();
 
         Debug.Log("Customer ordered: " + currentOrder.drinkName);
 
@@ -125,7 +139,11 @@ public class CustomerOrder : MonoBehaviour
 
         patience.StopPatience();
 
+        popupText.ShowText("Thanks!");
+
         ShowHappyBubble();
+
+        MoneyManager.instance.AddMoney(currentOrder.price);
 
         customer.OnDrinkReceived();
     }
