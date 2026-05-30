@@ -171,9 +171,12 @@ public class CustomerController : MonoBehaviour
 
         order.ShowAngryBubble();
 
-        PlayerController.instance.health.TakeDamage(1);
-
-        AudioManager.instance.PlaySFX(hurtSFX);
+        if (PlayerController.instance.health.CurrentHP > 0)
+        {
+            PlayerController.instance.health.TakeDamage(1);
+            
+            AudioManager.instance.PlaySFX(hurtSFX);
+        }
 
         yield return new WaitForSeconds(1f);
 

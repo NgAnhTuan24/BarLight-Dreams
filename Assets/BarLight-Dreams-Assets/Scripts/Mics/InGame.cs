@@ -15,6 +15,11 @@ public class InGame : MonoBehaviour
         Debug.Log("Đã nhấn nút save");
     }
 
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void ExitToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
