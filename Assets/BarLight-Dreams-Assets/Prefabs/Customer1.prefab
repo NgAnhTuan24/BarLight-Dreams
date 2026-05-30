@@ -1089,6 +1089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leavePoint: {fileID: 0}
+  hurtSFX: {fileID: 8300000, guid: 24b4564fbf47c3e4492ce4d284079a45, type: 3}
 --- !u!114 &3187973371364477111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,6 +1132,7 @@ MonoBehaviour:
   drinkIcon: {fileID: 3045870468234122568}
   happyBubble: {fileID: 3068822273379525700}
   angryBubble: {fileID: 8710184720906455090}
+  collectionSFX: {fileID: 8300000, guid: f12cbe4cf77a9fc49b949be0f45c4ae8, type: 3}
 --- !u!114 &1955761859628439092
 MonoBehaviour:
   m_ObjectHideFlags: 0
