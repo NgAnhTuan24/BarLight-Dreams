@@ -19,6 +19,6 @@ public class MenuGame : MonoBehaviour
 
     public void ExitGame()
     {
-        Debug.Log("đã nhấn exit");
+        Application.Quit();
     }
 }

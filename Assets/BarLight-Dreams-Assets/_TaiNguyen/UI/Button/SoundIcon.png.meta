@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 333277e0d5e3f6d48baff9bd0e64ef58
+guid: c99b6c9fcddcb3b4e8593c9e57ee11e3
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -126,10 +126,10 @@ TextureImporter:
       name: SoundIcon_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 4
-        width: 8
-        height: 8
+        x: 1
+        y: 1
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b7190581f051cc0418e15f6dcccc483e
-      internalID: -1087050767
+      spriteID: 37d59e1f68362284ea18ec8f1ce2d5a3
+      internalID: 736587862
       vertices: []
       indices: 
       edges: []
@@ -147,10 +147,10 @@ TextureImporter:
       name: SoundIcon_1
       rect:
         serializedVersion: 2
-        x: 21
-        y: 4
-        width: 8
-        height: 8
+        x: 19
+        y: 1
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,8 +158,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 628c278a1ce1be64a98418bf31521b69
-      internalID: -6634826
+      spriteID: 62ef28d91614d694384d8cb43ca50b38
+      internalID: -1483132029
       vertices: []
       indices: 
       edges: []
@@ -175,8 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SoundIcon_0: -1087050767
-      SoundIcon_1: -6634826
+      SoundIcon_0: 736587862
+      SoundIcon_1: -1483132029
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

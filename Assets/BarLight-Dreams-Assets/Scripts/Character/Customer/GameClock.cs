@@ -29,6 +29,7 @@ public class GameClock : MonoBehaviour
 
     [Header("UI In Game")]
     [SerializeField] private DayIntroUI dayIntroUI;
+    [SerializeField] private SummaryDayUI summaryUI;
     public bool IsRunning { get; private set; }
 
     private float timer;
@@ -63,7 +64,6 @@ public class GameClock : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -96,9 +96,6 @@ public class GameClock : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Add 1 in-game minute
-    /// </summary>
     private void AddMinute()
     {
         CurrentMinute++;
@@ -126,9 +123,6 @@ public class GameClock : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Update TMP clock text
-    /// </summary>
     private void UpdateClockUI()
     {
         int displayHour = CurrentHour;
@@ -156,9 +150,6 @@ public class GameClock : MonoBehaviour
         dayText.text = $"Day {CurrentDay}";
     }
 
-    /// <summary>
-    /// Called when the bar closes
-    /// </summary>
     private void EndDay()
     {
         StartCoroutine(EndDayRoutine());
@@ -169,24 +160,30 @@ public class GameClock : MonoBehaviour
         dayEnded = true;
         IsRunning = false;
 
+        PlayerController.instance.movement.SetCanMove(false);
+
         OnBarClosed?.Invoke();
 
         yield return new WaitUntil(
             () => CustomerManager.instance.CurrentCustomerCount == 0
         );
 
+        bool introFinished = false;
+
         dayIntroUI.Show(
             "END DAY",
-            "CLOSE BAR"
+            "CLOSE BAR",
+            () => introFinished = true
         );
 
-        /*  hiện tại thì chưa làm sumary day lên chỉ dùng WaitForSeconds sẽ pk config tay
-            nếu <10s thì ui end day sẽ không hiển thị kịp close bar text thì nó đã chuyển sang startnextday
-            nê sau này sẽ thêm sumary day ui
-        */
-        yield return new WaitForSeconds(10f);
+        yield return new WaitUntil(() => introFinished);
 
-        StartNextDay();
+        summaryUI.Show(
+            CurrentDay,
+            0,
+            0,
+            StartNextDay
+        );
     }
 
     private void StartNextDay()
@@ -207,6 +204,8 @@ public class GameClock : MonoBehaviour
 
         IsRunning = false;
 
+        PlayerController.instance.movement.SetCanMove(false);
+
         UpdateClockUI();
 
         dayIntroUI.Show(
@@ -215,6 +214,8 @@ public class GameClock : MonoBehaviour
             () =>
             {
                 IsRunning = true;
+
+                PlayerController.instance.movement.SetCanMove(true);
 
                 OnNewDayStarted?.Invoke();
 
