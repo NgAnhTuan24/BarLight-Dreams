@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -56,7 +58,8 @@ public class GameClock : MonoBehaviour
 
     private bool dayEnded;
 
-    public event System.Action OnNewDayStarted;
+    public event Action OnNewDayStarted;
+    public event Action OnBarClosed;
 
     private void Awake()
     {
@@ -158,18 +161,32 @@ public class GameClock : MonoBehaviour
     /// </summary>
     private void EndDay()
     {
+        StartCoroutine(EndDayRoutine());
+    }
+
+    private IEnumerator EndDayRoutine()
+    {
         dayEnded = true;
+        IsRunning = false;
 
-        Debug.Log("Bar Closed - End Day");
+        OnBarClosed?.Invoke();
 
-        // TODO:
-        // - Stop customer spawning
-        // - Make customers leave
-        // - Show summary UI
-        // - Save earnings
+        yield return new WaitUntil(
+            () => CustomerManager.instance.CurrentCustomerCount == 0
+        );
 
-        // TEST:
-        Invoke(nameof(StartNextDay), 3f);
+        dayIntroUI.Show(
+            "END DAY",
+            "CLOSE BAR"
+        );
+
+        /*  hiện tại thì chưa làm sumary day lên chỉ dùng WaitForSeconds sẽ pk config tay
+            nếu <10s thì ui end day sẽ không hiển thị kịp close bar text thì nó đã chuyển sang startnextday
+            nê sau này sẽ thêm sumary day ui
+        */
+        yield return new WaitForSeconds(10f);
+
+        StartNextDay();
     }
 
     private void StartNextDay()

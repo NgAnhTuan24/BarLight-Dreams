@@ -26,10 +26,14 @@ public class CustomerSpawner : MonoBehaviour
     private void Start()
     {
         ResetSpawnInterval();
+
+        GameClock.instance.OnNewDayStarted += ResetSpawnInterval;
     }
 
     private void Update()
     {
+        UpdateCustomerUI();
+
         if (!GameClock.instance.IsRunning) return;
 
             timer += Time.deltaTime;
@@ -42,8 +46,6 @@ public class CustomerSpawner : MonoBehaviour
 
             SetRandomSpawnInterval();
         }
-
-        UpdateCustomerUI();
     }
 
     void ResetSpawnInterval()
@@ -114,15 +116,7 @@ public class CustomerSpawner : MonoBehaviour
         Gizmos.DrawWireCube(spawnCenter, new Vector3(spawnRangeX * 2, spawnRangeY * 2, 0.1f));
     }
 
-    private void OnEnable()
-    {
-        if (GameClock.instance != null)
-        {
-            GameClock.instance.OnNewDayStarted += ResetSpawnInterval;
-        }
-    }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (GameClock.instance != null)
         {

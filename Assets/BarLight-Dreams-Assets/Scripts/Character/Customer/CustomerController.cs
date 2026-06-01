@@ -184,6 +184,19 @@ public class CustomerController : MonoBehaviour
     }
     #endregion
 
+    #region End Day - Khách Buộc phải rời quán
+    public void ForceLeave()
+    {
+        StopAllCoroutines();
+
+        order.AlertBubble.SetActive(false);
+        order.DrinkBubble.SetActive(false);
+        patience.StopPatience();
+
+        LeaveBar();
+    }
+    #endregion
+
     void LeaveBar()
     {
         currentState = CustomerState.Leaving;
