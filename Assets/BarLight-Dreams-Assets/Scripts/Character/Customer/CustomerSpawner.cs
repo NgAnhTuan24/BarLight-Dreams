@@ -30,7 +30,9 @@ public class CustomerSpawner : MonoBehaviour
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        if (!GameClock.instance.IsRunning) return;
+
+            timer += Time.deltaTime;
 
         while (timer >= currentSpawnInterval)
         {

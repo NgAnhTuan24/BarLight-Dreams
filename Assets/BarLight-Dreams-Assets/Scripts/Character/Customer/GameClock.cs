@@ -25,6 +25,10 @@ public class GameClock : MonoBehaviour
     [SerializeField] private bool isFastForward;
     [SerializeField] private float fastForwardMultiplier = 2f;
 
+    [Header("UI In Game")]
+    [SerializeField] private DayIntroUI dayIntroUI;
+    public bool IsRunning { get; private set; }
+
     private float timer;
 
     // Expose current time
@@ -75,7 +79,7 @@ public class GameClock : MonoBehaviour
     {
         if (PlayerController.instance.health.CurrentHP == 0) return;
 
-        if (dayEnded) return;
+        if (dayEnded || !IsRunning) return;
 
         float speedMultiplier = isFastForward ? fastForwardMultiplier : 1f;
 
@@ -184,10 +188,21 @@ public class GameClock : MonoBehaviour
 
         timer = 0f;
 
+        IsRunning = false;
+
         UpdateClockUI();
 
-        OnNewDayStarted?.Invoke();
+        dayIntroUI.Show(
+            $"DAY {CurrentDay}",
+            "OPEN BAR",
+            () =>
+            {
+                IsRunning = true;
 
-        Debug.Log($"Start Day {CurrentDay}");
+                OnNewDayStarted?.Invoke();
+
+                Debug.Log($"Start Day {CurrentDay}");
+            }
+        );
     }
 }
