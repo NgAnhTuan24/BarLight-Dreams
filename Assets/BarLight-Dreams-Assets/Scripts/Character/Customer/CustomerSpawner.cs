@@ -70,6 +70,8 @@ public class CustomerSpawner : MonoBehaviour
 
     void TrySpawnCustomer()
     {
+        if (PlayerController.instance.health.CurrentHP == 0) return;
+
         if (!GameClock.instance.CanReceiveCustomers)
         {
             return;

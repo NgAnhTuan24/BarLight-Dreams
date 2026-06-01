@@ -73,8 +73,9 @@ public class GameClock : MonoBehaviour
 
     private void Update()
     {
-        if (dayEnded)
-            return;
+        if (PlayerController.instance.health.CurrentHP == 0) return;
+
+        if (dayEnded) return;
 
         float speedMultiplier = isFastForward ? fastForwardMultiplier : 1f;
 
