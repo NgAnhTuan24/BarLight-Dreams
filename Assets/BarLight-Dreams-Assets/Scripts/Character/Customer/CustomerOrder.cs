@@ -148,6 +148,9 @@ public class CustomerOrder : MonoBehaviour
 
         MoneyManager.instance.AddMoney(currentOrder.price);
 
+        DayStatsManager.instance.AddEarnings(currentOrder.price);
+        DayStatsManager.instance.AddServedCustomer();
+
         AudioManager.instance.PlaySFX(collectionSFX);
 
         customer.OnDrinkReceived();

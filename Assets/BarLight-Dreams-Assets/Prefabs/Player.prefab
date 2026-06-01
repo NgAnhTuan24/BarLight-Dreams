@@ -200,6 +200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  footstepClip: {fileID: 8300000, guid: 7c9b80ae27d6ee645996b27308f7326d, type: 3}
+  stepInterval: 0.4
 --- !u!114 &54141686171164696
 MonoBehaviour:
   m_ObjectHideFlags: 0

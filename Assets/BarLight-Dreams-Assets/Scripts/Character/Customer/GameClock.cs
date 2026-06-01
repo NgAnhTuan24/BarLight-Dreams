@@ -160,13 +160,13 @@ public class GameClock : MonoBehaviour
         dayEnded = true;
         IsRunning = false;
 
-        PlayerController.instance.movement.SetCanMove(false);
-
         OnBarClosed?.Invoke();
 
         yield return new WaitUntil(
             () => CustomerManager.instance.CurrentCustomerCount == 0
         );
+        
+        PlayerController.instance.movement.SetCanMove(false);
 
         bool introFinished = false;
 
@@ -177,11 +177,14 @@ public class GameClock : MonoBehaviour
         );
 
         yield return new WaitUntil(() => introFinished);
+        
+        CounterBarUI.instance.CleanCounter();
+        PlayerHoldItem.instance.Clear();
 
         summaryUI.Show(
             CurrentDay,
-            0,
-            0,
+            DayStatsManager.instance.DayEarnings,
+            DayStatsManager.instance.CustomersServed,
             StartNextDay
         );
     }
@@ -196,6 +199,8 @@ public class GameClock : MonoBehaviour
     private void StartNewDay()
     {
         dayEnded = false;
+
+        DayStatsManager.instance.ResetDay();
 
         CurrentHour = startHour;
         CurrentMinute = startMinute;
