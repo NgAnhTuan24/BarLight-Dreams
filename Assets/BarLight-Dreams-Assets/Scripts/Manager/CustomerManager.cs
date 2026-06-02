@@ -36,4 +36,22 @@ public class CustomerManager : MonoBehaviour
             customers.Remove(customer);
         }
     }
+
+    public void ForceAllCustomersLeave()
+    {
+        foreach (CustomerController customer in customers)
+        {
+            customer.ForceLeave();
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameClock.instance.OnBarClosed += ForceAllCustomersLeave;
+    }
+
+    private void OnDisable()
+    {
+        GameClock.instance.OnBarClosed -= ForceAllCustomersLeave;
+    }
 }

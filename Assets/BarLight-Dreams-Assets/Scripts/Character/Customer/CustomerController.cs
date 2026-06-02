@@ -8,6 +8,9 @@ public class CustomerController : MonoBehaviour
     [Header("Leave")]
     [SerializeField] private Transform leavePoint;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip hurtSFX;
+
     private Chair targetChair;
     private CustomerState currentState;
 
@@ -153,6 +156,7 @@ public class CustomerController : MonoBehaviour
         LeaveBar();
     }
 
+    #region Rời quán với tâm trạng tức giận
     public void LeaveAngry()
     {
         order.AlertBubble.SetActive(false);
@@ -167,12 +171,31 @@ public class CustomerController : MonoBehaviour
 
         order.ShowAngryBubble();
 
-        PlayerController.instance.health.TakeDamage(1);
+        if (PlayerController.instance.health.CurrentHP > 0)
+        {
+            PlayerController.instance.health.TakeDamage(1);
+            
+            AudioManager.instance.PlaySFX(hurtSFX);
+        }
 
         yield return new WaitForSeconds(1f);
 
         LeaveBar();
     }
+    #endregion
+
+    #region End Day - Khách Buộc phải rời quán
+    public void ForceLeave()
+    {
+        StopAllCoroutines();
+
+        order.AlertBubble.SetActive(false);
+        order.DrinkBubble.SetActive(false);
+        patience.StopPatience();
+
+        LeaveBar();
+    }
+    #endregion
 
     void LeaveBar()
     {

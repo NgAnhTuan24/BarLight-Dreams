@@ -20,6 +20,9 @@ public class CustomerOrder : MonoBehaviour
     [SerializeField] private GameObject happyBubble;
     [SerializeField] private GameObject angryBubble;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip collectionSFX;
+
     private CustomerController customer;
     private CustomerPatience patience;
     private CustomerPopupText popupText;
@@ -144,6 +147,11 @@ public class CustomerOrder : MonoBehaviour
         ShowHappyBubble();
 
         MoneyManager.instance.AddMoney(currentOrder.price);
+
+        DayStatsManager.instance.AddEarnings(currentOrder.price);
+        DayStatsManager.instance.AddServedCustomer();
+
+        AudioManager.instance.PlaySFX(collectionSFX);
 
         customer.OnDrinkReceived();
     }

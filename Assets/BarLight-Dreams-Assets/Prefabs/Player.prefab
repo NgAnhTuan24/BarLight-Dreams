@@ -199,7 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f8ba729baa37a41becfe2d55ba6c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 7
+  footstepClip: {fileID: 8300000, guid: 7c9b80ae27d6ee645996b27308f7326d, type: 3}
+  stepInterval: 0.4
 --- !u!114 &54141686171164696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,5 +215,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 3
-  currentHP: 0
-  heartUI: {fileID: 0}

@@ -7,6 +7,8 @@ public class PlayerHealth : MonoBehaviour
 
     private HeartUI heartUI;
 
+    public int CurrentHP => currentHP;
+
     private void Awake()
     {
         heartUI = FindFirstObjectByType<HeartUI>();
@@ -28,8 +30,15 @@ public class PlayerHealth : MonoBehaviour
 
         heartUI.UpdateHearts(currentHP);
 
-        if (currentHP < 0)
+        if (currentHP <= 0)
         {
+            GameOver();
         }
+    }
+
+    void GameOver()
+    {
+        PlayerController.instance.movement.SetCanMove(false);
+        GameOverUIHandler.instance.gameOverUI.Open();
     }
 }

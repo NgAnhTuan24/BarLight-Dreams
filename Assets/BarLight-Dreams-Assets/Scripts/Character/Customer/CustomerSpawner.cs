@@ -25,16 +25,20 @@ public class CustomerSpawner : MonoBehaviour
 
     private void Start()
     {
-        SetRandomSpawnInterval();
-        TrySpawnCustomer();
-        UpdateCustomerUI();
+        ResetSpawnInterval();
+
+        GameClock.instance.OnNewDayStarted += ResetSpawnInterval;
     }
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        UpdateCustomerUI();
 
-        if (timer >= currentSpawnInterval)
+        if (!GameClock.instance.IsRunning) return;
+
+            timer += Time.deltaTime;
+
+        while (timer >= currentSpawnInterval)
         {
             timer = 0f;
 
@@ -42,18 +46,19 @@ public class CustomerSpawner : MonoBehaviour
 
             SetRandomSpawnInterval();
         }
+    }
 
-        UpdateCustomerUI();
+    void ResetSpawnInterval()
+    {
+        currentSpawnInterval = 10f;
+        timer = 0f;
+
+        Debug.Log("Time spawn " + currentSpawnInterval);
     }
 
     void SetRandomSpawnInterval()
     {
-        int hour = GameClock.Instance.CurrentHour;
-        int minute = GameClock.Instance.CurrentMinute;
-
-        bool isRushHour = (hour == 22) || (hour == 23 && minute <= 30);
-
-        if (isRushHour)
+        if (GameClock.instance.IsRushHour)
         {
             currentSpawnInterval = 10f;
         }
@@ -69,12 +74,9 @@ public class CustomerSpawner : MonoBehaviour
 
     void TrySpawnCustomer()
     {
-        int hour = GameClock.Instance.CurrentHour;
-        int minute = GameClock.Instance.CurrentMinute;
+        if (PlayerController.instance.health.CurrentHP == 0) return;
 
-        bool stopReceivingCustomers = (hour == 23 && minute >= 30);
-
-        if (stopReceivingCustomers)
+        if (!GameClock.instance.CanReceiveCustomers)
         {
             return;
         }
@@ -112,5 +114,13 @@ public class CustomerSpawner : MonoBehaviour
         Gizmos.color = Color.green;
 
         Gizmos.DrawWireCube(spawnCenter, new Vector3(spawnRangeX * 2, spawnRangeY * 2, 0.1f));
+    }
+
+    private void OnDestroy()
+    {
+        if (GameClock.instance != null)
+        {
+            GameClock.instance.OnNewDayStarted -= ResetSpawnInterval;
+        }
     }
 }

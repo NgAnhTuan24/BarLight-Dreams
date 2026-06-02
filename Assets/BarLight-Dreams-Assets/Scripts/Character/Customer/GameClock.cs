@@ -1,9 +1,11 @@
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class GameClock : MonoBehaviour
 {
-    public static GameClock Instance { get; private set; }
+    public static GameClock instance { get; private set; }
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI clockText;
@@ -21,6 +23,15 @@ public class GameClock : MonoBehaviour
     [SerializeField] private int closingHour = 0; // 12 AM
     [SerializeField] private int closingMinute = 0;
 
+    [Header("Test Time Speed")]
+    [SerializeField] private bool isFastForward;
+    [SerializeField] private float fastForwardMultiplier = 2f;
+
+    [Header("UI In Game")]
+    [SerializeField] private DayIntroUI dayIntroUI;
+    [SerializeField] private SummaryDayUI summaryUI;
+    public bool IsRunning { get; private set; }
+
     private float timer;
 
     // Expose current time
@@ -30,18 +41,36 @@ public class GameClock : MonoBehaviour
     // Current Day
     public int CurrentDay { get; private set; } = 1;
 
+    public bool IsRushHour
+    {
+        get
+        {
+            return CurrentHour == 22 || (CurrentHour == 23 && CurrentMinute <= 30);
+        }
+    }
+
+    public bool CanReceiveCustomers
+    {
+        get
+        {
+            return !(CurrentHour == 23 && CurrentMinute >= 45);
+        }
+    }
+
     private bool dayEnded;
+
+    public event Action OnNewDayStarted;
+    public event Action OnBarClosed;
 
     private void Awake()
     {
-        // Singleton
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        instance = this;
     }
 
     private void Start()
@@ -51,12 +80,15 @@ public class GameClock : MonoBehaviour
 
     private void Update()
     {
-        if (dayEnded)
-            return;
+        if (PlayerController.instance.health.CurrentHP == 0) return;
 
-        timer += Time.deltaTime;
+        if (dayEnded || !IsRunning) return;
 
-        if (timer >= realSecondsPerGameMinute)
+        float speedMultiplier = isFastForward ? fastForwardMultiplier : 1f;
+
+        timer += Time.deltaTime * speedMultiplier;
+
+        while (timer >= realSecondsPerGameMinute)
         {
             timer -= realSecondsPerGameMinute;
 
@@ -64,9 +96,6 @@ public class GameClock : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Add 1 in-game minute
-    /// </summary>
     private void AddMinute()
     {
         CurrentMinute++;
@@ -94,9 +123,6 @@ public class GameClock : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Update TMP clock text
-    /// </summary>
     private void UpdateClockUI()
     {
         int displayHour = CurrentHour;
@@ -124,23 +150,43 @@ public class GameClock : MonoBehaviour
         dayText.text = $"Day {CurrentDay}";
     }
 
-    /// <summary>
-    /// Called when the bar closes
-    /// </summary>
     private void EndDay()
     {
+        StartCoroutine(EndDayRoutine());
+    }
+
+    private IEnumerator EndDayRoutine()
+    {
         dayEnded = true;
+        IsRunning = false;
 
-        Debug.Log("Bar Closed - End Day");
+        OnBarClosed?.Invoke();
 
-        // TODO:
-        // - Stop customer spawning
-        // - Make customers leave
-        // - Show summary UI
-        // - Save earnings
+        yield return new WaitUntil(
+            () => CustomerManager.instance.CurrentCustomerCount == 0
+        );
+        
+        PlayerController.instance.movement.SetCanMove(false);
 
-        // TEST:
-        Invoke(nameof(StartNextDay), 3f);
+        bool introFinished = false;
+
+        dayIntroUI.Show(
+            "END DAY",
+            "CLOSE BAR",
+            () => introFinished = true
+        );
+
+        yield return new WaitUntil(() => introFinished);
+        
+        CounterBarUI.instance.CleanCounter();
+        PlayerHoldItem.instance.Clear();
+
+        summaryUI.Show(
+            CurrentDay,
+            DayStatsManager.instance.DayEarnings,
+            DayStatsManager.instance.CustomersServed,
+            StartNextDay
+        );
     }
 
     private void StartNextDay()
@@ -154,13 +200,32 @@ public class GameClock : MonoBehaviour
     {
         dayEnded = false;
 
+        DayStatsManager.instance.ResetDay();
+
         CurrentHour = startHour;
         CurrentMinute = startMinute;
 
         timer = 0f;
 
+        IsRunning = false;
+
+        PlayerController.instance.movement.SetCanMove(false);
+
         UpdateClockUI();
 
-        Debug.Log($"Start Day {CurrentDay}");
+        dayIntroUI.Show(
+            $"DAY {CurrentDay}",
+            "OPEN BAR",
+            () =>
+            {
+                IsRunning = true;
+
+                PlayerController.instance.movement.SetCanMove(true);
+
+                OnNewDayStarted?.Invoke();
+
+                Debug.Log($"Start Day {CurrentDay}");
+            }
+        );
     }
 }
