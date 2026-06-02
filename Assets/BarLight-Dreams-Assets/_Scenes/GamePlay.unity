@@ -6888,6 +6888,7 @@ GameObject:
   - component: {fileID: 579063918}
   - component: {fileID: 579063920}
   - component: {fileID: 579063919}
+  - component: {fileID: 579063922}
   - component: {fileID: 579063921}
   m_Layer: 5
   m_Name: UI_DaySummary
@@ -6971,6 +6972,20 @@ MonoBehaviour:
   earningsText: {fileID: 1217820569}
   customerText: {fileID: 1644113379}
   nextButton: {fileID: 294665850}
+  canvasGroup: {fileID: 579063922}
+  panel: {fileID: 579063918}
+--- !u!225 &579063922
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579063917}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &579892768
 GameObject:
   m_ObjectHideFlags: 0
