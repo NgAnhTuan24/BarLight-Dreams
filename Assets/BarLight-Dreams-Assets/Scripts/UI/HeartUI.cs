@@ -40,7 +40,7 @@ public class HeartUI : MonoBehaviour
 
             if (!shouldShow && hearts[i].enabled)
             {
-                PlayLoseHeartAnimation(hearts[i]);
+                LoseHeartEffect(hearts[i]);
             }
             else if (shouldShow)
             {
@@ -49,7 +49,7 @@ public class HeartUI : MonoBehaviour
         }
     }
 
-    private void PlayLoseHeartAnimation(Image heart)
+    private void LoseHeartEffect(Image heart)
     {
         RectTransform rect = heart.rectTransform;
 
