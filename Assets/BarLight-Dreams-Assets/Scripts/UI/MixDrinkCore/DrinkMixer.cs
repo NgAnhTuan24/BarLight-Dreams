@@ -57,11 +57,9 @@ public class DrinkMixer : MonoBehaviour
 
         for (int i = 0; i < recipe.ingredients.Count; i++)
         {
-            IngredientType recipeIngredient =
-                recipe.ingredients[i].ingredientType;
+            IngredientType recipeIngredient = recipe.ingredients[i].ingredientType;
 
-            IngredientType currentIngredient =
-                current[i];
+            IngredientType currentIngredient = current[i];
 
             if (recipeIngredient != currentIngredient)
             {
