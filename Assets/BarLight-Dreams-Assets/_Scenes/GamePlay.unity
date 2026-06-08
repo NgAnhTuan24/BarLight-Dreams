@@ -1360,7 +1360,7 @@ Tilemap:
       - {fileID: -629604430, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 1510131083, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 356604140, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
-      m_AnimationSpeed: 3.0000002
+      m_AnimationSpeed: 3
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -6196,6 +6196,10 @@ MonoBehaviour:
   customerPrefabs:
   - {fileID: 4001223003319005604, guid: 92cefa58b16bb3d468f955e7b0aed23d, type: 3}
   - {fileID: 6780047281601323171, guid: 2b9a24816183e3245b67e29d4d080c53, type: 3}
+  - {fileID: 4797502520885138038, guid: 11073283e687673499e8aa304583df25, type: 3}
+  - {fileID: 1751953953958820347, guid: f5ea45f58069d09449f972f23cec8107, type: 3}
+  - {fileID: 5749299940929519075, guid: 4dde5cd7c5e602244818a2b148f5931c, type: 3}
+  - {fileID: 6565536770458484744, guid: fcb80de6eb39db44fb1b07d07db8437f, type: 3}
   spawnCenter: {x: 21, y: -4}
   spawnRangeX: 1
   spawnRangeY: 3
