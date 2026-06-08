@@ -6193,7 +6193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0feb3d504ee99b74fa3ed9e94c17c835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customerPrefab: {fileID: 4001223003319005604, guid: 92cefa58b16bb3d468f955e7b0aed23d, type: 3}
+  customerPrefabs:
+  - {fileID: 4001223003319005604, guid: 92cefa58b16bb3d468f955e7b0aed23d, type: 3}
+  - {fileID: 6780047281601323171, guid: 2b9a24816183e3245b67e29d4d080c53, type: 3}
   spawnCenter: {x: 21, y: -4}
   spawnRangeX: 1
   spawnRangeY: 3

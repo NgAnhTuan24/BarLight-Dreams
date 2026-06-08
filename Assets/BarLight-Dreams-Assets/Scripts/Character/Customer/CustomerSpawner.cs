@@ -4,7 +4,7 @@ using UnityEngine;
 public class CustomerSpawner : MonoBehaviour
 {
     [Header("Spawn")]
-    [SerializeField] private CustomerController customerPrefab;
+    [SerializeField] private CustomerController[] customerPrefabs;
 
     [Header("Spawn Area")]
     [SerializeField] private Vector2 spawnCenter;
@@ -88,7 +88,11 @@ public class CustomerSpawner : MonoBehaviour
 
         Vector3 spawnPos = GetRandomSpawnPosition();
 
-        Instantiate(customerPrefab, spawnPos, Quaternion.identity);
+        int randomIndex = Random.Range(0, customerPrefabs.Length);
+
+        CustomerController randomCustomer = customerPrefabs[randomIndex];
+
+        Instantiate(randomCustomer, spawnPos, Quaternion.identity);
     }
 
     Vector3 GetRandomSpawnPosition()
