@@ -34,11 +34,9 @@ public class GameClock : MonoBehaviour
 
     private float timer;
 
-    // Expose current time
     public int CurrentHour { get; private set; }
     public int CurrentMinute { get; private set; }
 
-    // Current Day
     public int CurrentDay { get; private set; } = 1;
 
     public bool IsRushHour
@@ -100,13 +98,11 @@ public class GameClock : MonoBehaviour
     {
         CurrentMinute++;
 
-        // Increase hour every 60 minutes
         if (CurrentMinute >= 60)
         {
             CurrentMinute = 0;
             CurrentHour++;
 
-            // Wrap after 24
             if (CurrentHour >= 24)
             {
                 CurrentHour = 0;
@@ -115,7 +111,6 @@ public class GameClock : MonoBehaviour
 
         UpdateClockUI();
 
-        // Check closing time
         if (CurrentHour == closingHour &&
             CurrentMinute == closingMinute)
         {
@@ -128,7 +123,6 @@ public class GameClock : MonoBehaviour
         int displayHour = CurrentHour;
         string period = "AM";
 
-        // Convert to 12-hour format
         if (displayHour >= 12)
         {
             period = "PM";

@@ -14,6 +14,15 @@ public class MenuGame : MonoBehaviour
 
     public void StartGame()
     {
+        int slot = SaveManager.instance.GetEmptySlot();
+
+        if (slot == -1)
+        {
+            return;
+        }
+
+        SaveManager.instance.SetCurrentSlot(slot);
+
         SceneManager.LoadScene(sceneName);
     }
 
