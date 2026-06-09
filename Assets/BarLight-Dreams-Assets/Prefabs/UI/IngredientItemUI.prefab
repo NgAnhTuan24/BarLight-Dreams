@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7487583398604844}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -92,6 +92,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconImage: {fileID: 827106012215519417}
   nameText: {fileID: 7402896535313776928}
+  bottleSize: {x: 25, y: 60}
+  fruitSize: {x: 40, y: 50}
+  iceSize: {x: 40, y: 50}
 --- !u!1 &2683116100627198943
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,8 +129,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.999977, y: -1.15}
-  m_SizeDelta: {x: 100, y: 49.5}
+  m_AnchoredPosition: {x: 30, y: -1}
+  m_SizeDelta: {x: 120, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &790025639414545320
 CanvasRenderer:
@@ -184,8 +187,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
