@@ -4,6 +4,8 @@ public class GameLoader : MonoBehaviour
 {
     private void Start()
     {
+        if (!SaveManager.instance.IsLoadingGame) return;
+
         LoadGameData();
     }
 
@@ -17,18 +19,19 @@ public class GameLoader : MonoBehaviour
 
         if (MoneyManager.instance != null)
         {
-            MoneyManager.instance.SetMoney(data.CurrentMoney);
+            MoneyManager.instance.SetMoney(data.currentMoney);
         }
 
         if (GameClock.instance != null)
         {
-            GameClock.instance.SetDay(data.CurrentDay);
+            GameClock.instance.SetDay(data.currentDay);
         }
 
         if (PlayerController.instance != null && PlayerController.instance.health != null)
         {
-            PlayerController.instance.health.SetHP(data.CurrentHP);
+            PlayerController.instance.health.SetHP(data.currentHP);
         }
 
+        SaveManager.instance.ClearLoadState();
     }
 }

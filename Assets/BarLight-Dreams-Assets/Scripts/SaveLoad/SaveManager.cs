@@ -7,6 +7,8 @@ public class SaveManager : MonoBehaviour
 
     public int CurrentSlot { get; private set; }
 
+    public bool IsLoadingGame { get; private set; }
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -17,6 +19,23 @@ public class SaveManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void StartNewGame(int slot)
+    {
+        CurrentSlot = slot;
+        IsLoadingGame = false;
+    }
+
+    public void StartLoadGame(int slot)
+    {
+        CurrentSlot = slot;
+        IsLoadingGame = true;
+    }
+
+    public void ClearLoadState()
+    {
+        IsLoadingGame = false;
     }
 
     public int GetEmptySlot()
@@ -32,18 +51,13 @@ public class SaveManager : MonoBehaviour
         return -1;
     }
 
-    public void SetCurrentSlot(int slot)
-    {
-        CurrentSlot = slot;
-    }
-
     public void SaveGame()
     {
         GameData data = new GameData();
 
-        data.CurrentHP = PlayerController.instance.health.CurrentHP;
-        data.CurrentDay = GameClock.instance.CurrentDay;
-        data.CurrentMoney = MoneyManager.instance.CurrentMoney;
+        data.currentHP = PlayerController.instance.health.CurrentHP;
+        data.currentDay = GameClock.instance.CurrentDay;
+        data.currentMoney = MoneyManager.instance.CurrentMoney;
 
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
@@ -59,7 +73,6 @@ public class SaveManager : MonoBehaviour
 
         return SaveLoadSystem.LoadGame(CurrentSlot);
     }
-
 
     public void DeleteSlot(int slot)
     {

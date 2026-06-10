@@ -31,19 +31,16 @@ public class SaveSlotUI : MonoBehaviour
         }
 
         saveNameText.text = $"Save Slot {slotID}";
-        dayText.text = $"Day: {data.CurrentDay}";
-        moneyText.text = $"Money: {data.CurrentMoney}";
+        dayText.text = $"Day: {data.currentDay}";
+        moneyText.text = $"Money: {data.currentMoney}";
         lastSaveText.text = $"Last Save: {data.saveTime}";
     }
 
     public void LoadSlot()
     {
-        if (!SaveLoadSystem.HasSave(slotID))
-        {
-            return;
-        }
+        if (!SaveLoadSystem.HasSave(slotID)) return;
 
-        SaveManager.instance.SetCurrentSlot(slotID);
+        SaveManager.instance.StartLoadGame(slotID);
 
         SceneManager.LoadScene("GamePlay");
     }

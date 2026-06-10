@@ -73,14 +73,17 @@ public class GameClock : MonoBehaviour
 
     private void Start()
     {
-        GameData data = SaveManager.instance.LoadGame();
 
-        if (data != null)
+        if (SaveManager.instance.IsLoadingGame)
         {
+            GameData data = SaveManager.instance.LoadGame();
+
+            if (data == null) return;
+
             LoadDay();
 
             dayIntroUI.Show(
-                $"DAY {data.CurrentDay}",
+                $"DAY {data.currentDay}",
                 "OPEN BAR",
                 () =>
                 {
@@ -96,10 +99,8 @@ public class GameClock : MonoBehaviour
 
             return;
         }
-        else
-        {
-            StartNewDay();
-        }
+
+        StartNewDay();
     }
 
     public void SetDay(int day)
