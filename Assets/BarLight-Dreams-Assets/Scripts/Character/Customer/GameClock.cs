@@ -73,7 +73,39 @@ public class GameClock : MonoBehaviour
 
     private void Start()
     {
-        StartNewDay();
+        GameData data = SaveManager.instance.LoadGame();
+
+        if (data != null)
+        {
+            LoadDay();
+
+            dayIntroUI.Show(
+                $"DAY {data.CurrentDay}",
+                "OPEN BAR",
+                () =>
+                {
+                    IsRunning = true;
+
+                    PlayerController.instance.movement.SetCanMove(true);
+
+                    OnNewDayStarted?.Invoke();
+
+                    Debug.Log($"Start Day {CurrentDay}");
+                }
+            );
+
+            return;
+        }
+        else
+        {
+            StartNewDay();
+        }
+    }
+
+    public void SetDay(int day)
+    {
+        CurrentDay = day;
+        UpdateClockUI();
     }
 
     private void Update()
@@ -190,7 +222,7 @@ public class GameClock : MonoBehaviour
         StartNewDay();
     }
 
-    private void StartNewDay()
+    private void InitializeDay()
     {
         dayEnded = false;
 
@@ -206,6 +238,16 @@ public class GameClock : MonoBehaviour
         PlayerController.instance.movement.SetCanMove(false);
 
         UpdateClockUI();
+    }
+
+    private void LoadDay()
+    {
+        InitializeDay();
+    }
+
+    private void StartNewDay()
+    {
+        InitializeDay();
 
         dayIntroUI.Show(
             $"DAY {CurrentDay}",

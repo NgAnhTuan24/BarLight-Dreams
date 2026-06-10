@@ -47600,6 +47600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1639060280}
   - component: {fileID: 1639060281}
+  - component: {fileID: 1639060282}
   m_Layer: 0
   m_Name: InGame
   m_TagString: Untagged
@@ -47635,6 +47636,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicInGame: {fileID: 8300000, guid: afe57770133f7a54a9fd42fdac851ed4, type: 3}
+--- !u!114 &1639060282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639060279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d32a9abbb44b164689df21876091d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1644113377
 GameObject:
   m_ObjectHideFlags: 0

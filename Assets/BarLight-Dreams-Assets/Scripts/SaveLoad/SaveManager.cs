@@ -50,6 +50,17 @@ public class SaveManager : MonoBehaviour
         SaveLoadSystem.SaveGame(data, CurrentSlot);
     }
 
+    public GameData LoadGame()
+    {
+        if (CurrentSlot <= 0)
+        {
+            return null;
+        }
+
+        return SaveLoadSystem.LoadGame(CurrentSlot);
+    }
+
+
     public void DeleteSlot(int slot)
     {
         SaveLoadSystem.DeleteSave(slot);

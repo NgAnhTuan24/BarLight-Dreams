@@ -12,15 +12,21 @@ public class PlayerHealth : MonoBehaviour
     private void Awake()
     {
         heartUI = FindFirstObjectByType<HeartUI>();
+
+        currentHP = maxHP;
     }
 
     private void Start()
     {
-        currentHP = maxHP;
-
         heartUI.Initialize(maxHP);
         heartUI.UpdateHearts(currentHP);
 
+    }
+
+    public void SetHP(int hp)
+    {
+        currentHP = Mathf.Clamp(hp, 0, maxHP);
+        heartUI.UpdateHearts(currentHP);
     }
 
     public void TakeDamage(int damage)
