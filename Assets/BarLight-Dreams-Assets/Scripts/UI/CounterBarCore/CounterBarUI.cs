@@ -34,7 +34,6 @@ public class CounterBarUI : MonoBehaviour
     {
         if (spawnedItems.Count >= maxItems)
         {
-            Debug.Log("Counter Full!");
             return;
         }
 

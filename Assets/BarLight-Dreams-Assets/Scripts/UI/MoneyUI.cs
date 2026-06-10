@@ -20,10 +20,10 @@ public class MoneyUI : MonoBehaviour
     {
         moneyText.text = money.ToString();
 
-        PlayAnim();
+        MoneyEffect();
     }
 
-    private void PlayAnim()
+    private void MoneyEffect()
     {
         if (punchTween != null && punchTween.IsActive())
             punchTween.Kill();

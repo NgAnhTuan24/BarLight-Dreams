@@ -12,12 +12,21 @@ public class MenuGame : MonoBehaviour
         AudioManager.instance.PlayMusic(musicGame);
     }
 
-    public void StartGame()
+    public void StartGame() //New Game
     {
+        int slot = SaveManager.instance.GetEmptySlot();
+
+        if (slot == -1)
+        {
+            return;
+        }
+
+        SaveManager.instance.StartNewGame(slot);
+
         SceneManager.LoadScene(sceneName);
     }
 
-    public void ExitGame()
+    public void QuitGame()
     {
         Application.Quit();
     }

@@ -12,7 +12,7 @@ public class InGame : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("Đã nhấn nút save");
+        SaveManager.instance.SaveGame();
     }
 
     public void Retry()

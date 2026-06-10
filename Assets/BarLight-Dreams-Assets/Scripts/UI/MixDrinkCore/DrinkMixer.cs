@@ -14,7 +14,6 @@ public class DrinkMixer : MonoBehaviour
     {
         if (!PlayerHoldItem.instance.HasCup())
         {
-            Debug.Log("Need Cup!");
             return;
         }
 
@@ -25,7 +24,6 @@ public class DrinkMixer : MonoBehaviour
     {
         if (!PlayerHoldItem.instance.HasCup())
         {
-            Debug.Log("Need Cup!");
             return;
         }
 
@@ -35,8 +33,6 @@ public class DrinkMixer : MonoBehaviour
         {
             if (IsMatch(recipe, current))
             {
-                Debug.Log("Created: " + recipe.drinkName);
-
                 CounterBarUI.instance.CleanCounter();
 
                 PlayerHoldItem.instance.HoldDrink(recipe);
@@ -45,7 +41,8 @@ public class DrinkMixer : MonoBehaviour
             }
         }
 
-        Debug.Log("Wrong Recipe!");
+        CounterBarUI.instance.CleanCounter();
+        PlayerHoldItem.instance.Clear();
     }
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)
@@ -57,11 +54,9 @@ public class DrinkMixer : MonoBehaviour
 
         for (int i = 0; i < recipe.ingredients.Count; i++)
         {
-            IngredientType recipeIngredient =
-                recipe.ingredients[i].ingredientType;
+            IngredientType recipeIngredient = recipe.ingredients[i].ingredientType;
 
-            IngredientType currentIngredient =
-                current[i];
+            IngredientType currentIngredient = current[i];
 
             if (recipeIngredient != currentIngredient)
             {

@@ -34,8 +34,7 @@ public class RecipeBookUI : MonoBehaviour
     {
         foreach (DrinkRecipeSO recipe in recipes)
         {
-            RecipeButtonUI button =
-                Instantiate(recipeButtonPrefab, recipeButtonParent);
+            RecipeButtonUI button = Instantiate(recipeButtonPrefab, recipeButtonParent);
 
             button.Setup(recipe, this);
         }
@@ -54,8 +53,7 @@ public class RecipeBookUI : MonoBehaviour
 
         foreach (IngredientData ingredient in recipe.ingredients)
         {
-            IngredientItemUI item =
-                Instantiate(ingredientPrefab, ingredientParent);
+            IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
             item.Setup(ingredient);
         }

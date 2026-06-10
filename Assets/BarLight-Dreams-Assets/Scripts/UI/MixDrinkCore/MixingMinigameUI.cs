@@ -60,13 +60,11 @@ public class MixingMinigameUI : MonoBehaviour
 
         for (int i = 0; i < arrowCount; i++)
         {
-            ArrowType randomArrow =
-                (ArrowType)UnityEngine.Random.Range(0, 4);
+            ArrowType randomArrow = (ArrowType)UnityEngine.Random.Range(0, 4);
 
             sequence.Add(randomArrow);
 
-            MixingArrowUI arrow =
-                Instantiate(arrowPrefab, arrowParent);
+            MixingArrowUI arrow = Instantiate(arrowPrefab, arrowParent);
 
             arrow.Setup(randomArrow);
 

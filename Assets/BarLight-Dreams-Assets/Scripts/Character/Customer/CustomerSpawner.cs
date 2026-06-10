@@ -50,10 +50,8 @@ public class CustomerSpawner : MonoBehaviour
 
     void ResetSpawnInterval()
     {
-        currentSpawnInterval = 10f;
+        currentSpawnInterval = 2f;
         timer = 0f;
-
-        Debug.Log("Time spawn " + currentSpawnInterval);
     }
 
     void SetRandomSpawnInterval()
@@ -68,8 +66,6 @@ public class CustomerSpawner : MonoBehaviour
 
             currentSpawnInterval = spawnIntervals[randomIndex];
         }
-
-        Debug.Log("Next Spawn In: " + currentSpawnInterval);
     }
 
     void TrySpawnCustomer()
