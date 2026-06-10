@@ -46,6 +46,7 @@ public class UIPopup : MonoBehaviour
         if (pauseGameplay)
         {
             Time.timeScale = 0f;
+            PlayerController.instance.movement.SetCanMove(false);
         }
 
         foreach (GameObject obj in hideObjects)
@@ -74,6 +75,7 @@ public class UIPopup : MonoBehaviour
         if (pauseGameplay)
         {
             Time.timeScale = 1f;
+            PlayerController.instance.movement.SetCanMove(true);
         }
 
         currentTween?.Kill();
