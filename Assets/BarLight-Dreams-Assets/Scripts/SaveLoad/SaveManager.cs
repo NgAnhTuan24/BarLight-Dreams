@@ -56,7 +56,11 @@ public class SaveManager : MonoBehaviour
         GameData data = new GameData();
 
         data.currentHP = PlayerController.instance.health.CurrentHP;
+
         data.currentDay = GameClock.instance.CurrentDay;
+        data.currentHour = GameClock.instance.CurrentHour;
+        data.currentMinute = GameClock.instance.CurrentMinute;
+
         data.currentMoney = MoneyManager.instance.CurrentMoney;
 
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");

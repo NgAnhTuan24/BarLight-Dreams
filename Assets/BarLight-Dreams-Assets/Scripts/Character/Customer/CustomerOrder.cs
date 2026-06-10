@@ -95,8 +95,6 @@ public class CustomerOrder : MonoBehaviour
 
         PlayOrderVoice();
 
-        Debug.Log("Customer ordered: " + currentOrder.drinkName);
-
         customer.ChangeState(CustomerState.WaitingDrink);
 
         patience.StartWaitingDrink();
@@ -134,8 +132,6 @@ public class CustomerOrder : MonoBehaviour
 
     void ReceiveDrink()
     {
-        Debug.Log("Correct Drink!");
-
         PlayerHoldItem.instance.Clear();
 
         drinkBubble.SetActive(false);

@@ -25,6 +25,7 @@ public class GameLoader : MonoBehaviour
         if (GameClock.instance != null)
         {
             GameClock.instance.SetDay(data.currentDay);
+            GameClock.instance.SetTime(data.currentHour, data.currentMinute);
         }
 
         if (PlayerController.instance != null && PlayerController.instance.health != null)

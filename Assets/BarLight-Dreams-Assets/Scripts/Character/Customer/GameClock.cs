@@ -82,22 +82,31 @@ public class GameClock : MonoBehaviour
 
             LoadDay();
 
-            dayIntroUI.Show(
-                $"DAY {data.currentDay}",
-                "OPEN BAR",
-                () =>
-                {
-                    IsRunning = true;
+            bool isNewDay = data.currentHour == startHour && data.currentMinute == startMinute;
 
-                    PlayerController.instance.movement.SetCanMove(true);
+            if (isNewDay)
+            {
+                dayIntroUI.Show(
+                    $"DAY {data.currentDay}",
+                    "OPEN BAR",
+                    () =>
+                    {
+                        IsRunning = true;
 
-                    OnNewDayStarted?.Invoke();
+                        PlayerController.instance.movement.SetCanMove(true);
 
-                    Debug.Log($"Start Day {CurrentDay}");
-                }
-            );
+                        OnNewDayStarted?.Invoke();
+                    }
+                );
+            }
+            else
+            {
+                IsRunning = true;
 
-            return;
+                PlayerController.instance.movement.SetCanMove(true);
+            }
+
+                return;
         }
 
         StartNewDay();
@@ -106,6 +115,15 @@ public class GameClock : MonoBehaviour
     public void SetDay(int day)
     {
         CurrentDay = day;
+
+        UpdateClockUI();
+    }
+
+    public void SetTime(int hour, int minute)
+    {
+        CurrentHour = hour;
+        CurrentMinute = minute;
+
         UpdateClockUI();
     }
 
@@ -223,14 +241,17 @@ public class GameClock : MonoBehaviour
         StartNewDay();
     }
 
-    private void InitializeDay()
+    private void InitializeDay(bool useStartTime)
     {
         dayEnded = false;
 
         DayStatsManager.instance.ResetDay();
 
-        CurrentHour = startHour;
-        CurrentMinute = startMinute;
+        if (useStartTime)
+        {
+            CurrentHour = startHour;
+            CurrentMinute = startMinute;
+        }
 
         timer = 0f;
 
@@ -243,12 +264,12 @@ public class GameClock : MonoBehaviour
 
     private void LoadDay()
     {
-        InitializeDay();
+        InitializeDay(false);
     }
 
     private void StartNewDay()
     {
-        InitializeDay();
+        InitializeDay(true);
 
         dayIntroUI.Show(
             $"DAY {CurrentDay}",
@@ -260,8 +281,6 @@ public class GameClock : MonoBehaviour
                 PlayerController.instance.movement.SetCanMove(true);
 
                 OnNewDayStarted?.Invoke();
-
-                Debug.Log($"Start Day {CurrentDay}");
             }
         );
     }
