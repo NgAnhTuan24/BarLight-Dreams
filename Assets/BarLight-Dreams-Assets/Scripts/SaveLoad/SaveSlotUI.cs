@@ -42,7 +42,10 @@ public class SaveSlotUI : MonoBehaviour
 
         SaveManager.instance.StartLoadGame(slotID);
 
-        SceneManager.LoadScene("GamePlay");
+        SceneTransition.instance.FadeOut(() =>
+        {
+            SceneManager.LoadScene("GamePlay");
+        });
     }
 
     public void DeleteSlot()

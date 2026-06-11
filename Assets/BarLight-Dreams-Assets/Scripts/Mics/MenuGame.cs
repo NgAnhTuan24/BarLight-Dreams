@@ -23,7 +23,10 @@ public class MenuGame : MonoBehaviour
 
         SaveManager.instance.StartNewGame(slot);
 
-        SceneManager.LoadScene(sceneName);
+        SceneTransition.instance.FadeOut(() =>
+        {
+            SceneManager.LoadScene(sceneName);
+        });
     }
 
     public void QuitGame()

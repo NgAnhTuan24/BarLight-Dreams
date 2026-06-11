@@ -17,10 +17,6 @@ public class SceneTransition : MonoBehaviour
 
     public void FadeIn(Action onComplete = null)
     {
-        //gameObject.SetActive(true);
-
-        canvasGroup.alpha = 1f;
-
         Sequence sequence = DOTween.Sequence();
 
         sequence.AppendInterval(delayBeforeFade);
@@ -37,5 +33,16 @@ public class SceneTransition : MonoBehaviour
 
                 onComplete?.Invoke();
         });
+    }
+
+    public void FadeOut(Action onComplete = null)
+    {
+        canvasGroup
+            .DOFade(1f, fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                onComplete?.Invoke();
+            });
     }
 }

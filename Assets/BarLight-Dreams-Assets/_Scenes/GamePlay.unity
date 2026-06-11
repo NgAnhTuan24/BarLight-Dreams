@@ -1500,7 +1500,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 140884033}
-  hideObjects: []
+  hideObjects:
+  - {fileID: 2067128016}
+  - {fileID: 103999837}
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 0
@@ -6633,8 +6635,8 @@ RectTransform:
   - {fileID: 1813477228}
   - {fileID: 579063918}
   - {fileID: 140884033}
-  - {fileID: 1997190520}
   - {fileID: 1922423264}
+  - {fileID: 1997190520}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -42796,6 +42798,50 @@ MonoBehaviour:
   cupSprite: {fileID: 0}
   cupSFX: {fileID: 0}
   drinkMixer: {fileID: 0}
+--- !u!1 &1118436064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118436066}
+  - component: {fileID: 1118436065}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1118436065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118436064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73d52eca246622f428eb331decdb7930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1118436066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118436064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1129856418
 GameObject:
   m_ObjectHideFlags: 0
@@ -45545,7 +45591,7 @@ GameObject:
   - component: {fileID: 1483384792}
   - component: {fileID: 1483384791}
   m_Layer: 0
-  m_Name: Global
+  m_Name: Global Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49304,8 +49350,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 1345045951}
   titleText: {fileID: 2026393606}
-  fadeDuration: 2
-  messageDuration: 1.5
+  fadeDuration: 0.7
+  messageDuration: 0.7
 --- !u!114 &1813477231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50851,7 +50897,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1922423264}
-  hideObjects: []
+  hideObjects:
+  - {fileID: 2067128016}
+  - {fileID: 103999837}
+  - {fileID: 1813477227}
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 1
@@ -52553,8 +52602,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 1997190522}
-  delayBeforeFade: 0.5
-  fadeDuration: 2
+  delayBeforeFade: 1
+  fadeDuration: 1
 --- !u!225 &1997190522
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -52564,7 +52613,7 @@ CanvasGroup:
   m_GameObject: {fileID: 1997190519}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1997190523
@@ -54101,6 +54150,7 @@ SceneRoots:
   - {fileID: 498973301}
   - {fileID: 1639060280}
   - {fileID: 751391960}
+  - {fileID: 1118436066}
   - {fileID: 1483384792}
   - {fileID: 1824797838}
   - {fileID: 579892771}
