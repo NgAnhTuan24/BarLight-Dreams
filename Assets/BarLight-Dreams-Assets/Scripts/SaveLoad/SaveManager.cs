@@ -40,7 +40,7 @@ public class SaveManager : MonoBehaviour
 
     public int GetEmptySlot()
     {
-        for(int i = 1; i <=2; i++)
+        for(int i = 1; i <= 3; i++)
         {
             if (!SaveLoadSystem.HasSave(i))
             {

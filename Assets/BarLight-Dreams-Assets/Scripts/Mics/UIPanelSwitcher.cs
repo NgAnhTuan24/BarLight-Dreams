@@ -11,15 +11,27 @@ public class UIPanelSwitcher : MonoBehaviour
 
     [SerializeField] private float duration = 0.25f;
 
+    private bool isTransitioning;
+
     public void Open()
     {
+        if (isTransitioning || panelToShow.activeSelf) return;
+
+        isTransitioning = true;
+
         panelToShow.SetActive(true);
 
         panelCanvasGroup.alpha = 0;
         panelToShow.transform.localScale = Vector3.one * 0.8f;
 
         panelCanvasGroup.DOFade(1, duration);
-        panelToShow.transform.DOScale(1f, duration).SetEase(Ease.OutBack);
+        panelToShow.transform
+            .DOScale(1f, duration)
+            .SetEase(Ease.OutBack).
+            OnComplete(() =>
+            {
+                isTransitioning = false;
+            });
 
         foreach (var obj in objectsToHide)
         {
@@ -29,6 +41,10 @@ public class UIPanelSwitcher : MonoBehaviour
 
     public void Close()
     {
+        if (isTransitioning || !panelToShow.activeSelf) return;
+
+        isTransitioning = true;
+
         panelCanvasGroup.DOFade(0, duration);
 
         panelToShow.transform
@@ -37,6 +53,7 @@ public class UIPanelSwitcher : MonoBehaviour
             .OnComplete(() =>
             {
                 panelToShow.SetActive(false);
+                isTransitioning = false;
             });
 
         foreach (var obj in objectsToShowWhenClose)
