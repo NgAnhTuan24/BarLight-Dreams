@@ -30,12 +30,11 @@ public class UIPopup : MonoBehaviour
 
     public void Open()
     {
+        if (SceneTransition.instance != null && SceneTransition.instance.IsTransitioning) return;
+
         if (IsOpen) return;
 
-        if (currentOpenPopup != null && currentOpenPopup != this)
-        {
-            return;
-        }
+        if (currentOpenPopup != null && currentOpenPopup != this) return;
 
         currentOpenPopup = this;
 

@@ -10,6 +10,8 @@ public class SceneTransition : MonoBehaviour
     [SerializeField] private float delayBeforeFade = 1f;
     [SerializeField] private float fadeDuration = 1f;
 
+    public bool IsTransitioning { get; private set; }
+
     private void Awake()
     {
         instance = this;
@@ -17,6 +19,8 @@ public class SceneTransition : MonoBehaviour
 
     public void FadeIn(Action onComplete = null)
     {
+        IsTransitioning = true;
+
         Sequence sequence = DOTween.Sequence();
 
         sequence.AppendInterval(delayBeforeFade);
@@ -29,9 +33,11 @@ public class SceneTransition : MonoBehaviour
 
         sequence.OnComplete(() =>
         {
-                gameObject.SetActive(false);
+            IsTransitioning = false;
 
-                onComplete?.Invoke();
+            gameObject.SetActive(false);
+
+            onComplete?.Invoke();
         });
     }
 
