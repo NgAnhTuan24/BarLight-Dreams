@@ -227,7 +227,7 @@ public class GameClock : MonoBehaviour
 
         summaryUI.Show(
             CurrentDay,
-            DayStatsManager.instance.DayEarnings,
+            DayStatsManager.instance.EarningsToDay,
             DayStatsManager.instance.CustomersServed,
             StartNextDay
         );
@@ -242,6 +242,8 @@ public class GameClock : MonoBehaviour
         StartNewDay();
 
         ShowDayIntro(CurrentDay);
+
+        SaveManager.instance.SaveGame();
     }
 
     private void InitializeDay(bool useStartTime)
@@ -282,8 +284,6 @@ public class GameClock : MonoBehaviour
             "OPEN BAR",
             () =>
             {
-                SaveManager.instance.SaveGame();
-
                 IsRunning = true;
 
                 PlayerController.instance.movement.SetCanMove(true);
