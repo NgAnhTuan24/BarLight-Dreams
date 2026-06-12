@@ -238,6 +238,8 @@ public class GameClock : MonoBehaviour
         CurrentDay++;
 
         StartNewDay();
+
+        SaveManager.instance.SaveGame();
     }
 
     private void InitializeDay(bool useStartTime)

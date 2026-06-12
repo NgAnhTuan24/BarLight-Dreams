@@ -6,6 +6,8 @@ public class DayStatsManager : MonoBehaviour
 
     public int DayEarnings { get; private set; }
     public int CustomersServed { get; private set; }
+    public int TotalCustomersServed { get; private set; }
+    public int TotalMoneyEarned { get; private set; }
 
     private void Awake()
     {
@@ -22,11 +24,13 @@ public class DayStatsManager : MonoBehaviour
     public void AddEarnings(int amount)
     {
         DayEarnings += amount;
+        TotalMoneyEarned += amount;
     }
 
     public void AddServedCustomer()
     {
         CustomersServed++;
+        TotalCustomersServed++;
     }
 
     public void ResetDay()

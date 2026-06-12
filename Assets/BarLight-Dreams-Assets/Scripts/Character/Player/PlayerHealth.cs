@@ -38,13 +38,14 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            GameOver();
+            FailDay();
         }
     }
 
-    void GameOver()
+    void FailDay()
     {
         PlayerController.instance.movement.SetCanMove(false);
-        GameOverUIHandler.instance.gameOverUI.Open();
+        CustomerManager.instance.ForceAllCustomersLeave();
+        FailDayUIHandler.instance.ShowFailDay();
     }
 }

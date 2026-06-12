@@ -15,7 +15,7 @@ public class InGame : MonoBehaviour
         SaveManager.instance.SaveGame();
     }
 
-    public void Retry()
+    public void RetryDay()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
