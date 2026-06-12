@@ -29,6 +29,12 @@ public class PlayerHealth : MonoBehaviour
         heartUI.UpdateHearts(currentHP);
     }
 
+    public void HealFull()
+    {
+        currentHP = maxHP;
+        heartUI.UpdateHearts(currentHP);
+    }
+
     public void TakeDamage(int damage)
     {
         currentHP -= damage;

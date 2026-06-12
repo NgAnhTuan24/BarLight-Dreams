@@ -237,6 +237,8 @@ public class GameClock : MonoBehaviour
     {
         CurrentDay++;
 
+        PlayerController.instance.health.HealFull();
+
         StartNewDay();
 
         SaveManager.instance.SaveGame();
