@@ -17,7 +17,22 @@ public class InGame : MonoBehaviour
 
     public void RetryDay()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        int slot = SaveManager.instance.CurrentSlot;
+
+        if (slot > 0 && SaveLoadSystem.HasSave(slot))
+        {
+            SaveManager.instance.StartLoadGame(slot);
+
+            SceneTransition.instance.FadeOut(() =>
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
     }
 
     public void ExitToMainMenu()

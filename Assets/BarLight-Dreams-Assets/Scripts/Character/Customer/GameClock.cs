@@ -241,7 +241,7 @@ public class GameClock : MonoBehaviour
 
         StartNewDay();
 
-        SaveManager.instance.SaveGame();
+        ShowDayIntro(CurrentDay);
     }
 
     private void InitializeDay(bool useStartTime)
@@ -282,6 +282,8 @@ public class GameClock : MonoBehaviour
             "OPEN BAR",
             () =>
             {
+                SaveManager.instance.SaveGame();
+
                 IsRunning = true;
 
                 PlayerController.instance.movement.SetCanMove(true);
