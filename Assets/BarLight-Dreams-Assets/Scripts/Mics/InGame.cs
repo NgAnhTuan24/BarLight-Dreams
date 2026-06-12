@@ -10,11 +10,6 @@ public class InGame : MonoBehaviour
         AudioManager.instance.PlayMusic(musicInGame);
     }
 
-    public void Save()
-    {
-        SaveManager.instance.SaveGame();
-    }
-
     public void RetryDay()
     {
         int slot = SaveManager.instance.CurrentSlot;
