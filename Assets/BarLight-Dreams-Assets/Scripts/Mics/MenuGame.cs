@@ -12,7 +12,7 @@ public class MenuGame : MonoBehaviour
         AudioManager.instance.PlayMusic(musicGame);
     }
 
-    public void StartGame() //New Game
+    public void StartNewGame()
     {
         int slot = SaveManager.instance.GetEmptySlot();
 
