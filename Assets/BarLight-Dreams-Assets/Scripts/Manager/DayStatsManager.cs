@@ -4,13 +4,13 @@ public class DayStatsManager : MonoBehaviour
 {
     public static DayStatsManager instance { get; private set; }
 
-    public int EarningsToDay { get; private set; }
-    public int CustomersServed { get; private set; }
-    public int CustomersAngry { get; private set; }
+    public int MoneyEarnedToday { get; private set; }
+    public int ServedCustomersToday { get; private set; }
+    public int AngryCustomersToday { get; private set; }
 
-    public int TotalCustomersServed { get; private set; }
     public int TotalMoneyEarned { get; private set; }
-    public int TotalCustomersAngry { get; private set; }
+    public int TotalServedCustomers { get; private set; }
+    public int TotalAngryCustomers { get; private set; }
 
     private void Awake()
     {
@@ -26,26 +26,26 @@ public class DayStatsManager : MonoBehaviour
 
     public void AddEarnings(int amount)
     {
-        EarningsToDay += amount;
+        MoneyEarnedToday += amount;
         TotalMoneyEarned += amount;
     }
 
     public void AddCustomersServed()
     {
-        CustomersServed++;
-        TotalCustomersServed++;
+        ServedCustomersToday++;
+        TotalServedCustomers++;
     }
 
     public void AddCustomersAngry(int amount)
     {
-        CustomersAngry += amount;
-        TotalCustomersAngry++;
+        AngryCustomersToday += amount;
+        TotalAngryCustomers += amount;
     }
 
     public void ResetDay()
     {
-        EarningsToDay = 0;
-        CustomersServed = 0;
-        CustomersAngry = 0;
+        MoneyEarnedToday = 0;
+        ServedCustomersToday = 0;
+        AngryCustomersToday = 0;
     }
 }

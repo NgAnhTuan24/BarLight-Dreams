@@ -227,8 +227,8 @@ public class GameClock : MonoBehaviour
 
         summaryUI.Show(
             CurrentDay,
-            DayStatsManager.instance.EarningsToDay,
-            DayStatsManager.instance.CustomersServed,
+            DayStatsManager.instance.MoneyEarnedToday,
+            DayStatsManager.instance.ServedCustomersToday,
             StartNextDay
         );
     }

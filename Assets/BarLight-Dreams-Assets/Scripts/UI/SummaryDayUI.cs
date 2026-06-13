@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class SummaryDayUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text dayText;
-    [SerializeField] private TMP_Text earningsText;
-    [SerializeField] private TMP_Text customerText;
+    [SerializeField] private TMP_Text earningsTodayText;
+    [SerializeField] private TMP_Text customersSurvedText;
     [SerializeField] private Button nextButton;
 
     [SerializeField] private CanvasGroup canvasGroup;
@@ -27,39 +27,39 @@ public class SummaryDayUI : MonoBehaviour
 
         onNext = nextCallback;
 
-        dayText.text = $"DAY {day}";
+        dayText.text = $"{day}";
 
         canvasGroup.alpha = 0;
         panel.localScale = Vector3.zero;
 
-        earningsText.text = "0";
-        customerText.text = "0";
+        earningsTodayText.text = "0";
+        customersSurvedText.text = "0";
 
         Sequence seq = DOTween.Sequence();
 
         seq.Append(canvasGroup.DOFade(1f, 0.25f));
 
         seq.Join(
-            panel.DOScale(1f, 0.4f).SetEase(Ease.OutBack)
+            panel.DOScale(1f, 0.8f).SetEase(Ease.OutBack)
         );
 
-        seq.AppendInterval(0.1f);
+        seq.AppendInterval(0.2f);
 
         seq.Append(
             DOTween.To(
                 () => 0,
-                x => earningsText.text = x.ToString(),
+                x => earningsTodayText.text = x.ToString(),
                 earnings,
-                0.8f
+                0.9f
             )
         );
 
         seq.Join(
             DOTween.To(
                 () => 0,
-                x => customerText.text = x.ToString(),
+                x => customersSurvedText.text = x.ToString(),
                 customers,
-                0.8f
+                0.9f
             )
         );
 
