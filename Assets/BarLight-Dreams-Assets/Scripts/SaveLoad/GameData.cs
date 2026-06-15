@@ -9,5 +9,9 @@ public class GameData
 
     public int currentMoney;
 
+    public int totalMoneyEarned;
+    public int totalServedCustomers;
+    public int totalAngryCustomers;
+
     public string saveTime;
 }

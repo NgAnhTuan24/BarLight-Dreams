@@ -8,11 +8,15 @@ public class SummaryDayUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text earningsTodayText;
-    [SerializeField] private TMP_Text customersSurvedText;
+    [SerializeField] private TMP_Text tipsTodayText;
+    [SerializeField] private TMP_Text customersServedText;
+    [SerializeField] private TMP_Text totalIncomeText;
     [SerializeField] private Button nextButton;
 
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform panel;
+
+    [SerializeField] private GameObject[] objectsToHide;
 
     private event Action onNext;
 
@@ -21,9 +25,15 @@ public class SummaryDayUI : MonoBehaviour
         nextButton.onClick.AddListener(OnClickNext);
     }
 
-    public void Show(int day, int earnings, int customers, Action nextCallback)
+    public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
     {
         gameObject.SetActive(true);
+
+        foreach (GameObject obj in objectsToHide)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
 
         onNext = nextCallback;
 
@@ -33,7 +43,11 @@ public class SummaryDayUI : MonoBehaviour
         panel.localScale = Vector3.zero;
 
         earningsTodayText.text = "0";
-        customersSurvedText.text = "0";
+        tipsTodayText.text = "0";
+        customersServedText.text = "0";
+        totalIncomeText.text = "0";
+
+        int totalIncome = earnings + tips;
 
         Sequence seq = DOTween.Sequence();
 
@@ -57,8 +71,26 @@ public class SummaryDayUI : MonoBehaviour
         seq.Join(
             DOTween.To(
                 () => 0,
-                x => customersSurvedText.text = x.ToString(),
+                x => tipsTodayText.text = x.ToString(),
+                tips,
+                0.9f
+            )
+        );
+
+        seq.Join(
+            DOTween.To(
+                () => 0,
+                x => customersServedText.text = x.ToString(),
                 customers,
+                0.9f
+            )
+        );
+
+        seq.Join(
+            DOTween.To(
+                () => 0,
+                x => totalIncomeText.text = x.ToString(),
+                totalIncome,
                 0.9f
             )
         );
@@ -88,6 +120,12 @@ public class SummaryDayUI : MonoBehaviour
 
         seq.OnComplete(() =>
         {
+            foreach (GameObject obj in objectsToHide)
+            {
+                if (obj != null)
+                    obj.SetActive(true);
+            }
+
             gameObject.SetActive(false);
             onNext?.Invoke();
         });

@@ -48,4 +48,11 @@ public class DayStatsManager : MonoBehaviour
         ServedCustomersToday = 0;
         AngryCustomersToday = 0;
     }
+
+    public void LoadTotalStats(int money, int served, int angry)
+    {
+        TotalMoneyEarned = money;
+        TotalServedCustomers = served;
+        TotalAngryCustomers = angry;
+    }
 }

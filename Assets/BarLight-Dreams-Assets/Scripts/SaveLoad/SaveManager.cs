@@ -63,6 +63,10 @@ public class SaveManager : MonoBehaviour
 
         data.currentMoney = MoneyManager.instance.CurrentMoney;
 
+        data.totalMoneyEarned = DayStatsManager.instance.TotalMoneyEarned;
+        data.totalServedCustomers = DayStatsManager.instance.TotalServedCustomers;
+        data.totalAngryCustomers = DayStatsManager.instance.TotalAngryCustomers;
+
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
         SaveLoadSystem.SaveGame(data, CurrentSlot);
