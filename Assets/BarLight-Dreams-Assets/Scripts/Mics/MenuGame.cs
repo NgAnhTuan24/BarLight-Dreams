@@ -9,6 +9,8 @@ public class MenuGame : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
+
         AudioManager.instance.PlayMusic(musicGame);
     }
 
