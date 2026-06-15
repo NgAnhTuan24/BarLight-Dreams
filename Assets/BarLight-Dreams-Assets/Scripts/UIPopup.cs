@@ -101,11 +101,11 @@ public class UIPopup : MonoBehaviour
             Open();
     }
 
-    private void OnDisable()
-    {
-        if (pauseGameplay)
-        {
-            Time.timeScale = 1f;
-        }
-    }
+    //private void OnDisable()
+    //{
+    //    if (pauseGameplay)
+    //    {
+    //        Time.timeScale = 1f;
+    //    }
+    //}
 }
