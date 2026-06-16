@@ -228,7 +228,7 @@ public class GameClock : MonoBehaviour
         summaryUI.Show(
             CurrentDay,
             DayStatsManager.instance.MoneyEarnedToday,
-            0, // ch có tip nên hiện tại để là 0
+            DayStatsManager.instance.TipsToday,
             DayStatsManager.instance.ServedCustomersToday,
             StartNextDay
         );

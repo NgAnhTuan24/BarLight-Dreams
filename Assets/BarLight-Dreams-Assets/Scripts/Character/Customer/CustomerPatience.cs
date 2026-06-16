@@ -18,6 +18,8 @@ public class CustomerPatience : MonoBehaviour
 
     private Coroutine patienceRoutine;
 
+    public float PatiencePercentUsed { get; private set; }
+
     private void Awake()
     {
         customer = GetComponent<CustomerController>();
@@ -66,6 +68,8 @@ public class CustomerPatience : MonoBehaviour
             timer -= Time.deltaTime;
 
             float percent = 1f - (timer / duration);
+
+            PatiencePercentUsed = percent;
 
             UpdateTimerVisual(percent);
 

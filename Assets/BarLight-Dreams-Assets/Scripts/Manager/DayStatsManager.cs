@@ -5,6 +5,7 @@ public class DayStatsManager : MonoBehaviour
     public static DayStatsManager instance { get; private set; }
 
     public int MoneyEarnedToday { get; private set; }
+    public int TipsToday { get; private set; }
     public int ServedCustomersToday { get; private set; }
     public int AngryCustomersToday { get; private set; }
 
@@ -28,6 +29,14 @@ public class DayStatsManager : MonoBehaviour
     {
         MoneyEarnedToday += amount;
         TotalMoneyEarned += amount;
+        MoneyManager.instance.AddMoney(amount);
+    }
+
+    public void AddTips(int amount)
+    {
+        TipsToday += amount;
+        TotalMoneyEarned += amount;
+        MoneyManager.instance.AddMoney(amount);
     }
 
     public void AddCustomersServed()
@@ -45,6 +54,7 @@ public class DayStatsManager : MonoBehaviour
     public void ResetDay()
     {
         MoneyEarnedToday = 0;
+        TipsToday = 0;
         ServedCustomersToday = 0;
         AngryCustomersToday = 0;
     }
