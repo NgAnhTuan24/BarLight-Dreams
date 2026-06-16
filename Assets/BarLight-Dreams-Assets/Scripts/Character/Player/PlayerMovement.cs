@@ -4,10 +4,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
 
-    [Header("Footstep Sounds")]
-    [SerializeField] private AudioClip footstepClip;
-    [SerializeField] private float stepInterval = 0.4f;
-
     Rigidbody2D rb2D;
     Animator animator;
 
@@ -15,8 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 animDirection = new Vector2(0, -1);
 
     private bool canMove = true;
-
-    private float stepTimer;
 
     private void Awake()
     {
@@ -33,18 +27,11 @@ public class PlayerMovement : MonoBehaviour
             if (moveDirection != Vector2.zero)
             {
                 animDirection = moveDirection;
-
-                HandleFootstepSound();
-            }
-            else
-            {
-                stepTimer = 0f;
             }
         }
         else
         {
             moveDirection = Vector2.zero;
-            stepTimer = 0f;
         }
 
         UpdateAnim();
@@ -62,20 +49,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", moveDirection.sqrMagnitude);
     }
 
-    private void HandleFootstepSound()
-    {
-        if (moveDirection.sqrMagnitude < 0.1f) return;
-        if (footstepClip == null) return;
-
-        stepTimer -= Time.deltaTime;
-
-        if (stepTimer <= 0f)
-        {
-            AudioManager.instance.PlaySFX(footstepClip);
-            stepTimer = stepInterval;
-        }
-    }
-
     public void SetCanMove(bool value)
     {
         canMove = value;
@@ -84,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection = Vector2.zero;
             rb2D.velocity = Vector2.zero;
-            stepTimer = 0f;
         }
     }
 }
