@@ -86,30 +86,29 @@ public class GameClock : MonoBehaviour
 
             if (isNewDay)
             {
-                dayIntroUI.Show(
-                    $"DAY {data.currentDay}",
-                    "OPEN BAR",
-                    () =>
-                    {
-                        IsRunning = true;
-
-                        PlayerController.instance.movement.SetCanMove(true);
-
-                        OnNewDayStarted?.Invoke();
-                    }
-                );
+                SceneTransition.instance.FadeIn(() =>
+                {
+                    ShowDayIntro(data.currentDay);
+                });
             }
             else
             {
-                IsRunning = true;
-
-                PlayerController.instance.movement.SetCanMove(true);
+                SceneTransition.instance.FadeIn(() =>
+                {
+                    IsRunning = true;
+                    PlayerController.instance.movement.SetCanMove(true);
+                });
             }
 
                 return;
         }
 
         StartNewDay();
+
+        SceneTransition.instance.FadeIn(() =>
+        {
+            ShowDayIntro(CurrentDay);
+        });
     }
 
     public void SetDay(int day)
@@ -228,8 +227,9 @@ public class GameClock : MonoBehaviour
 
         summaryUI.Show(
             CurrentDay,
-            DayStatsManager.instance.DayEarnings,
-            DayStatsManager.instance.CustomersServed,
+            DayStatsManager.instance.MoneyEarnedToday,
+            DayStatsManager.instance.TipsToday,
+            DayStatsManager.instance.ServedCustomersToday,
             StartNextDay
         );
     }
@@ -238,7 +238,13 @@ public class GameClock : MonoBehaviour
     {
         CurrentDay++;
 
+        PlayerController.instance.health.HealFull();
+
         StartNewDay();
+
+        ShowDayIntro(CurrentDay);
+
+        SaveManager.instance.SaveGame();
     }
 
     private void InitializeDay(bool useStartTime)
@@ -270,9 +276,12 @@ public class GameClock : MonoBehaviour
     private void StartNewDay()
     {
         InitializeDay(true);
+    }
 
+    private void ShowDayIntro(int day)
+    {
         dayIntroUI.Show(
-            $"DAY {CurrentDay}",
+            $"DAY {day}",
             "OPEN BAR",
             () =>
             {

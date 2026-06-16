@@ -10,14 +10,24 @@ public class InGame : MonoBehaviour
         AudioManager.instance.PlayMusic(musicInGame);
     }
 
-    public void Save()
+    public void RetryDay()
     {
-        SaveManager.instance.SaveGame();
-    }
+        int slot = SaveManager.instance.CurrentSlot;
 
-    public void Retry()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (slot > 0 && SaveLoadSystem.HasSave(slot))
+        {
+            SaveManager.instance.StartLoadGame(slot);
+
+            SceneTransition.instance.FadeOut(() =>
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
     }
 
     public void ExitToMainMenu()

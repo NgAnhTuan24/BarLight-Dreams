@@ -9,10 +9,12 @@ public class MenuGame : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
+
         AudioManager.instance.PlayMusic(musicGame);
     }
 
-    public void StartGame() //New Game
+    public void StartNewGame()
     {
         int slot = SaveManager.instance.GetEmptySlot();
 
@@ -23,7 +25,10 @@ public class MenuGame : MonoBehaviour
 
         SaveManager.instance.StartNewGame(slot);
 
-        SceneManager.LoadScene(sceneName);
+        SceneTransition.instance.FadeOut(() =>
+        {
+            SceneManager.LoadScene(sceneName);
+        });
     }
 
     public void QuitGame()

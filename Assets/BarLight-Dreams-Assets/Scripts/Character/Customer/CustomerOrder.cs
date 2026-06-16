@@ -130,6 +130,35 @@ public class CustomerOrder : MonoBehaviour
         }
     }
 
+    void TryGiveTip()
+    {
+        float patienceUsed = patience.PatiencePercentUsed;
+
+        float tipChance;
+
+        if (patienceUsed <= 0.3f)
+        {
+            tipChance = 0.8f;
+        }
+        else if (patienceUsed <= 0.6f)
+        {
+            tipChance = 0.5f;
+        }
+        else
+        {
+            tipChance = 0.2f;
+        }
+
+        if (Random.value > tipChance)
+            return;
+
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f));
+
+        DayStatsManager.instance.AddTips(tipAmount);
+
+        popupText.ShowText($"+{tipAmount} Tip!");
+    }
+
     void ReceiveDrink()
     {
         PlayerHoldItem.instance.Clear();
@@ -142,10 +171,10 @@ public class CustomerOrder : MonoBehaviour
 
         ShowHappyBubble();
 
-        MoneyManager.instance.AddMoney(currentOrder.price);
+        TryGiveTip();
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);
-        DayStatsManager.instance.AddServedCustomer();
+        DayStatsManager.instance.AddCustomersServed();
 
         AudioManager.instance.PlaySFX(collectionSFX);
 

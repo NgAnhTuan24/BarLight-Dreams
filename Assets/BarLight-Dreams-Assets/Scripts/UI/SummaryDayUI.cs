@@ -7,12 +7,16 @@ using UnityEngine.UI;
 public class SummaryDayUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text dayText;
-    [SerializeField] private TMP_Text earningsText;
-    [SerializeField] private TMP_Text customerText;
+    [SerializeField] private TMP_Text earningsTodayText;
+    [SerializeField] private TMP_Text tipsTodayText;
+    [SerializeField] private TMP_Text customersServedText;
+    [SerializeField] private TMP_Text totalIncomeText;
     [SerializeField] private Button nextButton;
 
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform panel;
+
+    [SerializeField] private GameObject[] objectsToHide;
 
     private event Action onNext;
 
@@ -21,45 +25,73 @@ public class SummaryDayUI : MonoBehaviour
         nextButton.onClick.AddListener(OnClickNext);
     }
 
-    public void Show(int day, int earnings, int customers, Action nextCallback)
+    public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
     {
         gameObject.SetActive(true);
 
+        foreach (GameObject obj in objectsToHide)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
+
         onNext = nextCallback;
 
-        dayText.text = $"DAY {day}";
+        dayText.text = $"{day}";
 
         canvasGroup.alpha = 0;
         panel.localScale = Vector3.zero;
 
-        earningsText.text = "0";
-        customerText.text = "0";
+        earningsTodayText.text = "0";
+        tipsTodayText.text = "0";
+        customersServedText.text = "0";
+        totalIncomeText.text = "0";
+
+        int totalIncome = earnings + tips;
 
         Sequence seq = DOTween.Sequence();
 
         seq.Append(canvasGroup.DOFade(1f, 0.25f));
 
         seq.Join(
-            panel.DOScale(1f, 0.4f).SetEase(Ease.OutBack)
+            panel.DOScale(1f, 0.8f).SetEase(Ease.OutBack)
         );
 
-        seq.AppendInterval(0.1f);
+        seq.AppendInterval(0.2f);
 
         seq.Append(
             DOTween.To(
                 () => 0,
-                x => earningsText.text = x.ToString(),
+                x => earningsTodayText.text = x.ToString(),
                 earnings,
-                0.8f
+                0.9f
             )
         );
 
         seq.Join(
             DOTween.To(
                 () => 0,
-                x => customerText.text = x.ToString(),
+                x => tipsTodayText.text = x.ToString(),
+                tips,
+                0.9f
+            )
+        );
+
+        seq.Join(
+            DOTween.To(
+                () => 0,
+                x => customersServedText.text = x.ToString(),
                 customers,
-                0.8f
+                0.9f
+            )
+        );
+
+        seq.Join(
+            DOTween.To(
+                () => 0,
+                x => totalIncomeText.text = x.ToString(),
+                totalIncome,
+                0.9f
             )
         );
 
@@ -88,6 +120,12 @@ public class SummaryDayUI : MonoBehaviour
 
         seq.OnComplete(() =>
         {
+            foreach (GameObject obj in objectsToHide)
+            {
+                if (obj != null)
+                    obj.SetActive(true);
+            }
+
             gameObject.SetActive(false);
             onNext?.Invoke();
         });

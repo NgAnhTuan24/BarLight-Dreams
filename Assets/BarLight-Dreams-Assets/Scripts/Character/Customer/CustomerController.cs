@@ -171,6 +171,8 @@ public class CustomerController : MonoBehaviour
 
         order.ShowAngryBubble();
 
+        DayStatsManager.instance.AddCustomersAngry(1);
+
         if (PlayerController.instance.health.CurrentHP > 0)
         {
             PlayerController.instance.health.TakeDamage(1);

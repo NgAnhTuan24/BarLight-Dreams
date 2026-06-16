@@ -40,7 +40,7 @@ public class SaveManager : MonoBehaviour
 
     public int GetEmptySlot()
     {
-        for(int i = 1; i <=2; i++)
+        for(int i = 1; i <= 3; i++)
         {
             if (!SaveLoadSystem.HasSave(i))
             {
@@ -62,6 +62,10 @@ public class SaveManager : MonoBehaviour
         data.currentMinute = GameClock.instance.CurrentMinute;
 
         data.currentMoney = MoneyManager.instance.CurrentMoney;
+
+        data.totalMoneyEarned = DayStatsManager.instance.TotalMoneyEarned;
+        data.totalServedCustomers = DayStatsManager.instance.TotalServedCustomers;
+        data.totalAngryCustomers = DayStatsManager.instance.TotalAngryCustomers;
 
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 

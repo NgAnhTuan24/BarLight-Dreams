@@ -4,8 +4,14 @@ public class DayStatsManager : MonoBehaviour
 {
     public static DayStatsManager instance { get; private set; }
 
-    public int DayEarnings { get; private set; }
-    public int CustomersServed { get; private set; }
+    public int MoneyEarnedToday { get; private set; }
+    public int TipsToday { get; private set; }
+    public int ServedCustomersToday { get; private set; }
+    public int AngryCustomersToday { get; private set; }
+
+    public int TotalMoneyEarned { get; private set; }
+    public int TotalServedCustomers { get; private set; }
+    public int TotalAngryCustomers { get; private set; }
 
     private void Awake()
     {
@@ -21,17 +27,42 @@ public class DayStatsManager : MonoBehaviour
 
     public void AddEarnings(int amount)
     {
-        DayEarnings += amount;
+        MoneyEarnedToday += amount;
+        TotalMoneyEarned += amount;
+        MoneyManager.instance.AddMoney(amount);
     }
 
-    public void AddServedCustomer()
+    public void AddTips(int amount)
     {
-        CustomersServed++;
+        TipsToday += amount;
+        TotalMoneyEarned += amount;
+        MoneyManager.instance.AddMoney(amount);
+    }
+
+    public void AddCustomersServed()
+    {
+        ServedCustomersToday++;
+        TotalServedCustomers++;
+    }
+
+    public void AddCustomersAngry(int amount)
+    {
+        AngryCustomersToday += amount;
+        TotalAngryCustomers += amount;
     }
 
     public void ResetDay()
     {
-        DayEarnings = 0;
-        CustomersServed = 0;
+        MoneyEarnedToday = 0;
+        TipsToday = 0;
+        ServedCustomersToday = 0;
+        AngryCustomersToday = 0;
+    }
+
+    public void LoadTotalStats(int money, int served, int angry)
+    {
+        TotalMoneyEarned = money;
+        TotalServedCustomers = served;
+        TotalAngryCustomers = angry;
     }
 }

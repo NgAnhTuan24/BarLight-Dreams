@@ -9,17 +9,30 @@ public class UIPanelSwitcher : MonoBehaviour
     [SerializeField] private GameObject[] objectsToHide;
     [SerializeField] private GameObject[] objectsToShowWhenClose;
 
-    [SerializeField] private float duration = 0.25f;
+    [SerializeField] private float duration = 0.5f;
+
+    private bool isTransitioning;
 
     public void Open()
     {
+        if (isTransitioning || panelToShow.activeSelf) return;
+
+        isTransitioning = true;
+
         panelToShow.SetActive(true);
 
         panelCanvasGroup.alpha = 0;
         panelToShow.transform.localScale = Vector3.one * 0.8f;
 
-        panelCanvasGroup.DOFade(1, duration);
-        panelToShow.transform.DOScale(1f, duration).SetEase(Ease.OutBack);
+        panelCanvasGroup.DOFade(1, duration).SetUpdate(true);
+        panelToShow.transform
+            .DOScale(1f, duration)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                isTransitioning = false;
+            });
 
         foreach (var obj in objectsToHide)
         {
@@ -29,14 +42,20 @@ public class UIPanelSwitcher : MonoBehaviour
 
     public void Close()
     {
-        panelCanvasGroup.DOFade(0, duration);
+        if (isTransitioning || !panelToShow.activeSelf) return;
+
+        isTransitioning = true;
+
+        panelCanvasGroup.DOFade(0, duration).SetUpdate(true);
 
         panelToShow.transform
             .DOScale(0.8f, duration)
             .SetEase(Ease.InBack)
+            .SetUpdate(true)
             .OnComplete(() =>
             {
                 panelToShow.SetActive(false);
+                isTransitioning = false;
             });
 
         foreach (var obj in objectsToShowWhenClose)
@@ -51,9 +70,11 @@ public class UIPanelSwitcher : MonoBehaviour
 
         if (cg == null) cg = obj.AddComponent<CanvasGroup>();
 
-        cg.DOFade(0, duration).OnComplete(() => obj.SetActive(false));
+        cg.DOFade(0, duration)
+            .SetUpdate(true)
+            .OnComplete(() => obj.SetActive(false));
 
-        obj.transform.DOScale(0.8f, duration);
+        obj.transform.DOScale(0.8f, duration).SetUpdate(true);
     }
 
     private void ShowEffect(GameObject obj)
@@ -67,7 +88,10 @@ public class UIPanelSwitcher : MonoBehaviour
         cg.alpha = 0;
         obj.transform.localScale = Vector3.one * 0.8f;
 
-        cg.DOFade(1, duration);
-        obj.transform.DOScale(1f, duration).SetEase(Ease.OutBack);
+        cg.DOFade(1, duration).SetUpdate(true);
+        obj.transform
+            .DOScale(1f, duration)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true);
     }
 }

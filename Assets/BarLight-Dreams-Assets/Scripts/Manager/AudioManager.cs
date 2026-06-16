@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -8,11 +9,12 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource;
     public AudioSource sfxSource;
 
-    private bool musicEnabled = true;
-    private bool sfxEnabled = true;
+    [Header("Mixer")]
+    [SerializeField] private AudioMixer audioMixer;
 
-    public bool MusicEnabled => musicEnabled;
-    public bool SFXEnabled => sfxEnabled;
+    public float MasterVolume { get; private set; } = 1f;
+    public float MusicVolume { get; private set; } = 1f;
+    public float SFXVolume { get; private set; } = 1f;
 
     private void Awake()
     {
@@ -24,11 +26,13 @@ public class AudioManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        ApplyVolumes();
     }
 
     public void PlayMusic(AudioClip clip)
     {
-        if (!musicEnabled) return;
+        if (clip == null) return;
 
         if (musicSource.clip == clip) return;
 
@@ -39,20 +43,38 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        if (!sfxEnabled) return;
+        if (clip == null) return;
 
         sfxSource.PlayOneShot(clip);
     }
 
-    public void ToggleMusic()
+    public void SetMasterVolume(float value)
     {
-        musicEnabled = !musicEnabled;
-        musicSource.mute = !musicEnabled;
+        MasterVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
     }
 
-    public void ToggleSFX()
+    public void SetMusicVolume(float value)
     {
-        sfxEnabled = !sfxEnabled;
-        sfxSource.mute = !sfxEnabled;
+        MusicVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        SFXVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
+    }
+
+    private void ApplyVolumes()
+    {
+        audioMixer.SetFloat("MasterVolume", LinearToDb(MasterVolume));
+        audioMixer.SetFloat("MusicVolume", LinearToDb(MusicVolume));
+        audioMixer.SetFloat("SFXVolume", LinearToDb(SFXVolume));
+    }
+
+    private float LinearToDb(float value)
+    {
+        return value <= 0.0001f ? -80f : Mathf.Log10(value) * 20f;
     }
 }

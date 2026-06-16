@@ -22,6 +22,11 @@ public class GameLoader : MonoBehaviour
             MoneyManager.instance.SetMoney(data.currentMoney);
         }
 
+        if (DayStatsManager.instance != null)
+        {
+            DayStatsManager.instance.LoadTotalStats(data.totalMoneyEarned, data.totalServedCustomers, data.totalAngryCustomers);
+        }
+
         if (GameClock.instance != null)
         {
             GameClock.instance.SetDay(data.currentDay);
