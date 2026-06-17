@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
   m_Name: Tequila Sunrise
   m_EditorClassIdentifier: 
-  drinkName: Tequila Sunrise
+  drinkType: 2
+  displayName: Tequila Sunrise
   drinkIcon: {fileID: 999972624, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
   price: 100
   ingredients:

@@ -4,8 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Drink Name" ,menuName = "Bar/Drink Recipe")]
 public class DrinkRecipeSO : ScriptableObject
 {
-    public string drinkName;
+    public DrinkType drinkType;
+    public string displayName;
+
     public Sprite drinkIcon;
+
     public int price;
 
     public List<IngredientData> ingredients;

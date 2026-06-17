@@ -43,7 +43,7 @@ public class RecipeBookUI : MonoBehaviour
     public void ShowRecipe(DrinkRecipeSO recipe)
     {
         drinkIcon.sprite = recipe.drinkIcon;
-        drinkNameText.text = recipe.drinkName;
+        drinkNameText.text = recipe.displayName;
         priceText.text = recipe.price.ToString();
 
         foreach (Transform child in ingredientParent)

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
   m_Name: Cherry Velvet
   m_EditorClassIdentifier: 
-  drinkName: Cherry Velvet
+  drinkType: 0
+  displayName: Cherry Velvet
   drinkIcon: {fileID: -284820601, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
   price: 150
   ingredients:
