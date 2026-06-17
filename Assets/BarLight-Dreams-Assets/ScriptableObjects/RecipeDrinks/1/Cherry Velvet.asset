@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 0
   displayName: Cherry Velvet
-  drinkIcon: {fileID: -284820601, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: da3dc62beef43c94bbaacdfbfb5e0ac7, type: 3}
   price: 150
   ingredients:
   - ingredientType: 16
-    ingredientIcon: {fileID: 433018445, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
   - ingredientType: 4
-    ingredientIcon: {fileID: -399453396, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}
   - ingredientType: 2
-    ingredientIcon: {fileID: 1919860819, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: cdfdcafa53b56404186b01d1cc4c9a4f, type: 3}

@@ -21,6 +21,11 @@ public class CustomerManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        GameClock.instance.OnBarClosed += ForceAllCustomersLeave;
+    }
+
     public void RegisterCustomer(CustomerController customer)
     {
         if (!customers.Contains(customer))
@@ -45,12 +50,7 @@ public class CustomerManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        GameClock.instance.OnBarClosed += ForceAllCustomersLeave;
-    }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameClock.instance.OnBarClosed -= ForceAllCustomersLeave;
     }

@@ -5097,12 +5097,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405893476}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 502266748}
+  m_Father: {fileID: 1639060280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &405893478
 MonoBehaviour:
@@ -9052,7 +9052,6 @@ GameObject:
   - component: {fileID: 502266755}
   - component: {fileID: 502266754}
   - component: {fileID: 502266747}
-  - component: {fileID: 502266750}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -9084,34 +9083,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1997138363}
-  - {fileID: 405893477}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &502266750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502266746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f5a3f185327ab4088f3ef7392a6982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clockText: {fileID: 652633869}
-  dayText: {fileID: 472000397}
-  realSecondsPerGameMinute: 1
-  startHour: 18
-  startMinute: 0
-  closingHour: 0
-  closingMinute: 0
-  isFastForward: 0
-  fastForwardMultiplier: 2
-  dayIntroUI: {fileID: 1813477229}
-  summaryUI: {fileID: 579063921}
 --- !u!114 &502266751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9532,7 +9506,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1016459886, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a52fce28260d84b4ca21fd9be31b8590, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -44937,7 +44911,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1900447675, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4bad6fb3c5c533a48b9f737c824a32e6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -48087,7 +48061,7 @@ MonoBehaviour:
   cleanCounter: 0
   cleanSFX: {fileID: 0}
   giveIce: 1
-  iceSprite: {fileID: -1552573982, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  iceSprite: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
   iceSFX: {fileID: 8300000, guid: b4514301945d58f47a92ff31158cad99, type: 3}
   giveCup: 0
   cupSprite: {fileID: 0}
@@ -49551,7 +49525,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1078699230, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 17ebdbce97fd270438bd4e4b50ce904b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -53110,7 +53084,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 318557779, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  m_Sprite: {fileID: 775825855, guid: d9f450a214a673b40b50ab856b26529f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -55760,7 +55734,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1997138363}
+  - {fileID: 405893477}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1639060281
@@ -56593,6 +56569,61 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1683949991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1683949993}
+  - component: {fileID: 1683949992}
+  m_Layer: 0
+  m_Name: GameClock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1683949992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683949991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f5a3f185327ab4088f3ef7392a6982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clockText: {fileID: 652633869}
+  dayText: {fileID: 472000397}
+  realSecondsPerGameMinute: 1
+  startHour: 18
+  startMinute: 0
+  closingHour: 0
+  closingMinute: 0
+  isFastForward: 0
+  fastForwardMultiplier: 2
+  dayIntroUI: {fileID: 1813477229}
+  summaryUI: {fileID: 579063921}
+--- !u!4 &1683949993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683949991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1695105246
 GameObject:
   m_ObjectHideFlags: 0
@@ -57987,7 +58018,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1578376657, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0dbc697f0a46f6a4e9c750227b8f64fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -58372,7 +58403,7 @@ MonoBehaviour:
   iceSprite: {fileID: 0}
   iceSFX: {fileID: 0}
   giveCup: 1
-  cupSprite: {fileID: -719357237, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  cupSprite: {fileID: 21300000, guid: daf5c3c0d4b124d429da4cb02d2c6f16, type: 3}
   cupSFX: {fileID: 8300000, guid: 0c435fa5ae5763741bc062fca7f22329, type: 3}
   drinkMixer: {fileID: 0}
 --- !u!1 &1868733868
@@ -61659,14 +61690,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997138362}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 829811663}
   - {fileID: 745766995}
-  m_Father: {fileID: 502266748}
+  m_Father: {fileID: 1639060280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1997190519
 GameObject:
@@ -64530,6 +64561,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1173331234}
   - {fileID: 502266748}
+  - {fileID: 1683949993}
   - {fileID: 498973301}
   - {fileID: 1639060280}
   - {fileID: 5183747231704569751}

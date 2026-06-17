@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 3
   displayName: The Pink Lady
-  drinkIcon: {fileID: 1266125154, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: eef9d5d785509d841a445cddbd7736b3, type: 3}
   price: 100
   ingredients:
   - ingredientType: 17
-    ingredientIcon: {fileID: -827545940, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: bf0309323bc8c4c4883fcafc2e617d76, type: 3}
   - ingredientType: 21
-    ingredientIcon: {fileID: -1578376657, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 0dbc697f0a46f6a4e9c750227b8f64fc, type: 3}

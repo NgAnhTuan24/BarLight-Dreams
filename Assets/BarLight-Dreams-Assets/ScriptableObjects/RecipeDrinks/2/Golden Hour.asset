@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 5
   displayName: Golden Hour
-  drinkIcon: {fileID: -1710732817, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: c2eff292acb13a64c8b906d85415d9b8, type: 3}
   price: 200
   ingredients:
   - ingredientType: 1
-    ingredientIcon: {fileID: -1552573982, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
   - ingredientType: 14
-    ingredientIcon: {fileID: -1330419109, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 10118871788fd9f4d9c28c910f3c24fa, type: 3}
   - ingredientType: 12
-    ingredientIcon: {fileID: -1377475584, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: aad03abde6f0d6b4f8904617f5295788, type: 3}
   - ingredientType: 16
-    ingredientIcon: {fileID: 433018445, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}

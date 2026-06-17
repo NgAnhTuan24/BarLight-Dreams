@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 4
   displayName: Choco Cherry Pop
-  drinkIcon: {fileID: -884067265, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: f16809c961640504c831f615d872f00f, type: 3}
   price: 150
   ingredients:
   - ingredientType: 1
-    ingredientIcon: {fileID: -1552573982, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
   - ingredientType: 17
-    ingredientIcon: {fileID: -827545940, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: bf0309323bc8c4c4883fcafc2e617d76, type: 3}
   - ingredientType: 4
-    ingredientIcon: {fileID: -399453396, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Cherry
   m_EditorClassIdentifier: 
   fruitName: 4
-  fruitIcon: {fileID: -399453396, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  fruitIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}

@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 6
   displayName: Green Hornet
-  drinkIcon: {fileID: -856897733, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: 6ae4b51974c234748afd69afb6faa15f, type: 3}
   price: 200
   ingredients:
   - ingredientType: 1
-    ingredientIcon: {fileID: -1552573982, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
   - ingredientType: 10
-    ingredientIcon: {fileID: -1570211914, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
   - ingredientType: 11
-    ingredientIcon: {fileID: -1016459886, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: a52fce28260d84b4ca21fd9be31b8590, type: 3}
   - ingredientType: 5
-    ingredientIcon: {fileID: -2066566383, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 999895756be91fe4593d3ba605355779, type: 3}

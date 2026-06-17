@@ -43,6 +43,10 @@ public class RecipeBookUI : MonoBehaviour
     public void ShowRecipe(DrinkRecipeSO recipe)
     {
         drinkIcon.sprite = recipe.drinkIcon;
+
+        drinkIcon.preserveAspect = true;
+        drinkIcon.rectTransform.sizeDelta = IconSizeHelper.GetDrinkRecipeSize(recipe.drinkType);
+
         drinkNameText.text = recipe.displayName;
         priceText.text = recipe.price.ToString();
 

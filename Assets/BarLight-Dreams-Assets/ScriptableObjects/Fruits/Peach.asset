@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Peach
   m_EditorClassIdentifier: 
   fruitName: 2
-  fruitIcon: {fileID: 1919860819, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  fruitIcon: {fileID: 21300000, guid: cdfdcafa53b56404186b01d1cc4c9a4f, type: 3}

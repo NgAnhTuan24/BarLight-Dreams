@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 8
   displayName: Amber Moonlight
-  drinkIcon: {fileID: -1059935076, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: d2d02d0e27d767d4895e601f834fde04, type: 3}
   price: 150
   ingredients:
   - ingredientType: 21
-    ingredientIcon: {fileID: -1578376657, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 0dbc697f0a46f6a4e9c750227b8f64fc, type: 3}
   - ingredientType: 19
-    ingredientIcon: {fileID: 1900447675, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 4bad6fb3c5c533a48b9f737c824a32e6, type: 3}
   - ingredientType: 4
-    ingredientIcon: {fileID: -399453396, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}

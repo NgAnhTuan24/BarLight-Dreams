@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkType: 10
   displayName: Jade Breeze
-  drinkIcon: {fileID: -319098133, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkIcon: {fileID: 21300000, guid: b64e8e7385aa6d441800f6970d018964, type: 3}
   price: 150
   ingredients:
   - ingredientType: 11
-    ingredientIcon: {fileID: -1016459886, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: a52fce28260d84b4ca21fd9be31b8590, type: 3}
   - ingredientType: 10
-    ingredientIcon: {fileID: -1570211914, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
   - ingredientType: 9
-    ingredientIcon: {fileID: -1343074320, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: fd514ec0f29bbfb4ca1a6b61335a2aa3, type: 3}
