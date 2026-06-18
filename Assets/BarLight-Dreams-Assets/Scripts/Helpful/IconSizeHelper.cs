@@ -76,6 +76,46 @@ public static class IconSizeHelper
         }
     }
 
+    public static Vector2 GetDrinkOrderSize(DrinkType type)
+    {
+        switch (type)
+        {
+            case DrinkType.CherryVelvet:
+            case DrinkType.GreenVelvet:
+            case DrinkType.TequilaSunrise:
+            case DrinkType.ThePinkLady:
+                return new Vector2(50, 70);
+
+            case DrinkType.ChocoCherryPop:
+            case DrinkType.GoldenHour:
+            case DrinkType.GreenHornet:
+            case DrinkType.GinAndTonic:
+                return new Vector2(55, 70);
+
+            case DrinkType.AmberMoonlight:
+            case DrinkType.AuroraCloud:
+            case DrinkType.JadeBreeze:
+            case DrinkType.MysticMartini:
+
+            case DrinkType.CitrusMargarita:
+            case DrinkType.GreenOasis:
+            case DrinkType.MidnightOrchid:
+            case DrinkType.VelvetKiss:
+                return new Vector2(60, 70);
+
+            case DrinkType.AmberSparkle:
+            case DrinkType.LemonZest:
+            case DrinkType.LotusDream:
+                return new Vector2(45, 70);
+
+            case DrinkType.TropicalWave:
+                return new Vector2(50, 70);
+
+            default:
+                return new Vector2(0, 0);
+        }
+    }
+
     public static Vector2 GetIngredientSize(IngredientType type)
     {
         switch (type)

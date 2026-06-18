@@ -205,6 +205,11 @@ public class CustomerController : MonoBehaviour
     #region Rời quán với tâm trạng tức giận
     public void LeaveAngry()
     {
+        if (order.CurrentOrder != null)
+        {
+            OrderQueueManager.instance.RemoveOrder(order.CurrentOrder);
+        }
+
         order.AlertBubble.SetActive(false);
         order.DrinkBubble.SetActive(false);
 
@@ -236,6 +241,11 @@ public class CustomerController : MonoBehaviour
     public void ForceLeave()
     {
         StopAllCoroutines();
+
+        if (order.CurrentOrder != null)
+        {
+            OrderQueueManager.instance.RemoveOrder(order.CurrentOrder);
+        }
 
         order.AlertBubble.SetActive(false);
         order.DrinkBubble.SetActive(false);
