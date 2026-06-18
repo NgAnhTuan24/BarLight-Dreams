@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 5111897585937995258}
   - component: {fileID: 6376952623299586315}
   m_Layer: 7
-  m_Name: Customer2
+  m_Name: Customer1_2
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

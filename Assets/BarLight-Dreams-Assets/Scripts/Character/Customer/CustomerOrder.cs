@@ -28,7 +28,6 @@ public class CustomerOrder : MonoBehaviour
     private CustomerPopupText popupText;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
-    public bool HasOrdered { get; private set; }
     public GameObject AlertBubble => alertBubble;
     public GameObject DrinkBubble => drinkBubble;
 
@@ -89,8 +88,6 @@ public class CustomerOrder : MonoBehaviour
 
         currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
 
-        HasOrdered = true;
-
         ShowOrderBubble();
 
         PlayOrderVoice();
@@ -132,27 +129,18 @@ public class CustomerOrder : MonoBehaviour
 
     void TryGiveTip()
     {
+        float finalTipChance = customer.Data.tipChance;
+
         float patienceUsed = patience.PatiencePercentUsed;
 
-        float tipChance;
-
-        if (patienceUsed <= 0.3f)
+        if (patienceUsed > 0.8f)
         {
-            tipChance = 0.8f;
-        }
-        else if (patienceUsed <= 0.6f)
-        {
-            tipChance = 0.5f;
-        }
-        else
-        {
-            tipChance = 0.2f;
+            finalTipChance *= 0.5f;
         }
 
-        if (Random.value > tipChance)
-            return;
+        if (Random.value > finalTipChance) return;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f));
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier);
 
         DayStatsManager.instance.AddTips(tipAmount);
 

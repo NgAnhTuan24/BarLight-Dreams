@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 1543636513895498493}
   - component: {fileID: 62794799990568904}
   m_Layer: 7
-  m_Name: Customer4
+  m_Name: Customer5_2
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f5de75b59231740b13cfbe565b6fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customerData: {fileID: 11400000, guid: 59973a3df823e8542b5f0910e5bf7bd2, type: 2}
+  customerData: {fileID: 11400000, guid: 7a20f9eaa796f04498a027f5f6d5eb32, type: 2}
   leavePoint: {fileID: 0}
   hurtSFX: {fileID: 8300000, guid: 24b4564fbf47c3e4492ce4d284079a45, type: 3}
 --- !u!114 &1543636513895498493

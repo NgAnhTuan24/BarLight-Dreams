@@ -5027,7 +5027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 0}
   targetPopup: {fileID: 0}
-  interactKey: 102
+  interactKey: 101
   cleanCounter: 0
   cleanSFX: {fileID: 0}
   giveIce: 0
@@ -9006,15 +9006,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerPrefabs:
-  - {fileID: 4001223003319005604, guid: 92cefa58b16bb3d468f955e7b0aed23d, type: 3}
-  - {fileID: 6780047281601323171, guid: 2b9a24816183e3245b67e29d4d080c53, type: 3}
-  - {fileID: 4797502520885138038, guid: 11073283e687673499e8aa304583df25, type: 3}
-  - {fileID: 1751953953958820347, guid: f5ea45f58069d09449f972f23cec8107, type: 3}
-  - {fileID: 5749299940929519075, guid: 4dde5cd7c5e602244818a2b148f5931c, type: 3}
-  - {fileID: 6565536770458484744, guid: fcb80de6eb39db44fb1b07d07db8437f, type: 3}
-  spawnCenter: {x: 21, y: -4}
-  spawnRangeX: 1
-  spawnRangeY: 3
+  - {fileID: 4001223003319005604, guid: a844d176fce7b1e4a9f6b42ba9caf9ae, type: 3}
+  - {fileID: 6780047281601323171, guid: 2d9904dd859bc0a47be3268d9727a402, type: 3}
+  - {fileID: 4797502520885138038, guid: 74ce874f77787d442839b94aee79d091, type: 3}
+  - {fileID: 1751953953958820347, guid: 954baa8bd9c00054b9e25ad19ef2ffb6, type: 3}
+  - {fileID: 1751953953958820347, guid: 1277493c5ac70474ebe170eb9e4348a7, type: 3}
+  - {fileID: 4797502520885138038, guid: e96c3ed5ddfd02848b62cf9d5e471078, type: 3}
+  spawnCenter: {x: 20.8, y: -4}
+  spawnRangeX: 0.8
+  spawnRangeY: 2.5
   spawnIntervals:
   - 15
   - 19

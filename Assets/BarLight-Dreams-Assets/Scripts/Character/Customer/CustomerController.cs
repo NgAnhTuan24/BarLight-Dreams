@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CustomerController : MonoBehaviour
 {
+    [SerializeField] private CustomerSO customerData;
+
     //public float moveSpeed = 3f;
     [Header("Leave")]
     [SerializeField] private Transform leavePoint;
@@ -24,6 +26,8 @@ public class CustomerController : MonoBehaviour
     private Vector2 lastMoveDirection = Vector2.left;
     
     public CustomerState CurrentState => currentState;
+
+    public CustomerSO Data => customerData;
 
     private void Awake()
     {

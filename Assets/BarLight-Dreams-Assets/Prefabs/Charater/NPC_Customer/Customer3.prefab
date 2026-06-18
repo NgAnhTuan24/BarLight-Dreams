@@ -353,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f5de75b59231740b13cfbe565b6fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customerData: {fileID: 11400000, guid: 59973a3df823e8542b5f0910e5bf7bd2, type: 2}
   leavePoint: {fileID: 0}
   hurtSFX: {fileID: 8300000, guid: 24b4564fbf47c3e4492ce4d284079a45, type: 3}
 --- !u!114 &8556158536853930063
@@ -410,8 +411,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543527adaa14452458ec8ca72a8abb84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitOrderTime: 45
-  waitDrinkTime: 90
   timerBubble: {fileID: 5455088620560395697}
   timerIcon: {fileID: 1176333547673750521}
   timerFrames:
