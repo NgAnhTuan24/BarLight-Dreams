@@ -86,15 +86,15 @@ public class CustomerOrder : MonoBehaviour
 
         alertBubble.SetActive(false);
 
+        patience.StopPatience();
+
         currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
 
         ShowOrderBubble();
 
         PlayOrderVoice();
 
-        customer.ChangeState(CustomerState.WaitingDrink);
-
-        patience.StartWaitingDrink();
+        customer.ChangeState(CustomerState.FindSeat);
     }
 
     void ShowOrderBubble()

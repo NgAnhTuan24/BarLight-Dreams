@@ -10,6 +10,9 @@ public class CustomerController : MonoBehaviour
     [Header("Leave")]
     [SerializeField] private Transform leavePoint;
 
+    [Header("Counter")]
+    [SerializeField] private Transform counterPoint;
+
     [Header("Audio")]
     [SerializeField] private AudioClip hurtSFX;
 
@@ -42,6 +45,8 @@ public class CustomerController : MonoBehaviour
     {
         leavePoint = GameObject.FindGameObjectWithTag("ExitPoint").transform;
 
+        counterPoint = GameObject.FindGameObjectWithTag("OrderCounter").transform;
+
         EnterBar();
     }
 
@@ -57,6 +62,14 @@ public class CustomerController : MonoBehaviour
     {
         switch (currentState)
         {
+            case CustomerState.FindCounter:
+                MoveToCounter();
+                break;
+
+            case CustomerState.MovingToCounter:
+                CheckReachedCounter();
+                break;
+
             case CustomerState.FindSeat:
                 FindSeat();
                 break;
@@ -89,7 +102,30 @@ public class CustomerController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        currentState = CustomerState.FindSeat;
+        currentState = CustomerState.FindCounter;
+    }
+
+    void MoveToCounter()
+    {
+        currentState = CustomerState.MovingToCounter;
+
+        aiPath.destination = counterPoint.position;
+        aiPath.canMove = true;
+    }
+
+    void CheckReachedCounter()
+    {
+        if (aiPath.pathPending) return;
+
+        if (Vector2.Distance(transform.position, counterPoint.position) > 0.2f) return;
+
+        aiPath.canMove = false;
+
+        currentState = CustomerState.WaitingOrder;
+
+        order.ShowAlertBubble();
+
+        patience.StartWaitingOrder();
     }
 
     void FindSeat()
@@ -112,8 +148,16 @@ public class CustomerController : MonoBehaviour
 
     void CheckReachedSeat()
     {
-        if (!aiPath.reachedEndOfPath)
+        if (targetChair == null)
+        {
+            LeaveBar();
             return;
+        }
+
+        float dist = Vector2.Distance(transform.position, targetChair.sitPoint.position);
+
+        if (aiPath.pathPending) return;
+        if (dist > 1.5f) return;
 
         SitDown();
     }
@@ -139,11 +183,9 @@ public class CustomerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        currentState = CustomerState.WaitingOrder;
+        currentState = CustomerState.WaitingDrink;
 
-        order.ShowAlertBubble();
-
-        patience.StartWaitingOrder();
+        patience.StartWaitingDrink();
     }
 
     public void OnDrinkReceived()
@@ -221,11 +263,9 @@ public class CustomerController : MonoBehaviour
 
     void CheckReachedExit()
     {
-        if (aiPath.pathPending)
-            return;
+        if (aiPath.pathPending) return;
 
-        if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
-            return;
+        if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f) return;
 
         CustomerManager.instance.RemoveCustomer(this);
 
@@ -234,7 +274,13 @@ public class CustomerController : MonoBehaviour
 
     void UpdateMovementDirection()
     {
-        moveDirection = aiPath.desiredVelocity.normalized;
+        if (!aiPath.canMove)
+        {
+            moveDirection = Vector2.zero;
+            return;
+        }
+
+        moveDirection = aiPath.velocity;
     }
 
     void UpdateAnimator()
@@ -261,11 +307,16 @@ public class CustomerController : MonoBehaviour
 public enum CustomerState
 {
     Enter,
+
+    FindCounter,
+    MovingToCounter,
+
+    WaitingOrder,
+
     FindSeat,
     MovingToSeat,
 
     Sitting,
-    WaitingOrder,
     WaitingDrink,
     DrinkReceived,
 
