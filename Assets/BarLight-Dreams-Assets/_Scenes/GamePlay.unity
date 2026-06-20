@@ -2333,7 +2333,7 @@ Tilemap:
       - {fileID: -629604430, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 1510131083, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
       - {fileID: 356604140, guid: 6b8c5a618579d7a4c92aba3bc46a9809, type: 3}
-      m_AnimationSpeed: 3
+      m_AnimationSpeed: 3.0000002
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -4250,7 +4250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -856.9, y: 180}
+  m_AnchoredPosition: {x: -873.12, y: 180}
   m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381368542
@@ -9047,6 +9047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 502266748}
+  - component: {fileID: 502266757}
   - component: {fileID: 502266751}
   - component: {fileID: 502266752}
   - component: {fileID: 502266753}
@@ -9166,7 +9167,19 @@ MonoBehaviour:
   - {fileID: 644589311}
   - {fileID: 803836624}
   - {fileID: 1000521737}
-  stackOffset: 65
+  stackOffset: 55
+--- !u!114 &502266757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502266746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002a2dad9f044ba4286cdb8937ed78d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &530588240
 GameObject:
   m_ObjectHideFlags: 0
@@ -42990,7 +43003,7 @@ GameObject:
   - component: {fileID: 745766995}
   - component: {fileID: 745766996}
   m_Layer: 0
-  m_Name: SettingGame
+  m_Name: PauseGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43023,8 +43036,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91256f12039d7024590557513136afba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipeBookPopup: {fileID: 1922423265}
-  recipeKey: 27
+  uiPopup: {fileID: 1922423265}
+  keyCode: 27
+  inputType: 2
 --- !u!1 &751302285
 GameObject:
   m_ObjectHideFlags: 0
@@ -44744,8 +44758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91256f12039d7024590557513136afba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipeBookPopup: {fileID: 124120692}
-  recipeKey: 99
+  uiPopup: {fileID: 124120692}
+  keyCode: 99
+  inputType: 1
 --- !u!1 &829889713
 GameObject:
   m_ObjectHideFlags: 0
@@ -45448,7 +45463,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 870, y: 0}
+  m_AnchoredPosition: {x: 891.9, y: 0}
   m_SizeDelta: {x: 100, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &890326468
@@ -45888,7 +45903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 246.25, y: -121.25}
+  m_AnchoredPosition: {x: 230, y: -121.25}
   m_SizeDelta: {x: 412.5, y: 162.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &926656737
@@ -47642,7 +47657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 850, y: -300}
+  m_AnchoredPosition: {x: 875.65, y: -300}
   m_SizeDelta: {x: 130, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1083247274
@@ -53265,7 +53280,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -626.3, y: 458.8}
+  m_AnchoredPosition: {x: -642.47, y: 458.8}
   m_SizeDelta: {x: 240, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1466529493
@@ -53532,7 +53547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -395, y: 458.8}
+  m_AnchoredPosition: {x: -420, y: 458.8}
   m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1500407917

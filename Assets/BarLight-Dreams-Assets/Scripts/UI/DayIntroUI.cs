@@ -17,6 +17,8 @@ public class DayIntroUI : MonoBehaviour
 
     public void Show(string firstMessage, string secondMessage, Action onComplete = null)
     {
+        UIManager.Instance.LockGameplayInput();
+
         gameObject.SetActive(true);
 
         currentSequence?.Kill();
@@ -52,6 +54,7 @@ public class DayIntroUI : MonoBehaviour
 
         currentSequence.OnComplete(() =>
         {
+            UIManager.Instance.UnlockGameplayInput();
             gameObject.SetActive(false);
             onComplete?.Invoke();
         });
@@ -60,5 +63,10 @@ public class DayIntroUI : MonoBehaviour
     private void OnDestroy()
     {
         currentSequence?.Kill();
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UnlockGameplayInput();
+        }
     }
 }

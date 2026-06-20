@@ -27,6 +27,12 @@ public class SummaryDayUI : MonoBehaviour
 
     public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
     {
+        UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
+
+        nextButton.transform.DOKill();
+        nextButton.transform.localScale = Vector3.one;
+
         gameObject.SetActive(true);
 
         foreach (GameObject obj in objectsToHide)
@@ -57,7 +63,7 @@ public class SummaryDayUI : MonoBehaviour
             panel.DOScale(1f, 0.8f).SetEase(Ease.OutBack)
         );
 
-        seq.AppendInterval(0.2f);
+        seq.AppendInterval(0.1f);
 
         seq.Append(
             DOTween.To(
@@ -98,7 +104,7 @@ public class SummaryDayUI : MonoBehaviour
         seq.OnComplete(() =>
         {
             nextButton.transform
-                .DOScale(1.08f, 0.6f)
+                .DOScale(1.05f, 0.6f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine);
         });
@@ -120,6 +126,9 @@ public class SummaryDayUI : MonoBehaviour
 
         seq.OnComplete(() =>
         {
+            UIManager.Instance.UnlockGameplayInput();
+            UIManager.Instance.UnlockPauseInput();
+
             foreach (GameObject obj in objectsToHide)
             {
                 if (obj != null)
@@ -129,5 +138,13 @@ public class SummaryDayUI : MonoBehaviour
             gameObject.SetActive(false);
             onNext?.Invoke();
         });
+    }
+
+    private void OnDestroy()
+    {
+        nextButton.transform.DOKill();
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.UnlockGameplayInput();
     }
 }

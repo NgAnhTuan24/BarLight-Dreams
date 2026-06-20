@@ -43,7 +43,7 @@ public static class IconSizeHelper
             case DrinkType.GreenVelvet:
             case DrinkType.TequilaSunrise:
             case DrinkType.ThePinkLady:
-                return new Vector2(70, 100);
+                return new Vector2(70, 90);
 
             case DrinkType.ChocoCherryPop:
             case DrinkType.GoldenHour:
@@ -51,25 +51,23 @@ public static class IconSizeHelper
             case DrinkType.GinAndTonic:
                 return new Vector2(60, 80);
 
+            case DrinkType.AmberSparkle:
+            case DrinkType.LemonZest:
+            case DrinkType.LotusDream:
+                return new Vector2(45, 90);
+
+            case DrinkType.TropicalWave:
+                return new Vector2(70, 90);
+
             case DrinkType.AmberMoonlight:
             case DrinkType.AuroraCloud:
             case DrinkType.JadeBreeze:
             case DrinkType.MysticMartini:
-                return new Vector2(80, 90);
-
-            case DrinkType.AmberSparkle:
-            case DrinkType.LemonZest:
-            case DrinkType.LotusDream:
-                return new Vector2(50, 100);
-
-            case DrinkType.TropicalWave:
-                return new Vector2(70, 100);
-
             case DrinkType.CitrusMargarita:
             case DrinkType.GreenOasis:
             case DrinkType.MidnightOrchid:
             case DrinkType.VelvetKiss:
-                return new Vector2(75, 100);
+                return new Vector2(80, 90);
 
             default:
                 return new Vector2(0, 0);

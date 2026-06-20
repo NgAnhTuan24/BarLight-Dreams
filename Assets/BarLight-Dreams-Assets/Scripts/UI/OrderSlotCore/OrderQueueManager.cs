@@ -8,7 +8,7 @@ public class OrderQueueManager : MonoBehaviour
     [Header("Slots")]
     [SerializeField] private OrderSlotUI[] slots;
 
-    [SerializeField] private float stackOffset = 65f;
+    [SerializeField] private float stackOffset = 0f;
 
     private readonly List<DrinkRecipeSO> activeOrders = new List<DrinkRecipeSO>();
 

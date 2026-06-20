@@ -28,6 +28,8 @@ public class InteractionHighlight : MonoBehaviour
 
     private void Start()
     {
+        if (UIManager.Instance != null && UIManager.Instance.IsGameplayInputLocked) return;
+
         if (highlight != null)
         {
             highlight.SetActive(false);
