@@ -96,6 +96,8 @@ public class CustomerOrder : MonoBehaviour
 
         PlayOrderVoice();
 
+        customer.ReleaseCounterSlot();
+
         customer.ChangeState(CustomerState.FindSeat);
     }
 

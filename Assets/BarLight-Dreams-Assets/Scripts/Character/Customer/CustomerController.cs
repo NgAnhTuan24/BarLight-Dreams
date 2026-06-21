@@ -10,11 +10,12 @@ public class CustomerController : MonoBehaviour
     [Header("Leave")]
     [SerializeField] private Transform leavePoint;
 
-    [Header("Counter")]
-    [SerializeField] private Transform counterPoint;
-
     [Header("Audio")]
     [SerializeField] private AudioClip hurtSFX;
+
+    float counterCheckTimer;
+
+    private CounterSlot targetCounterSlot;
 
     private Chair targetChair;
     private CustomerState currentState;
@@ -45,8 +46,6 @@ public class CustomerController : MonoBehaviour
     {
         leavePoint = GameObject.FindGameObjectWithTag("ExitPoint").transform;
 
-        counterPoint = GameObject.FindGameObjectWithTag("OrderCounter").transform;
-
         EnterBar();
     }
 
@@ -62,6 +61,10 @@ public class CustomerController : MonoBehaviour
     {
         switch (currentState)
         {
+            case CustomerState.WaitingForCounter:
+                TryFindCounterAgain();
+                break;
+
             case CustomerState.FindCounter:
                 MoveToCounter();
                 break;
@@ -105,19 +108,42 @@ public class CustomerController : MonoBehaviour
         currentState = CustomerState.FindCounter;
     }
 
+    void TryFindCounterAgain()
+    {
+        counterCheckTimer += Time.deltaTime;
+
+        if (counterCheckTimer < 2f) return;
+
+        counterCheckTimer = 0f;
+
+        currentState = CustomerState.FindCounter;
+    }
+
     void MoveToCounter()
     {
+        CounterSlot slot = CounterManager.instance.ReserveSlot(this);
+
+        if (slot == null)
+        {
+            currentState = CustomerState.WaitingForCounter;
+            return;
+        }
+
+        targetCounterSlot = slot;
+
         currentState = CustomerState.MovingToCounter;
 
-        aiPath.destination = counterPoint.position;
+        aiPath.destination = slot.transform.position;
         aiPath.canMove = true;
     }
 
     void CheckReachedCounter()
     {
+        if (targetCounterSlot == null) return;
+        
         if (aiPath.pathPending) return;
 
-        if (Vector2.Distance(transform.position, counterPoint.position) > 0.2f) return;
+        if (Vector2.Distance(transform.position, targetCounterSlot.transform.position) > 0.2f) return;
 
         aiPath.canMove = false;
 
@@ -126,6 +152,14 @@ public class CustomerController : MonoBehaviour
         order.ShowAlertBubble();
 
         patience.StartWaitingOrder();
+    }
+
+    public void ReleaseCounterSlot()
+    {
+        if (targetCounterSlot == null) return;
+
+        targetCounterSlot.Release();
+        targetCounterSlot = null;
     }
 
     void FindSeat()
@@ -257,6 +291,8 @@ public class CustomerController : MonoBehaviour
 
     void LeaveBar()
     {
+        ReleaseCounterSlot();
+
         currentState = CustomerState.Leaving;
 
         animator.SetBool("IsSitting", false);
@@ -317,6 +353,8 @@ public class CustomerController : MonoBehaviour
 public enum CustomerState
 {
     Enter,
+
+    WaitingForCounter,
 
     FindCounter,
     MovingToCounter,
