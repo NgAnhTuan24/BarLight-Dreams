@@ -84,6 +84,9 @@ public class CustomerOrder : MonoBehaviour
         if (customer.CurrentState != CustomerState.WaitingOrder)
             return;
 
+        if (OrderQueueManager.instance.IsFull)
+            return;
+
         alertBubble.SetActive(false);
 
         patience.StopPatience();

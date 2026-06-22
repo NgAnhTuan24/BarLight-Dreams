@@ -12,7 +12,9 @@ public class OrderQueueManager : MonoBehaviour
 
     private readonly List<DrinkRecipeSO> activeOrders = new List<DrinkRecipeSO>();
 
-    private const int MAX_QUEUE = 3;
+    private const int MAX_QUEUE = 6;
+
+    public bool IsFull => activeOrders.Count >= MAX_QUEUE;
 
     private void Awake()
     {
@@ -80,7 +82,7 @@ public class OrderQueueManager : MonoBehaviour
         {
             RectTransform rect = slots[i].GetComponent<RectTransform>();
 
-            rect.anchoredPosition = new Vector2(0, -140 + i * stackOffset);
+            rect.anchoredPosition = new Vector2(0, -165 + i * stackOffset);
         }
     }
 }

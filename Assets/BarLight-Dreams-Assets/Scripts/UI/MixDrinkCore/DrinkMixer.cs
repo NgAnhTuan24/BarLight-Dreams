@@ -10,9 +10,14 @@ public class DrinkMixer : MonoBehaviour
 
     [SerializeField] private MixingMinigameUI minigameUI;
 
+    public bool CanMix()
+    {
+        return PlayerHoldItem.instance.HasCup() && CounterBarUI.instance.GetIngredients().Count > 0;
+    }
+
     public void StartMixing()
     {
-        if (!PlayerHoldItem.instance.HasCup())
+        if (!CanMix())
         {
             return;
         }
@@ -22,7 +27,7 @@ public class DrinkMixer : MonoBehaviour
 
     public void Mix()
     {
-        if (!PlayerHoldItem.instance.HasCup())
+        if (!CanMix())
         {
             return;
         }

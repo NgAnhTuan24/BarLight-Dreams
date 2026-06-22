@@ -316,6 +316,7 @@ Transform:
   - {fileID: 8855210471398938756}
   - {fileID: 7140865576264880170}
   - {fileID: 1695040834395763947}
+  - {fileID: 6086031505086505109}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2194007752045789785
@@ -1073,6 +1074,8 @@ MonoBehaviour:
   customer: {fileID: 6780047281601323171}
   customerOrder: {fileID: 5111897585937995258}
   interactKey: 102
+  interactionUIPrefab: {fileID: 7819704524656780411, guid: 66087f64c09b5614fae3360a63ca5885, type: 3}
+  textAnchor: {fileID: 6086031505086505109}
 --- !u!1 &8761668651713754421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1160,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &9034478167067774801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6086031505086505109}
+  m_Layer: 7
+  m_Name: TextAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6086031505086505109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034478167067774801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3551949743665060484}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9050077409654878600
 GameObject:
   m_ObjectHideFlags: 0

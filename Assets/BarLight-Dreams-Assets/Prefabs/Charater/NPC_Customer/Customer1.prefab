@@ -84,6 +84,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &823608591269669406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8094800483195958332}
+  m_Layer: 7
+  m_Name: TextAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8094800483195958332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823608591269669406}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3961222374173532729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101800559272498193
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,6 +856,8 @@ MonoBehaviour:
   customer: {fileID: 4001223003319005604}
   customerOrder: {fileID: 3187973371364477111}
   interactKey: 102
+  interactionUIPrefab: {fileID: 7819704524656780411, guid: 66087f64c09b5614fae3360a63ca5885, type: 3}
+  textAnchor: {fileID: 8094800483195958332}
 --- !u!1 &8235343048381222228
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,6 +902,7 @@ Transform:
   - {fileID: 8734762901911981430}
   - {fileID: 6320520003726807490}
   - {fileID: 2649023643582683186}
+  - {fileID: 8094800483195958332}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3747712705306997600
