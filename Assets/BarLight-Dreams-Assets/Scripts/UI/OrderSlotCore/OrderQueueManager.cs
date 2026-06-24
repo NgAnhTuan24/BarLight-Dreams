@@ -54,13 +54,6 @@ public class OrderQueueManager : MonoBehaviour
         RefreshUI();
     }
 
-    public void ClearAll()
-    {
-        activeOrders.Clear();
-
-        RefreshUI();
-    }
-
     private void RefreshUI()
     {
         for (int i = 0; i < slots.Length; i++)
