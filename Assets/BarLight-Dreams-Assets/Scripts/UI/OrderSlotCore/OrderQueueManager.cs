@@ -1,5 +1,17 @@
-using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class OrderData
+{
+    public CustomerController customer;
+    public DrinkRecipeSO recipe;
+
+    public OrderData(CustomerController customer, DrinkRecipeSO recipe)
+    {
+        this.customer = customer;
+        this.recipe = recipe;
+    }
+}
 
 public class OrderQueueManager : MonoBehaviour
 {
@@ -10,11 +22,23 @@ public class OrderQueueManager : MonoBehaviour
 
     [SerializeField] private float stackOffset = 0f;
 
-    private readonly List<DrinkRecipeSO> activeOrders = new List<DrinkRecipeSO>();
-
     private const int MAX_QUEUE = 6;
 
-    public bool IsFull => activeOrders.Count >= MAX_QUEUE;
+    private OrderData[] activeOrders = new OrderData[MAX_QUEUE];
+
+    public bool IsFull
+    {
+        get
+        {
+            for (int i = 0; i < MAX_QUEUE; i++)
+            {
+                if (activeOrders[i] == null)
+                    return false;
+            }
+
+            return true;
+        }
+    }
 
     private void Awake()
     {
@@ -34,38 +58,44 @@ public class OrderQueueManager : MonoBehaviour
         RefreshUI();
     }
 
-    public void AddOrder(DrinkRecipeSO recipe)
+    public void AddOrder(CustomerController customer, DrinkRecipeSO recipe)
     {
-        if (recipe == null)
-            return;
+        if (recipe == null || customer == null) return;
 
-        activeOrders.Add(recipe);
-
-        RefreshUI();
+        for (int i = 0; i < MAX_QUEUE; i++)
+        {
+            if (activeOrders[i] == null)
+            {
+                activeOrders[i] = new OrderData(customer, recipe);
+                slots[i].SetOrder(recipe);
+                return;
+            }
+        }
     }
 
-    public void RemoveOrder(DrinkRecipeSO recipe)
+    public void RemoveOrder(CustomerController customer)
     {
-        if (recipe == null)
-            return;
+        if (customer == null) return;
 
-        activeOrders.Remove(recipe);
-
-        RefreshUI();
+        for (int i = 0; i < MAX_QUEUE; i++)
+        {
+            if (activeOrders[i] != null && activeOrders[i].customer == customer)
+            {
+                activeOrders[i] = null;
+                slots[i].ClearSlot();
+                return;
+            }
+        }
     }
 
     private void RefreshUI()
     {
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < MAX_QUEUE; i++)
         {
-            slots[i].ClearSlot();
-        }
-
-        int count = Mathf.Min(MAX_QUEUE, activeOrders.Count);
-
-        for (int i = 0; i < count; i++)
-        {
-            slots[i].SetOrder(activeOrders[i]);
+            if (activeOrders[i] != null)
+                slots[i].SetOrder(activeOrders[i].recipe);
+            else
+                slots[i].ClearSlot();
         }
     }
 
@@ -75,7 +105,10 @@ public class OrderQueueManager : MonoBehaviour
         {
             RectTransform rect = slots[i].GetComponent<RectTransform>();
 
-            rect.anchoredPosition = new Vector2(0, -165 + i * stackOffset);
+            Vector2 pos = new Vector2(0, -165 + i * stackOffset);
+
+            rect.anchoredPosition = pos;
+            slots[i].SetOriginalPosition(pos);
         }
     }
 }

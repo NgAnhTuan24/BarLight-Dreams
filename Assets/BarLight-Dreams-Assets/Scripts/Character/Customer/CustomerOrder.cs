@@ -93,7 +93,7 @@ public class CustomerOrder : MonoBehaviour
 
         currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
 
-        OrderQueueManager.instance.AddOrder(currentOrder);
+        OrderQueueManager.instance.AddOrder(customer, currentOrder);
 
         ShowOrderBubble();
 
@@ -156,7 +156,7 @@ public class CustomerOrder : MonoBehaviour
 
     void ReceiveDrink()
     {
-        OrderQueueManager.instance.RemoveOrder(currentOrder);
+        OrderQueueManager.instance.RemoveOrder(customer);
 
         PlayerHoldItem.instance.Clear();
 

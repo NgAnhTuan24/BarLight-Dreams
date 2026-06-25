@@ -241,7 +241,7 @@ public class CustomerController : MonoBehaviour
     {
         if (order.CurrentOrder != null)
         {
-            OrderQueueManager.instance.RemoveOrder(order.CurrentOrder);
+            OrderQueueManager.instance.RemoveOrder(this);
         }
 
         order.AlertBubble.SetActive(false);
@@ -278,7 +278,7 @@ public class CustomerController : MonoBehaviour
 
         if (order.CurrentOrder != null)
         {
-            OrderQueueManager.instance.RemoveOrder(order.CurrentOrder);
+            OrderQueueManager.instance.RemoveOrder(this);
         }
 
         order.AlertBubble.SetActive(false);
