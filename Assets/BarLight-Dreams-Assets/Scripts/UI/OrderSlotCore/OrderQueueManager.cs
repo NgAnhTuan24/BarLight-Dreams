@@ -26,6 +26,8 @@ public class OrderQueueManager : MonoBehaviour
 
     private OrderData[] activeOrders = new OrderData[MAX_QUEUE];
 
+    private OrderSlotUI currentSelectedSlot;
+
     public bool IsFull
     {
         get
@@ -81,6 +83,11 @@ public class OrderQueueManager : MonoBehaviour
         {
             if (activeOrders[i] != null && activeOrders[i].customer == customer)
             {
+                if (currentSelectedSlot == slots[i])
+                {
+                    currentSelectedSlot = null;
+                }
+
                 activeOrders[i] = null;
                 slots[i].ClearSlot();
                 return;
@@ -110,5 +117,16 @@ public class OrderQueueManager : MonoBehaviour
             rect.anchoredPosition = pos;
             slots[i].SetOriginalPosition(pos);
         }
+    }
+
+    public void SelectSlot(OrderSlotUI slot)
+    {
+        if (currentSelectedSlot == slot) return;
+
+        if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(false);
+
+        currentSelectedSlot = slot;
+
+        if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(true);
     }
 }

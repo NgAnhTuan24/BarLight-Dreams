@@ -218,6 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkIcon: {fileID: 6541634005548453543}
   visualRect: {fileID: 3205964001404317269}
+  highlight: {fileID: 8668031504798647865}
   hoverOffsetX: -100
   hoverDuration: 0.2
 --- !u!1 &4155855340554080587

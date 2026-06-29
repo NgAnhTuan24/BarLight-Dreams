@@ -134,7 +134,7 @@ public class CustomerOrder : MonoBehaviour
         }
     }
 
-    void TryGiveTip()
+    int TryGiveTip()
     {
         float finalTipChance = customer.Data.tipChance;
 
@@ -145,13 +145,13 @@ public class CustomerOrder : MonoBehaviour
             finalTipChance *= 0.5f;
         }
 
-        if (Random.value > finalTipChance) return;
+        if (Random.value > finalTipChance) return 0;
 
         int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier);
 
         DayStatsManager.instance.AddTips(tipAmount);
 
-        popupText.ShowText($"+{tipAmount} Tip!");
+        return tipAmount;
     }
 
     void ReceiveDrink()
@@ -164,11 +164,12 @@ public class CustomerOrder : MonoBehaviour
 
         patience.StopPatience();
 
-        popupText.ShowText("Thanks!");
-
         ShowHappyBubble();
 
-        TryGiveTip();
+        int tipAmount = TryGiveTip();
+
+        string message = tipAmount > 0 ? $"Thanks! +{tipAmount} Tip!" : "Thanks!";
+        popupText.ShowText(message);
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);
         DayStatsManager.instance.AddCustomersServed();

@@ -21,6 +21,10 @@ public class CustomerSpawner : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text customerCountText;
 
+    [Header("Test Mode")]
+    [SerializeField] private bool testSpawnEverySecond = false;
+    [SerializeField] private float testSpawnInterval = 1f;
+
     private float timer;
 
     private void Start()
@@ -50,12 +54,26 @@ public class CustomerSpawner : MonoBehaviour
 
     void ResetSpawnInterval()
     {
-        currentSpawnInterval = 2f;
         timer = 0f;
+
+        if (testSpawnEverySecond)
+        {
+            currentSpawnInterval = testSpawnInterval;
+        }
+        else
+        {
+            currentSpawnInterval = 2f;
+        }
     }
 
     void SetRandomSpawnInterval()
     {
+        if (testSpawnEverySecond)
+        {
+            currentSpawnInterval = testSpawnInterval;
+            return;
+        }
+
         if (GameClock.instance.IsRushHour)
         {
             currentSpawnInterval = 10f;

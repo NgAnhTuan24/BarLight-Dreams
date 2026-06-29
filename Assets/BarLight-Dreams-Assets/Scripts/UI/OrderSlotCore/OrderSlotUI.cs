@@ -7,6 +7,7 @@ public class OrderSlotUI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Image drinkIcon;
     [SerializeField] private RectTransform visualRect;
+    [SerializeField] private GameObject highlight;
 
     [SerializeField] private float hoverOffsetX = -100f;
     [SerializeField] private float hoverDuration = 0.2f;
@@ -63,6 +64,8 @@ public class OrderSlotUI : MonoBehaviour
 
     public void ClearSlot()
     {
+        SetHighlight(false);
+
         rect.DOKill();
         canvasGroup.DOKill();
 
@@ -83,6 +86,11 @@ public class OrderSlotUI : MonoBehaviour
         originalPos = pos;
     }
 
+    public void SetHighlight(bool value)
+    {
+        highlight.SetActive(value);
+    }
+
     public void HoverEnter()
     {
         visualRect.DOKill();
@@ -95,5 +103,10 @@ public class OrderSlotUI : MonoBehaviour
         visualRect.DOKill();
 
         visualRect.DOAnchorPos(visualOriginalPos, hoverDuration).SetEase(Ease.OutQuad);
+    }
+
+    public void OnClick()
+    {
+        OrderQueueManager.instance.SelectSlot(this);
     }
 }

@@ -88,7 +88,7 @@ public static class IconSizeHelper
             case DrinkType.GoldenHour:
             case DrinkType.GreenHornet:
             case DrinkType.GinAndTonic:
-                return new Vector2(55, 70);
+                return new Vector2(40, 70);
 
             case DrinkType.AmberMoonlight:
             case DrinkType.AuroraCloud:
