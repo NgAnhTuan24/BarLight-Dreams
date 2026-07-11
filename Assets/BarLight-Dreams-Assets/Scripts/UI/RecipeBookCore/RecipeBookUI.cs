@@ -59,7 +59,7 @@ public class RecipeBookUI : MonoBehaviour
         {
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
-            item.Setup(ingredient);
+            item.SetupRecipeIngredient(ingredient);
         }
     }
 }

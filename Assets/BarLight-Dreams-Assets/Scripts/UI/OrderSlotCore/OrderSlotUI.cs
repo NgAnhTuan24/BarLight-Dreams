@@ -18,6 +18,8 @@ public class OrderSlotUI : MonoBehaviour
     private RectTransform rect;
     private CanvasGroup canvasGroup;
 
+    public DrinkRecipeSO CurrentRecipe { get; private set; }
+
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -40,6 +42,8 @@ public class OrderSlotUI : MonoBehaviour
             ClearSlot();
             return;
         }
+
+        CurrentRecipe = recipe;
 
         rect.DOKill();
         canvasGroup.DOKill();
@@ -64,6 +68,8 @@ public class OrderSlotUI : MonoBehaviour
 
     public void ClearSlot()
     {
+        CurrentRecipe = null;
+
         SetHighlight(false);
 
         rect.DOKill();

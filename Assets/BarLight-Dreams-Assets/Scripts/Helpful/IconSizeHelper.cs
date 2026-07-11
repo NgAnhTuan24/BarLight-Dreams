@@ -149,4 +149,79 @@ public static class IconSizeHelper
                 return new Vector2(0, 0);
         }
     }
+
+    public static Vector2 GetOrderRecipeSize(DrinkType type)
+    {
+        switch (type)
+        {
+            case DrinkType.CherryVelvet:
+            case DrinkType.GreenVelvet:
+            case DrinkType.TequilaSunrise:
+            case DrinkType.ThePinkLady:
+            
+            case DrinkType.ChocoCherryPop:
+            case DrinkType.GinAndTonic:
+            case DrinkType.GoldenHour:
+            case DrinkType.GreenHornet:
+
+            case DrinkType.TropicalWave:
+                return new Vector2(110, 150);
+            
+            case DrinkType.AmberSparkle:
+            case DrinkType.LemonZest:
+            case DrinkType.LotusDream:
+                return new Vector2(75, 150);
+            
+            case DrinkType.AmberMoonlight:
+            case DrinkType.AuroraCloud:
+            case DrinkType.JadeBreeze:
+            case DrinkType.MysticMartini:
+            case DrinkType.CitrusMargarita:
+            case DrinkType.GreenOasis:
+            case DrinkType.MidnightOrchid:
+            case DrinkType.VelvetKiss:
+                return new Vector2(130, 130);
+            
+            default:
+                return new Vector2(0, 0);
+        }
+    }
+
+    public static Vector2 GetOrderIngredientSize(IngredientType type)
+    {
+        switch (type)
+        {
+            case IngredientType.Ice:
+            
+            case IngredientType.Peach:
+            case IngredientType.Strawberry:
+            case IngredientType.Cherry:
+            case IngredientType.Apple:
+            case IngredientType.Lemon:
+            case IngredientType.Grape:
+            case IngredientType.Orange:
+            case IngredientType.Pineapple:
+                return new Vector2(50,50);
+
+
+            case IngredientType.Mystic_Absinthe:
+                return new Vector2(35, 60);
+
+            case IngredientType.Verdant_Bite:
+            case IngredientType.Obsidian_Gin:
+            case IngredientType.Radiant_Dew:
+            case IngredientType.Golden_Rum_Rush:
+            case IngredientType.Golden_Gin:
+            case IngredientType.Ivory_Bloom:
+            case IngredientType.Vanilla_Crash:
+            case IngredientType.Honey_Flame:
+            case IngredientType.Azuze_Spirit:
+            case IngredientType.Citrus_Ember:
+            case IngredientType.Pink_Lady:
+                return new Vector2(35, 80);
+
+            default:
+                return new Vector2(0,  0);
+        }
+    }
 }

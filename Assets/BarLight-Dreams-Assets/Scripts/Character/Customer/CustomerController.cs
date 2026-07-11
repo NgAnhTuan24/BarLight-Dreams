@@ -24,7 +24,7 @@ public class CustomerController : MonoBehaviour
     private AIPath aiPath;
     private CustomerOrder order;
     private CustomerPatience patience;
-    private CustomerPopupText popupText;
+    private FloatingPopupText popupText;
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
@@ -39,7 +39,7 @@ public class CustomerController : MonoBehaviour
         aiPath = GetComponent<AIPath>();
         order = GetComponent<CustomerOrder>();
         patience = GetComponent<CustomerPatience>();
-        popupText = GetComponentInChildren<CustomerPopupText>();
+        popupText = GetComponentInChildren<FloatingPopupText>();
     }
 
     private void Start()

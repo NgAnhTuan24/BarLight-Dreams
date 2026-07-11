@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class CustomerPopupText : MonoBehaviour
+public class FloatingPopupText : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private CanvasGroup canvasGroup;

@@ -19,6 +19,7 @@ public class OrderQueueManager : MonoBehaviour
 
     [Header("Slots")]
     [SerializeField] private OrderSlotUI[] slots;
+    [SerializeField] private OrderRecipeDetailViewer orderRecipeDetailViewer;
 
     [SerializeField] private float stackOffset = 0f;
 
@@ -85,7 +86,7 @@ public class OrderQueueManager : MonoBehaviour
             {
                 if (currentSelectedSlot == slots[i])
                 {
-                    currentSelectedSlot = null;
+                    DeselectSlot();
                 }
 
                 activeOrders[i] = null;
@@ -121,6 +122,8 @@ public class OrderQueueManager : MonoBehaviour
 
     public void SelectSlot(OrderSlotUI slot)
     {
+        if (slot == null || slot.CurrentRecipe == null) return;
+
         if (currentSelectedSlot == slot) return;
 
         if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(false);
@@ -128,5 +131,17 @@ public class OrderQueueManager : MonoBehaviour
         currentSelectedSlot = slot;
 
         if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(true);
+
+        orderRecipeDetailViewer.Show(slot.CurrentRecipe);
+    }
+
+    public void DeselectSlot()
+    {
+        if (currentSelectedSlot != null)
+        {
+            currentSelectedSlot.SetHighlight(false);
+            currentSelectedSlot = null;
+        }
+        orderRecipeDetailViewer.Hide();
     }
 }

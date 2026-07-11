@@ -25,7 +25,7 @@ public class CustomerOrder : MonoBehaviour
 
     private CustomerController customer;
     private CustomerPatience patience;
-    private CustomerPopupText popupText;
+    private FloatingPopupText popupText;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public GameObject AlertBubble => alertBubble;
@@ -35,7 +35,7 @@ public class CustomerOrder : MonoBehaviour
     {
         customer = GetComponent<CustomerController>();
         patience = GetComponent<CustomerPatience>();
-        popupText = GetComponentInChildren<CustomerPopupText>();
+        popupText = GetComponentInChildren<FloatingPopupText>();
 
         alertBubble.SetActive(false);
         drinkBubble.SetActive(false);
@@ -130,7 +130,7 @@ public class CustomerOrder : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong drink!");
+            popupText.ShowText("Wrong drink!");
         }
     }
 
