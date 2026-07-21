@@ -168,8 +168,18 @@ public class CustomerOrder : MonoBehaviour
 
         int tipAmount = TryGiveTip();
 
-        string message = tipAmount > 0 ? $"Thanks! +{tipAmount} Tip!" : "Thanks!";
-        popupText.ShowText(message);
+        if (tipAmount > 0)
+        {
+            popupText.ShowText($"Thanks! +{tipAmount} Tip!");
+        }
+        else if (patience.PatiencePercentUsed > 0.8f)
+        {
+            popupText.ShowText("Too slow...");
+        }
+        else
+        {
+            popupText.ShowText("Thanks!");
+        }
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);
         DayStatsManager.instance.AddCustomersServed();

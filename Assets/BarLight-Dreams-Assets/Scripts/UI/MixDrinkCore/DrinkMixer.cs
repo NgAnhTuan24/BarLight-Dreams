@@ -10,6 +10,8 @@ public class DrinkMixer : MonoBehaviour
 
     [SerializeField] private MixingMinigameUI minigameUI;
 
+    [SerializeField] private FloatingPopupText popupText;
+
     public bool CanMix()
     {
         return PlayerHoldItem.instance.HasCup() && CounterBarUI.instance.GetIngredients().Count > 0;
@@ -42,12 +44,15 @@ public class DrinkMixer : MonoBehaviour
 
                 PlayerHoldItem.instance.HoldDrink(recipe);
 
+                popupText.ShowText("Perfect!");
+
                 return;
             }
         }
 
         CounterBarUI.instance.CleanCounter();
         PlayerHoldItem.instance.Clear();
+        popupText.ShowText("Wrong Recipe!");
     }
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)

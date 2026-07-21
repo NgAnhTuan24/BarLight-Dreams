@@ -5402,6 +5402,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9b979dc6eb55a2847b531fd001ff7089, type: 2}
   resultDrinkSprite: {fileID: 0}
   minigameUI: {fileID: 388099254}
+  popupText: {fileID: 768635377}
 --- !u!114 &401920917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49190,6 +49191,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768635377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3086413902998537262, guid: 2897aebe861bf6f4481e9cc38a5ccdb3, type: 3}
+  m_PrefabInstance: {fileID: 1963199519}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c12f64b5d4742214f82a6a64e48b5e56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &768656840
 GameObject:
   m_ObjectHideFlags: 0
