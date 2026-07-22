@@ -252,7 +252,7 @@ public class CustomerController : MonoBehaviour
 
     IEnumerator LeaveAngryRoutine()
     {
-        popupText.ShowText("Too slow!");
+        popupText.ShowText(PopupMessages.GetAngryMessage());
 
         order.ShowAngryBubble();
 

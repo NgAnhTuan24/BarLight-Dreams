@@ -44,7 +44,7 @@ public class DrinkMixer : MonoBehaviour
 
                 PlayerHoldItem.instance.HoldDrink(recipe);
 
-                popupText.ShowText("Perfect!");
+                popupText.ShowText(PopupMessages.GetSuccessMessage());
 
                 return;
             }
@@ -52,7 +52,7 @@ public class DrinkMixer : MonoBehaviour
 
         CounterBarUI.instance.CleanCounter();
         PlayerHoldItem.instance.Clear();
-        popupText.ShowText("Wrong Recipe!");
+        popupText.ShowText(PopupMessages.GetFailMessage());
     }
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)

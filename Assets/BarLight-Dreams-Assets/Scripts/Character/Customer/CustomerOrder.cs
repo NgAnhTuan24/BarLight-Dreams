@@ -130,7 +130,7 @@ public class CustomerOrder : MonoBehaviour
         }
         else
         {
-            popupText.ShowText("Wrong drink!");
+            popupText.ShowText(PopupMessages.GetWrongDrinkMessage());
         }
     }
 
@@ -170,15 +170,15 @@ public class CustomerOrder : MonoBehaviour
 
         if (tipAmount > 0)
         {
-            popupText.ShowText($"Thanks! +{tipAmount} Tip!");
+            popupText.ShowText(PopupMessages.GetTipMessage(tipAmount));
         }
         else if (patience.PatiencePercentUsed > 0.8f)
         {
-            popupText.ShowText("Too slow...");
+            popupText.ShowText(PopupMessages.GetSlowMessage());
         }
         else
         {
-            popupText.ShowText("Thanks!");
+            popupText.ShowText(PopupMessages.GetThanksMessage());
         }
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);
