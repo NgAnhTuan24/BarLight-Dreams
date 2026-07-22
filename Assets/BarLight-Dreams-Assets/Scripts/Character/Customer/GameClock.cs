@@ -23,7 +23,7 @@ public class GameClock : MonoBehaviour
     [SerializeField] private int closingHour = 0; // 12 AM
     [SerializeField] private int closingMinute = 0;
 
-    [Header("Test Time Speed")]
+    [Header("Test Mode")]
     [SerializeField] private bool isFastForward;
     [SerializeField] private float fastForwardMultiplier = 2f;
 

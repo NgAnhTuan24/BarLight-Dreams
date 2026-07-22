@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Mystic Absinthe
   m_EditorClassIdentifier: 
   wineName: 10
-  wineIcon: {fileID: -1570211914, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  wineIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}

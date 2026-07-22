@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
   m_Name: Aurora Cloud
   m_EditorClassIdentifier: 
-  drinkName: Aurora Cloud
-  drinkIcon: {fileID: 23953439, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkType: 9
+  displayName: Aurora Cloud
+  drinkIcon: {fileID: 21300000, guid: 4224332384aaf6f4c8a59e9c7f2f7bad, type: 3}
   price: 200
   ingredients:
   - ingredientType: 16
-    ingredientIcon: {fileID: 433018445, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
   - ingredientType: 19
-    ingredientIcon: {fileID: 1900447675, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 4bad6fb3c5c533a48b9f737c824a32e6, type: 3}
   - ingredientType: 13
-    ingredientIcon: {fileID: 1931798868, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 58d803dd4bc6a9c428258aa6f1f9093e, type: 3}
   - ingredientType: 6
-    ingredientIcon: {fileID: 511325662, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: fcf11c9c60bfc4c4f9fee7b51b397bee, type: 3}

@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class CustomerPatience : MonoBehaviour
 {
-    [Header("Patience Time")]
-    [SerializeField] private float waitOrderTime = 30f;
-    [SerializeField] private float waitDrinkTime = 60f;
-
     [Header("Bubble")]
     [SerializeField] private GameObject timerBubble;
     [SerializeField] private SpriteRenderer timerIcon;
@@ -29,12 +25,12 @@ public class CustomerPatience : MonoBehaviour
 
     public void StartWaitingOrder()
     {
-        StartPatience(waitOrderTime);
+        StartPatience(customer.Data.waitOrderTime);
     }
 
     public void StartWaitingDrink()
     {
-        StartPatience(waitDrinkTime);
+        StartPatience(customer.Data.waitDrinkTime);
     }
 
     public void StopPatience()

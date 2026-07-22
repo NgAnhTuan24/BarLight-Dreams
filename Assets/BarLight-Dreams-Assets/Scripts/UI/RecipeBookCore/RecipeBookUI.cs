@@ -43,7 +43,11 @@ public class RecipeBookUI : MonoBehaviour
     public void ShowRecipe(DrinkRecipeSO recipe)
     {
         drinkIcon.sprite = recipe.drinkIcon;
-        drinkNameText.text = recipe.drinkName;
+
+        drinkIcon.preserveAspect = true;
+        drinkIcon.rectTransform.sizeDelta = IconSizeHelper.GetDrinkRecipeSize(recipe.drinkType);
+
+        drinkNameText.text = recipe.displayName;
         priceText.text = recipe.price.ToString();
 
         foreach (Transform child in ingredientParent)
@@ -55,7 +59,7 @@ public class RecipeBookUI : MonoBehaviour
         {
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
-            item.Setup(ingredient);
+            item.SetupRecipeIngredient(ingredient);
         }
     }
 }

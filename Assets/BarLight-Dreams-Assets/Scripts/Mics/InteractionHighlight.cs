@@ -6,6 +6,8 @@ public class InteractionHighlight : MonoBehaviour
 
     [SerializeField] private UIPopup targetPopup;
     [SerializeField] private KeyCode interactKey = KeyCode.F;
+    [SerializeField] private InteractionUIText interactionUI;
+    [SerializeField] private Transform textAnchor;
 
     [Header("Remove All In Counter")]
     [SerializeField] private bool cleanCounter;
@@ -25,9 +27,12 @@ public class InteractionHighlight : MonoBehaviour
     [SerializeField] private DrinkMixer drinkMixer;
 
     private bool playerInRange;
+    private bool canShowTextUI;
 
     private void Start()
     {
+        if (UIManager.Instance != null && UIManager.Instance.IsGameplayInputLocked) return;
+
         if (highlight != null)
         {
             highlight.SetActive(false);
@@ -37,6 +42,18 @@ public class InteractionHighlight : MonoBehaviour
     private void Update()
     {
         if (!playerInRange) return;
+
+        bool newCanShowTextUI = CanInteract();
+
+        if (newCanShowTextUI != canShowTextUI)
+        {
+            canShowTextUI = newCanShowTextUI;
+
+            if (canShowTextUI)
+                interactionUI?.Show(textAnchor, interactKey);
+            else
+                interactionUI?.Hide();
+        }
 
         if (Input.GetKeyDown(interactKey))
         {
@@ -74,11 +91,21 @@ public class InteractionHighlight : MonoBehaviour
                 }
             }
 
-            if (drinkMixer != null)
+            if (drinkMixer != null && drinkMixer.CanMix())
             {
                 drinkMixer.StartMixing();
             }
         }
+    }
+
+    private bool CanInteract()
+    {
+        if (drinkMixer != null)
+        {
+            return drinkMixer.CanMix();
+        }
+
+        return true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -86,6 +113,8 @@ public class InteractionHighlight : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = true;
+            canShowTextUI = false;
+
             if (highlight != null)
             {
                 highlight.SetActive(true);
@@ -98,10 +127,16 @@ public class InteractionHighlight : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = false;
+            canShowTextUI = false;
+
             if (highlight != null)
             {
                 highlight.SetActive(false);
             }
+
+            interactionUI?.Hide();
+
+            if (drinkMixer != null) return;
 
             if (targetPopup != null && targetPopup.IsOpen)
             {

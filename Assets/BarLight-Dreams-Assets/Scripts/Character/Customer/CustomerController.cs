@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class CustomerController : MonoBehaviour
 {
+    [SerializeField] private CustomerSO customerData;
+
     //public float moveSpeed = 3f;
     [Header("Leave")]
     [SerializeField] private Transform leavePoint;
 
     [Header("Audio")]
     [SerializeField] private AudioClip hurtSFX;
+
+    float counterCheckTimer;
+
+    private CounterSlot targetCounterSlot;
 
     private Chair targetChair;
     private CustomerState currentState;
@@ -18,12 +24,14 @@ public class CustomerController : MonoBehaviour
     private AIPath aiPath;
     private CustomerOrder order;
     private CustomerPatience patience;
-    private CustomerPopupText popupText;
+    private FloatingPopupText popupText;
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
     
     public CustomerState CurrentState => currentState;
+
+    public CustomerSO Data => customerData;
 
     private void Awake()
     {
@@ -31,7 +39,7 @@ public class CustomerController : MonoBehaviour
         aiPath = GetComponent<AIPath>();
         order = GetComponent<CustomerOrder>();
         patience = GetComponent<CustomerPatience>();
-        popupText = GetComponentInChildren<CustomerPopupText>();
+        popupText = GetComponentInChildren<FloatingPopupText>();
     }
 
     private void Start()
@@ -53,6 +61,18 @@ public class CustomerController : MonoBehaviour
     {
         switch (currentState)
         {
+            case CustomerState.WaitingForCounter:
+                TryFindCounterAgain();
+                break;
+
+            case CustomerState.FindCounter:
+                MoveToCounter();
+                break;
+
+            case CustomerState.MovingToCounter:
+                CheckReachedCounter();
+                break;
+
             case CustomerState.FindSeat:
                 FindSeat();
                 break;
@@ -85,7 +105,61 @@ public class CustomerController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        currentState = CustomerState.FindSeat;
+        currentState = CustomerState.FindCounter;
+    }
+
+    void TryFindCounterAgain()
+    {
+        counterCheckTimer += Time.deltaTime;
+
+        if (counterCheckTimer < 2f) return;
+
+        counterCheckTimer = 0f;
+
+        currentState = CustomerState.FindCounter;
+    }
+
+    void MoveToCounter()
+    {
+        CounterSlot slot = CounterManager.instance.ReserveSlot(this);
+
+        if (slot == null)
+        {
+            currentState = CustomerState.WaitingForCounter;
+            return;
+        }
+
+        targetCounterSlot = slot;
+
+        currentState = CustomerState.MovingToCounter;
+
+        aiPath.destination = slot.transform.position;
+        aiPath.canMove = true;
+    }
+
+    void CheckReachedCounter()
+    {
+        if (targetCounterSlot == null) return;
+        
+        if (aiPath.pathPending) return;
+
+        if (Vector2.Distance(transform.position, targetCounterSlot.transform.position) > 0.2f) return;
+
+        aiPath.canMove = false;
+
+        currentState = CustomerState.WaitingOrder;
+
+        order.ShowAlertBubble();
+
+        patience.StartWaitingOrder();
+    }
+
+    public void ReleaseCounterSlot()
+    {
+        if (targetCounterSlot == null) return;
+
+        targetCounterSlot.Release();
+        targetCounterSlot = null;
     }
 
     void FindSeat()
@@ -108,8 +182,16 @@ public class CustomerController : MonoBehaviour
 
     void CheckReachedSeat()
     {
-        if (!aiPath.reachedEndOfPath)
+        if (targetChair == null)
+        {
+            LeaveBar();
             return;
+        }
+
+        float dist = Vector2.Distance(transform.position, targetChair.sitPoint.position);
+
+        if (aiPath.pathPending) return;
+        if (dist > 1.5f) return;
 
         SitDown();
     }
@@ -135,11 +217,9 @@ public class CustomerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        currentState = CustomerState.WaitingOrder;
+        currentState = CustomerState.WaitingDrink;
 
-        order.ShowAlertBubble();
-
-        patience.StartWaitingOrder();
+        patience.StartWaitingDrink();
     }
 
     public void OnDrinkReceived()
@@ -159,6 +239,11 @@ public class CustomerController : MonoBehaviour
     #region Rời quán với tâm trạng tức giận
     public void LeaveAngry()
     {
+        if (order.CurrentOrder != null)
+        {
+            OrderQueueManager.instance.RemoveOrder(this);
+        }
+
         order.AlertBubble.SetActive(false);
         order.DrinkBubble.SetActive(false);
 
@@ -191,6 +276,11 @@ public class CustomerController : MonoBehaviour
     {
         StopAllCoroutines();
 
+        if (order.CurrentOrder != null)
+        {
+            OrderQueueManager.instance.RemoveOrder(this);
+        }
+
         order.AlertBubble.SetActive(false);
         order.DrinkBubble.SetActive(false);
         patience.StopPatience();
@@ -201,6 +291,8 @@ public class CustomerController : MonoBehaviour
 
     void LeaveBar()
     {
+        ReleaseCounterSlot();
+
         currentState = CustomerState.Leaving;
 
         animator.SetBool("IsSitting", false);
@@ -217,11 +309,9 @@ public class CustomerController : MonoBehaviour
 
     void CheckReachedExit()
     {
-        if (aiPath.pathPending)
-            return;
+        if (aiPath.pathPending) return;
 
-        if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f)
-            return;
+        if (Vector2.Distance(transform.position, leavePoint.position) > 0.2f) return;
 
         CustomerManager.instance.RemoveCustomer(this);
 
@@ -230,7 +320,13 @@ public class CustomerController : MonoBehaviour
 
     void UpdateMovementDirection()
     {
-        moveDirection = aiPath.desiredVelocity.normalized;
+        if (!aiPath.canMove)
+        {
+            moveDirection = Vector2.zero;
+            return;
+        }
+
+        moveDirection = aiPath.velocity;
     }
 
     void UpdateAnimator()
@@ -257,11 +353,18 @@ public class CustomerController : MonoBehaviour
 public enum CustomerState
 {
     Enter,
+
+    WaitingForCounter,
+
+    FindCounter,
+    MovingToCounter,
+
+    WaitingOrder,
+
     FindSeat,
     MovingToSeat,
 
     Sitting,
-    WaitingOrder,
     WaitingDrink,
     DrinkReceived,
 

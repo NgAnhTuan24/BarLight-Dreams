@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
   m_Name: Midnight Orchid
   m_EditorClassIdentifier: 
-  drinkName: Midnight Orchid
-  drinkIcon: {fileID: -679484892, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  drinkType: 18
+  displayName: Midnight Orchid
+  drinkIcon: {fileID: 21300000, guid: f5e7db766c1fce449b01ed87bf325a49, type: 3}
   price: 200
   ingredients:
   - ingredientType: 10
-    ingredientIcon: {fileID: -1570211914, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
   - ingredientType: 17
-    ingredientIcon: {fileID: -827545940, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: bf0309323bc8c4c4883fcafc2e617d76, type: 3}
   - ingredientType: 7
-    ingredientIcon: {fileID: 2069676272, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 94e551210e0a7c34fab97de889b1b98f, type: 3}
   - ingredientType: 7
-    ingredientIcon: {fileID: 2069676272, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+    ingredientIcon: {fileID: 21300000, guid: 94e551210e0a7c34fab97de889b1b98f, type: 3}

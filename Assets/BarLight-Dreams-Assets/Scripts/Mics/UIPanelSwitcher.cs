@@ -17,6 +17,9 @@ public class UIPanelSwitcher : MonoBehaviour
     {
         if (isTransitioning || panelToShow.activeSelf) return;
 
+        UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
+
         isTransitioning = true;
 
         panelToShow.SetActive(true);
@@ -55,6 +58,8 @@ public class UIPanelSwitcher : MonoBehaviour
             .OnComplete(() =>
             {
                 panelToShow.SetActive(false);
+                UIManager.Instance.UnlockGameplayInput();
+                UIManager.Instance.UnlockPauseInput();
                 isTransitioning = false;
             });
 

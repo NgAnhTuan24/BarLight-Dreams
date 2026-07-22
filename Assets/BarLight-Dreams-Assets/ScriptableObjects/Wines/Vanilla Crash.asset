@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Vanilla Crash
   m_EditorClassIdentifier: 
   wineName: 17
-  wineIcon: {fileID: -827545940, guid: 08fc0a751c1d9d042be8704db04abb00, type: 3}
+  wineIcon: {fileID: 21300000, guid: bf0309323bc8c4c4883fcafc2e617d76, type: 3}

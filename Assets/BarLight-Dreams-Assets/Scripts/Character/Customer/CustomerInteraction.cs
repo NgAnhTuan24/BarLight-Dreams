@@ -7,16 +7,47 @@ public class CustomerInteraction : MonoBehaviour
 
     [SerializeField] private KeyCode interactKey = KeyCode.F;
 
+    [SerializeField] private InteractionUIText interactionUIPrefab;
+    [SerializeField] private Transform textAnchor;
+
+    private InteractionUIText interactionUI;
+
     private bool playerInRange;
+
+    private void Start()
+    {
+        interactionUI = Instantiate(interactionUIPrefab);
+    }
 
     private void Update()
     {
-        if (!playerInRange) return;
+        if (!playerInRange || !CanInteract())
+        {
+            interactionUI?.Hide();
+            return;
+        }
+
+        interactionUI?.Show(textAnchor, interactKey);
 
         if (Input.GetKeyDown(interactKey))
         {
             Interact();
         }
+    }
+
+    private bool CanInteract()
+    {
+        if (customer.CurrentState == CustomerState.WaitingOrder)
+        {
+            return !OrderQueueManager.instance.IsFull;
+        }
+
+        if (customer.CurrentState == CustomerState.WaitingDrink)
+        {
+            return PlayerHoldItem.instance.HasDrink();
+        }
+
+        return false;
     }
 
     void Interact()
@@ -28,6 +59,11 @@ public class CustomerInteraction : MonoBehaviour
         else if (customer.CurrentState == CustomerState.WaitingDrink)
         {
             customerOrder.TryGiveDrink();
+        }
+
+        if (!CanInteract())
+        {
+            interactionUI.Hide();
         }
     }
 
@@ -44,6 +80,13 @@ public class CustomerInteraction : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInRange = false;
+            interactionUI?.Hide();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (interactionUI != null)
+            Destroy(interactionUI.gameObject);
     }
 }

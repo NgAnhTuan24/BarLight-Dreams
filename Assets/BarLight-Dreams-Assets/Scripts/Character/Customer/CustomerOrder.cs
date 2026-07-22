@@ -25,10 +25,9 @@ public class CustomerOrder : MonoBehaviour
 
     private CustomerController customer;
     private CustomerPatience patience;
-    private CustomerPopupText popupText;
+    private FloatingPopupText popupText;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
-    public bool HasOrdered { get; private set; }
     public GameObject AlertBubble => alertBubble;
     public GameObject DrinkBubble => drinkBubble;
 
@@ -36,7 +35,7 @@ public class CustomerOrder : MonoBehaviour
     {
         customer = GetComponent<CustomerController>();
         patience = GetComponent<CustomerPatience>();
-        popupText = GetComponentInChildren<CustomerPopupText>();
+        popupText = GetComponentInChildren<FloatingPopupText>();
 
         alertBubble.SetActive(false);
         drinkBubble.SetActive(false);
@@ -85,19 +84,24 @@ public class CustomerOrder : MonoBehaviour
         if (customer.CurrentState != CustomerState.WaitingOrder)
             return;
 
+        if (OrderQueueManager.instance.IsFull)
+            return;
+
         alertBubble.SetActive(false);
+
+        patience.StopPatience();
 
         currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
 
-        HasOrdered = true;
+        OrderQueueManager.instance.AddOrder(customer, currentOrder);
 
         ShowOrderBubble();
 
         PlayOrderVoice();
 
-        customer.ChangeState(CustomerState.WaitingDrink);
+        customer.ReleaseCounterSlot();
 
-        patience.StartWaitingDrink();
+        customer.ChangeState(CustomerState.FindSeat);
     }
 
     void ShowOrderBubble()
@@ -126,52 +130,56 @@ public class CustomerOrder : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong drink!");
+            popupText.ShowText("Wrong drink!");
         }
     }
 
-    void TryGiveTip()
+    int TryGiveTip()
     {
+        float finalTipChance = customer.Data.tipChance;
+
         float patienceUsed = patience.PatiencePercentUsed;
 
-        float tipChance;
-
-        if (patienceUsed <= 0.3f)
+        if (patienceUsed > 0.8f)
         {
-            tipChance = 0.8f;
-        }
-        else if (patienceUsed <= 0.6f)
-        {
-            tipChance = 0.5f;
-        }
-        else
-        {
-            tipChance = 0.2f;
+            finalTipChance *= 0.5f;
         }
 
-        if (Random.value > tipChance)
-            return;
+        if (Random.value > finalTipChance) return 0;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f));
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier);
 
         DayStatsManager.instance.AddTips(tipAmount);
 
-        popupText.ShowText($"+{tipAmount} Tip!");
+        return tipAmount;
     }
 
     void ReceiveDrink()
     {
+        OrderQueueManager.instance.RemoveOrder(customer);
+
         PlayerHoldItem.instance.Clear();
 
         drinkBubble.SetActive(false);
 
         patience.StopPatience();
 
-        popupText.ShowText("Thanks!");
-
         ShowHappyBubble();
 
-        TryGiveTip();
+        int tipAmount = TryGiveTip();
+
+        if (tipAmount > 0)
+        {
+            popupText.ShowText($"Thanks! +{tipAmount} Tip!");
+        }
+        else if (patience.PatiencePercentUsed > 0.8f)
+        {
+            popupText.ShowText("Too slow...");
+        }
+        else
+        {
+            popupText.ShowText("Thanks!");
+        }
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);
         DayStatsManager.instance.AddCustomersServed();

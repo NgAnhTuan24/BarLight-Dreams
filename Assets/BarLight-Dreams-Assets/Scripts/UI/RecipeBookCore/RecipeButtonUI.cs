@@ -16,6 +16,10 @@ public class RecipeButtonUI : MonoBehaviour
 
         iconImage.sprite = recipe.drinkIcon;
 
+        iconImage.preserveAspect = true;
+
+        iconImage.rectTransform.sizeDelta = IconSizeHelper.GetDrinkSize(recipe.drinkType);
+
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
     }

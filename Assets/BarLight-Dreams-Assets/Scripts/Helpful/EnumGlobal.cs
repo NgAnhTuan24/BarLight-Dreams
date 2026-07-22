@@ -1,3 +1,31 @@
+public enum DrinkType
+{
+    CherryVelvet,
+    GreenVelvet,
+    TequilaSunrise,
+    ThePinkLady,
+
+    ChocoCherryPop,
+    GoldenHour,
+    GreenHornet,
+    GinAndTonic,
+
+    AmberMoonlight,
+    AuroraCloud,
+    JadeBreeze,
+    MysticMartini,
+
+    AmberSparkle,
+    LemonZest,
+    LotusDream,
+    TropicalWave,
+
+    CitrusMargarita,
+    GreenOasis,
+    MidnightOrchid,
+    VelvetKiss
+}
+
 public enum IngredientType
 {
     None,
