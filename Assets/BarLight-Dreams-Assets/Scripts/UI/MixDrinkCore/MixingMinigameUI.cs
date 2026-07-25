@@ -10,8 +10,7 @@ public class MixingMinigameUI : MonoBehaviour
     [SerializeField] private Transform arrowParent;
     [SerializeField] private MixingArrowUI arrowPrefab;
 
-    [Header("Settings")]
-    [SerializeField] private int arrowCount = 4;
+    private MixingSettings settings;
 
     private List<ArrowType> sequence = new();
     private List<MixingArrowUI> spawnedArrows = new();
@@ -32,8 +31,9 @@ public class MixingMinigameUI : MonoBehaviour
         }
     }
 
-    public void StartGame(Action successCallback)
+    public void StartGame(MixingSettings settings, Action successCallback)
     {
+        this.settings = settings;
         onSuccess = successCallback;
 
         root.SetActive(true);
@@ -58,7 +58,7 @@ public class MixingMinigameUI : MonoBehaviour
 
         spawnedArrows.Clear();
 
-        for (int i = 0; i < arrowCount; i++)
+        for (int i = 0; i < settings.arrowCount; i++)
         {
             ArrowType randomArrow = (ArrowType)UnityEngine.Random.Range(0, 4);
 

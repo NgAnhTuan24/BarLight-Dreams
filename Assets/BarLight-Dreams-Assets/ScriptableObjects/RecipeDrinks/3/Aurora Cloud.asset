@@ -25,3 +25,5 @@ MonoBehaviour:
     ingredientIcon: {fileID: 21300000, guid: 58d803dd4bc6a9c428258aa6f1f9093e, type: 3}
   - ingredientType: 6
     ingredientIcon: {fileID: 21300000, guid: fcf11c9c60bfc4c4f9fee7b51b397bee, type: 3}
+  mixing:
+    arrowCount: 9

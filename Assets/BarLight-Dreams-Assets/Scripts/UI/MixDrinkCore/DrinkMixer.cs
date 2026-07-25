@@ -5,9 +5,6 @@ public class DrinkMixer : MonoBehaviour
 {
     [SerializeField] private List<DrinkRecipeSO> recipes;
 
-    [Header("Result")]
-    [SerializeField] private Sprite resultDrinkSprite;
-
     [SerializeField] private MixingMinigameUI minigameUI;
 
     [SerializeField] private FloatingPopupText popupText;
@@ -17,6 +14,19 @@ public class DrinkMixer : MonoBehaviour
         return PlayerHoldItem.instance.HasCup() && CounterBarUI.instance.GetIngredients().Count > 0;
     }
 
+    private DrinkRecipeSO GetCurrentRecipe()
+    {
+        List<IngredientType> current = CounterBarUI.instance.GetIngredients();
+
+        foreach (DrinkRecipeSO recipe in recipes)
+        {
+            if (IsMatch(recipe, current))
+                return recipe;
+        }
+
+        return null;
+    }
+
     public void StartMixing()
     {
         if (!CanMix())
@@ -24,7 +34,11 @@ public class DrinkMixer : MonoBehaviour
             return;
         }
 
-        minigameUI.StartGame(Mix);
+        DrinkRecipeSO recipe = GetCurrentRecipe();
+
+        MixingSettings settings = recipe != null ? recipe.mixing : new MixingSettings();
+
+        minigameUI.StartGame(settings, Mix);
     }
 
     public void Mix()
