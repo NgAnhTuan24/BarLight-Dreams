@@ -13,6 +13,9 @@ public class SummaryDayUI : MonoBehaviour
     [SerializeField] private TMP_Text totalIncomeText;
     [SerializeField] private Button nextButton;
 
+    [SerializeField] private GameObject upgradePanel;
+    [SerializeField] private Button upgradeButton;
+
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform panel;
 
@@ -23,6 +26,7 @@ public class SummaryDayUI : MonoBehaviour
     private void Awake()
     {
         nextButton.onClick.AddListener(OnClickNext);
+        upgradeButton.onClick.AddListener(OnClickUpgrade);
     }
 
     public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
@@ -116,12 +120,11 @@ public class SummaryDayUI : MonoBehaviour
 
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(
-            canvasGroup.DOFade(0f, 0.2f)
-        );
+        seq.Append(canvasGroup.DOFade(0f, 0.2f));
 
         seq.Join(
-            panel.DOScale(0f, 0.2f).SetEase(Ease.InBack)
+            panel.DOScale(0f, 0.2f)
+                 .SetEase(Ease.InBack)
         );
 
         seq.OnComplete(() =>
@@ -137,6 +140,27 @@ public class SummaryDayUI : MonoBehaviour
 
             gameObject.SetActive(false);
             onNext?.Invoke();
+        });
+    }
+
+    private void OnClickUpgrade()
+    {
+        nextButton.transform.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(canvasGroup.DOFade(0f, 0.2f));
+
+        seq.Join(
+            panel.DOScale(0f, 0.2f)
+                 .SetEase(Ease.InBack)
+        );
+
+        seq.OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+
+            upgradePanel.SetActive(true);
         });
     }
 
