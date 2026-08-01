@@ -3,11 +3,30 @@ using UnityEngine;
 
 public class DrinkMixer : MonoBehaviour
 {
+    public static DrinkMixer instance;
+
     [SerializeField] private List<DrinkRecipeSO> recipes;
 
     [SerializeField] private MixingMinigameUI minigameUI;
 
     [SerializeField] private FloatingPopupText popupText;
+
+    [SerializeField] private float instantChance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void Start()
+    {
+        SetInstantChance(UpgradeManager.instance.GetInstantMixChance());
+    }
+
+    public void SetInstantChance(float chance)
+    {
+        instantChance = chance;
+    }
 
     public bool CanMix()
     {
@@ -35,6 +54,12 @@ public class DrinkMixer : MonoBehaviour
         }
 
         DrinkRecipeSO recipe = GetCurrentRecipe();
+
+        if (Random.value <= instantChance)
+        {
+            Mix();
+            return;
+        }
 
         MixingSettings settings = recipe != null ? recipe.mixing : new MixingSettings();
 

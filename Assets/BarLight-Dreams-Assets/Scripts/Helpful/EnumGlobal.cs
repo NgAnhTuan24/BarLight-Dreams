@@ -69,3 +69,12 @@ public enum ArrowType
     Left,
     Right
 }
+
+public enum UpgradeType
+{
+    Counter,
+    OrderSlot,
+    Chair,
+    Staff,
+    Mixing
+}

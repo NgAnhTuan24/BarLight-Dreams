@@ -147,7 +147,7 @@ public class CustomerOrder : MonoBehaviour
 
         if (Random.value > finalTipChance) return 0;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier);
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier * CustomerManager.instance.GetTipMultiplier());
 
         DayStatsManager.instance.AddTips(tipAmount);
 

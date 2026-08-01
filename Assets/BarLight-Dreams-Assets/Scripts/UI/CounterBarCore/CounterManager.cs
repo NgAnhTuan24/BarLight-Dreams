@@ -5,6 +5,7 @@ public class CounterManager : MonoBehaviour
     public static CounterManager instance;
 
     [SerializeField] private CounterSlot[] slots;
+    [SerializeField] private int capacity = 1;
 
     private void Awake()
     {
@@ -13,11 +14,11 @@ public class CounterManager : MonoBehaviour
 
     public CounterSlot ReserveSlot(CustomerController customer)
     {
-        int startIndex = Random.Range(0, slots.Length);
+        int startIndex = Random.Range(0, capacity);
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < capacity; i++)
         {
-            int index = (startIndex + i) % slots.Length;
+            int index = (startIndex + i) % capacity;
 
             if (!slots[index].IsOccupied)
             {
@@ -27,5 +28,10 @@ public class CounterManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void SetCapacity(int newCapacity)
+    {
+        capacity = Mathf.Clamp(newCapacity, 1, slots.Length);
     }
 }

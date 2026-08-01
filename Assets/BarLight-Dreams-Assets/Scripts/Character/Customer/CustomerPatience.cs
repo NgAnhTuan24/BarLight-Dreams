@@ -25,12 +25,12 @@ public class CustomerPatience : MonoBehaviour
 
     public void StartWaitingOrder()
     {
-        StartPatience(customer.Data.waitOrderTime);
+        StartPatience(customer.Data.waitOrderTime * CustomerManager.instance.GetPatienceMultiplier());
     }
 
     public void StartWaitingDrink()
     {
-        StartPatience(customer.Data.waitDrinkTime);
+        StartPatience(customer.Data.waitDrinkTime * CustomerManager.instance.GetPatienceMultiplier());
     }
 
     public void StopPatience()
