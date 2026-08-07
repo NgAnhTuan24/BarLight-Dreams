@@ -23,6 +23,8 @@ public class OrderRecipeDetailViewer : MonoBehaviour
 
     private Tween currentTween;
 
+    public bool IsShowing => root.activeSelf;
+
     private void Awake()
     {
         root.SetActive(false);

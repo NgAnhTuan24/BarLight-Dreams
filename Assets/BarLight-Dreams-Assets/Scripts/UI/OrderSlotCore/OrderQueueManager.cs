@@ -132,7 +132,19 @@ public class OrderQueueManager : MonoBehaviour
     {
         if (slot == null || slot.CurrentRecipe == null) return;
 
-        if (currentSelectedSlot == slot) return;
+        if (currentSelectedSlot == slot)
+        {
+            if (orderRecipeDetailViewer.IsShowing)
+            {
+                orderRecipeDetailViewer.Hide();
+            }
+            else
+            {
+                orderRecipeDetailViewer.Show(slot.CurrentRecipe);
+            }
+
+            return;
+        }
 
         if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(false);
 
@@ -158,5 +170,22 @@ public class OrderQueueManager : MonoBehaviour
         slotCount = Mathf.Clamp(count, 1, MAX_QUEUE);
 
         RefreshUI();
+    }
+
+    public OrderData GetSelectedOrder()
+    {
+        if (currentSelectedSlot == null)
+            return null;
+
+        for (int i = 0; i < MAX_QUEUE; i++)
+        {
+            if (activeOrders[i] == null)
+                continue;
+
+            if (slots[i] == currentSelectedSlot)
+                return activeOrders[i];
+        }
+
+        return null;
     }
 }
