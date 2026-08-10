@@ -127,6 +127,7 @@ public class CustomerOrder : MonoBehaviour
         if (drinkData.recipe == currentOrder)
         {
             ReceiveDrink();
+            PlayerHoldItem.instance.Clear();
         }
         else
         {
@@ -154,11 +155,9 @@ public class CustomerOrder : MonoBehaviour
         return tipAmount;
     }
 
-    void ReceiveDrink()
+    public void ReceiveDrink()
     {
         OrderQueueManager.instance.RemoveOrder(customer);
-
-        PlayerHoldItem.instance.Clear();
 
         drinkBubble.SetActive(false);
 

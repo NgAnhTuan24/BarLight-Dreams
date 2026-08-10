@@ -53,20 +53,17 @@ public class PickupCounter : MonoBehaviour
 
         Debug.Log($"PickupCounter: Added {drinkData.recipe.displayName} for {drinkData.customer.name}");
 
+        if (StaffManager.instance != null)
+        {
+            StaffManager.instance.TrySpawnStaff();
+        }
+
         return true;
     }
 
     public bool HasDrink()
     {
         return drinks.Count > 0;
-    }
-
-    public PickupDrinkData GetNextDrink()
-    {
-        if (drinks.Count == 0)
-            return null;
-
-        return drinks[0];
     }
 
     public PickupDrinkData TakeNextDrink()
@@ -81,11 +78,6 @@ public class PickupCounter : MonoBehaviour
         RefreshDrinkSlots();
 
         return drink;
-    }
-
-    public int GetDrinkCount()
-    {
-        return drinks.Count;
     }
 
     public bool TryPlaceDrink()
