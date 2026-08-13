@@ -345,7 +345,12 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 }
 
-            //case UpgradeType.Staff:
+            case UpgradeType.Staff:
+                {
+                    StaffManager.instance.TrySpawnStaff();
+
+                    break;
+                }
 
             case UpgradeType.Mixing:
                 {

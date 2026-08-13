@@ -6,12 +6,16 @@ public class PickupDrinkData
 {
     public CustomerController customer;
     public DrinkRecipeSO recipe;
+    public StaffController assignedStaff;
 
     public PickupDrinkData(CustomerController customer, DrinkRecipeSO recipe)
     {
         this.customer = customer;
         this.recipe = recipe;
+        this.assignedStaff = null;
     }
+
+    public bool IsReserved => assignedStaff != null;
 }
 
 public class PickupCounter : MonoBehaviour
@@ -38,18 +42,11 @@ public class PickupCounter : MonoBehaviour
     {
         if (drinkData == null)
             return false;
-
         if (!HasSpace())
             return false;
 
         drinks.Add(drinkData);
-
-        int index = drinks.Count - 1;
-
-        if (index < drinkSlots.Length)
-        {
-            drinkSlots[index].SetDrink(drinkData.recipe);
-        }
+        RefreshDrinkSlots();
 
         Debug.Log($"PickupCounter: Added {drinkData.recipe.displayName} for {drinkData.customer.name}");
 
@@ -61,50 +58,90 @@ public class PickupCounter : MonoBehaviour
         return true;
     }
 
-    public bool HasDrink()
+    public bool HasUnclaimedDrink()
     {
-        return drinks.Count > 0;
+        foreach (var drink in drinks)
+        {
+            if (!drink.IsReserved)
+                return true;
+        }
+        return false;
     }
 
-    public PickupDrinkData TakeNextDrink()
+    public bool TryReserveDrink(StaffController staff, out PickupDrinkData reservedDrink)
     {
-        if (drinks.Count == 0)
-            return null;
+        reservedDrink = null;
+        if (staff == null) return false;
 
-        PickupDrinkData drink = drinks[0];
+        foreach (var drink in drinks)
+        {
+            if (drink.assignedStaff == staff)
+            {
+                reservedDrink = drink;
+                return true;
+            }
+        }
 
-        drinks.RemoveAt(0);
+        foreach (var drink in drinks)
+        {
+            if (!drink.IsReserved)
+            {
+                drink.assignedStaff = staff;
+                reservedDrink = drink;
+                return true;
+            }
+        }
 
-        RefreshDrinkSlots();
+        return false;
+    }
 
-        return drink;
+    public PickupDrinkData TakeReservedDrink(StaffController staff)
+    {
+        for (int i = 0; i < drinks.Count; i++)
+        {
+            if (drinks[i].assignedStaff == staff)
+            {
+                PickupDrinkData drink = drinks[i];
+                drinks.RemoveAt(i);
+                RefreshDrinkSlots();
+                return drink;
+            }
+        }
+        return null;
+    }
+
+    public void CancelReservation(StaffController staff)
+    {
+        foreach (var drink in drinks)
+        {
+            if (drink.assignedStaff == staff)
+            {
+                drink.assignedStaff = null;
+            }
+        }
     }
 
     public bool TryPlaceDrink()
     {
-        if (!PlayerHoldItem.instance.HasDrink())
+        if (PlayerHoldItem.instance == null || !PlayerHoldItem.instance.HasDrink())
             return false;
 
         DrinkData drinkData = PlayerHoldItem.instance.CurrentDrinkData;
-
         if (drinkData == null || drinkData.recipe == null)
             return false;
 
         OrderData orderData = OrderQueueManager.instance.GetSelectedOrder();
-
         if (orderData == null)
             return false;
 
         if (orderData.recipe != drinkData.recipe)
             return false;
 
-        PickupDrinkData pickupDrink = new PickupDrinkData(orderData.customer,drinkData.recipe);
-
+        PickupDrinkData pickupDrink = new PickupDrinkData(orderData.customer, drinkData.recipe);
         if (!AddDrink(pickupDrink))
             return false;
 
         PlayerHoldItem.instance.Clear();
-
         return true;
     }
 

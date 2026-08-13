@@ -18,6 +18,8 @@ public class StaffController : MonoBehaviour
 
     private StaffState currentState = StaffState.Idle;
 
+    public StaffState CurrentState => currentState;
+
     private void Awake()
     {
         aiPath = GetComponent<AIPath>();
@@ -26,7 +28,6 @@ public class StaffController : MonoBehaviour
         {
             aiPath.canMove = false;
         }
-
 
         if (drinkBubble != null)
         {
@@ -43,17 +44,18 @@ public class StaffController : MonoBehaviour
     {
         this.pickupPoint = pickupPoint;
         this.spawnPoint = spawnPoint;
-
         StartCoroutine(GoToPickupAfterDelay());
     }
 
     private IEnumerator GoToPickupAfterDelay()
     {
         currentState = StaffState.Idle;
-
         yield return new WaitForSeconds(1f);
 
-        MoveToPickup();
+        if (!MoveToPickup())
+        {
+            MoveToSpawnPoint();
+        }
     }
 
     private void Update()
@@ -66,11 +68,9 @@ public class StaffController : MonoBehaviour
             case StaffState.GoingToPickup:
                 CheckReachedPickup();
                 break;
-
             case StaffState.GoingToCustomer:
                 CheckReachedCustomer();
                 break;
-
             case StaffState.ReturningHome:
                 CheckReachedSpawnPoint();
                 break;
@@ -87,6 +87,24 @@ public class StaffController : MonoBehaviour
         aiPath.SearchPath();
     }
 
+    public bool MoveToPickup()
+    {
+        if (pickupPoint == null)
+            return false;
+
+        if (PickupCounter.instance == null)
+            return false;
+
+        if (PickupCounter.instance.TryReserveDrink(this, out PickupDrinkData reservedDrink))
+        {
+            currentState = StaffState.GoingToPickup;
+            MoveTo(pickupPoint);
+            return true;
+        }
+
+        return false;
+    }
+
     public bool TryTakeDrink()
     {
         if (currentDrink != null)
@@ -95,13 +113,7 @@ public class StaffController : MonoBehaviour
         if (PickupCounter.instance == null)
             return false;
 
-        if (!PickupCounter.instance.HasDrink())
-        {
-            MoveToSpawnPoint();
-            return false;
-        }
-
-        currentDrink = PickupCounter.instance.TakeNextDrink();
+        currentDrink = PickupCounter.instance.TakeReservedDrink(this);
 
         if (currentDrink == null)
         {
@@ -120,9 +132,7 @@ public class StaffController : MonoBehaviour
         }
 
         Debug.Log($"Staff: Took {currentDrink.recipe.displayName} for {currentDrink.customer.name}");
-
         DeliverDrink();
-
         return true;
     }
 
@@ -139,16 +149,12 @@ public class StaffController : MonoBehaviour
         if (aiPath.pathPending)
             return;
 
-        float distance = Vector2.Distance(
-            transform.position,
-            pickupPoint.position
-        );
+        float distance = Vector2.Distance(transform.position, pickupPoint.position);
 
         if (distance > 0.4f)
             return;
 
         aiPath.canMove = false;
-
         TryTakeDrink();
     }
 
@@ -169,11 +175,10 @@ public class StaffController : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, currentDrink.customer.transform.position);
 
-        if (distance > 1.2f)
+        if (distance > 2f)
             return;
 
         aiPath.canMove = false;
-
         DeliverToCustomer();
     }
 
@@ -201,14 +206,9 @@ public class StaffController : MonoBehaviour
         }
 
         customerOrder.ReceiveDrink();
-
         ClearCurrentDrink();
 
-        if (PickupCounter.instance != null && PickupCounter.instance.HasDrink())
-        {
-            MoveToPickup();
-        }
-        else
+        if (!MoveToPickup())
         {
             MoveToSpawnPoint();
         }
@@ -229,16 +229,6 @@ public class StaffController : MonoBehaviour
         }
     }
 
-    private void MoveToPickup()
-    {
-        if (pickupPoint == null)
-            return;
-
-        currentState = StaffState.GoingToPickup;
-
-        MoveTo(pickupPoint);
-    }
-
     private void MoveToCustomer()
     {
         if (currentDrink == null)
@@ -252,7 +242,6 @@ public class StaffController : MonoBehaviour
         }
 
         currentState = StaffState.GoingToCustomer;
-
         MoveTo(currentDrink.customer.transform);
     }
 
@@ -261,8 +250,12 @@ public class StaffController : MonoBehaviour
         if (spawnPoint == null)
             return;
 
-        currentState = StaffState.ReturningHome;
+        if (PickupCounter.instance != null)
+        {
+            PickupCounter.instance.CancelReservation(this);
+        }
 
+        currentState = StaffState.ReturningHome;
         MoveTo(spawnPoint);
     }
 
@@ -271,9 +264,8 @@ public class StaffController : MonoBehaviour
         if (spawnPoint == null)
             return;
 
-        if (PickupCounter.instance != null && PickupCounter.instance.HasDrink())
+        if (MoveToPickup())
         {
-            MoveToPickup();
             return;
         }
 
@@ -286,14 +278,14 @@ public class StaffController : MonoBehaviour
             return;
 
         aiPath.canMove = false;
-
         HandleReachedSpawnPoint();
     }
 
     private void HandleReachedSpawnPoint()
     {
         currentState = StaffState.Idle;
-
+        aiPath.canMove = false;
+        gameObject.SetActive(false);
         Debug.Log("Staff: Reached spawn point.");
     }
 }
