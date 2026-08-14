@@ -20,6 +20,9 @@ public class ActiveSlotUI : MonoBehaviour
     public void Show(Sprite icon)
     {
         itemIcon.sprite = icon;
+        itemIcon.preserveAspect = true;
+        itemIcon.rectTransform.sizeDelta = IconSizeHelper.GetActiveSlotSize(icon);
+
         itemIcon.gameObject.SetActive(true);
     }
 

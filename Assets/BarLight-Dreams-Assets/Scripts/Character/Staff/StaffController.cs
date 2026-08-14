@@ -170,6 +170,13 @@ public class StaffController : MonoBehaviour
             return;
         }
 
+        if (currentDrink.customer.CurrentState != CustomerState.WaitingDrink)
+        {
+            ClearCurrentDrink();
+            MoveToSpawnPoint();
+            return;
+        }
+
         if (aiPath.pathPending)
             return;
 
@@ -187,16 +194,21 @@ public class StaffController : MonoBehaviour
         if (currentDrink == null)
             return;
 
-        CustomerController customer = currentDrink.customer;
-
-        if (customer == null)
+        if (currentDrink.customer == null)
         {
             ClearCurrentDrink();
             MoveToSpawnPoint();
             return;
         }
 
-        CustomerOrder customerOrder = customer.GetComponent<CustomerOrder>();
+        if (currentDrink.customer.CurrentState != CustomerState.WaitingDrink)
+        {
+            ClearCurrentDrink();
+            MoveToSpawnPoint();
+            return;
+        }
+
+        CustomerOrder customerOrder = currentDrink.customer.GetComponent<CustomerOrder>();
 
         if (customerOrder == null)
         {
