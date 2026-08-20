@@ -12,6 +12,23 @@ public class StaffManager : MonoBehaviour
 
     private readonly List<StaffController> staffs = new();
 
+    public bool HasActiveStaff
+    {
+        get
+        {
+            for (int i = 0; i < staffs.Count; i++)
+            {
+                if (staffs[i] == null)
+                    continue;
+
+                if (staffs[i].gameObject.activeSelf)
+                    return true;
+            }
+
+            return false;
+        }
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)

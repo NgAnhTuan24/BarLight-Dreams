@@ -159,4 +159,18 @@ public class PickupCounter : MonoBehaviour
             }
         }
     }
+
+    public void ClearAllDrinks()
+    {
+        for (int i = 0; i < drinks.Count; i++)
+        {
+            if (drinks[i].assignedStaff != null)
+            {
+                drinks[i].assignedStaff.CancelPickup();
+            }
+        }
+
+        drinks.Clear();
+        RefreshDrinkSlots();
+    }
 }

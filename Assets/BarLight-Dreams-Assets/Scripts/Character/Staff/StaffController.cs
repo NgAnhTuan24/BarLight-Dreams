@@ -112,6 +112,19 @@ public class StaffController : MonoBehaviour
 
         return false;
     }
+    
+    public void CancelPickup()
+    {
+        if (currentState != StaffState.GoingToPickup)
+            return;
+
+        if (PickupCounter.instance != null)
+        {
+            PickupCounter.instance.CancelReservation(this);
+        }
+
+        MoveToSpawnPoint();
+    }
 
     public bool TryTakeDrink()
     {

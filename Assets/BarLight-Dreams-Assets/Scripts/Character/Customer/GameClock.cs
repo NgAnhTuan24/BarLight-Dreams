@@ -206,10 +206,16 @@ public class GameClock : MonoBehaviour
 
         OnBarClosed?.Invoke();
 
+        PickupCounter.instance.ClearAllDrinks();
+
         yield return new WaitUntil(
             () => CustomerManager.instance.CurrentCustomerCount == 0
         );
-        
+
+        yield return new WaitUntil(
+            () => !StaffManager.instance.HasActiveStaff
+        );
+
         PlayerController.instance.movement.SetCanMove(false);
 
         bool introFinished = false;
