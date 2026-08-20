@@ -224,4 +224,43 @@ public static class IconSizeHelper
                 return new Vector2(0,  0);
         }
     }
+
+    public static Vector2 GetActiveSlotSize(Sprite sprite)
+    {
+        if (sprite == null)
+            return new Vector2(54, 78);
+
+
+        switch (sprite.name)
+        {
+            case "CherryVelvet":
+            case "GreenVelvet":
+            case "TequilaSunrise":
+            case "ThePinkLady":
+            case "ChocoCherryPop":
+            case "Gin&Tonic":
+            case "GoldenHour":
+            case "GreenHornet":
+            case "TropicalWave":
+                return new Vector2(54, 78);
+
+            case "AmberMoonlight":
+            case "AuroraCloud":
+            case "JadeBreeze":
+            case "MysticMartini":
+            case "CitrusMargarita":
+            case "GreenOasis":
+            case "MidnightOrchid":
+            case "VelvetKiss":
+                return new Vector2(64, 78);
+
+            case "AmberSparkle":
+            case "LemonZest":
+            case "LotusDream":
+                return new Vector2(40, 78);
+
+            default:
+                return new Vector2(54, 78);
+        }
+    }
 }

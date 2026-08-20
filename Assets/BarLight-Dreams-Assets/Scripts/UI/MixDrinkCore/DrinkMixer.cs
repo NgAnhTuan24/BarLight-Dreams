@@ -3,18 +3,47 @@ using UnityEngine;
 
 public class DrinkMixer : MonoBehaviour
 {
-    [SerializeField] private List<DrinkRecipeSO> recipes;
+    public static DrinkMixer instance;
 
-    [Header("Result")]
-    [SerializeField] private Sprite resultDrinkSprite;
+    [SerializeField] private List<DrinkRecipeSO> recipes;
 
     [SerializeField] private MixingMinigameUI minigameUI;
 
     [SerializeField] private FloatingPopupText popupText;
 
+    [SerializeField] private float instantChance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void Start()
+    {
+        SetInstantChance(UpgradeManager.instance.GetInstantMixChance());
+    }
+
+    public void SetInstantChance(float chance)
+    {
+        instantChance = chance;
+    }
+
     public bool CanMix()
     {
         return PlayerHoldItem.instance.HasCup() && CounterBarUI.instance.GetIngredients().Count > 0;
+    }
+
+    private DrinkRecipeSO GetCurrentRecipe()
+    {
+        List<IngredientType> current = CounterBarUI.instance.GetIngredients();
+
+        foreach (DrinkRecipeSO recipe in recipes)
+        {
+            if (IsMatch(recipe, current))
+                return recipe;
+        }
+
+        return null;
     }
 
     public void StartMixing()
@@ -24,7 +53,17 @@ public class DrinkMixer : MonoBehaviour
             return;
         }
 
-        minigameUI.StartGame(Mix);
+        DrinkRecipeSO recipe = GetCurrentRecipe();
+
+        if (Random.value <= instantChance)
+        {
+            Mix();
+            return;
+        }
+
+        MixingSettings settings = recipe != null ? recipe.mixing : new MixingSettings();
+
+        minigameUI.StartGame(settings, Mix);
     }
 
     public void Mix()
@@ -44,7 +83,7 @@ public class DrinkMixer : MonoBehaviour
 
                 PlayerHoldItem.instance.HoldDrink(recipe);
 
-                popupText.ShowText("Perfect!");
+                popupText.ShowText(PopupMessages.GetSuccessMessage());
 
                 return;
             }
@@ -52,7 +91,7 @@ public class DrinkMixer : MonoBehaviour
 
         CounterBarUI.instance.CleanCounter();
         PlayerHoldItem.instance.Clear();
-        popupText.ShowText("Wrong Recipe!");
+        popupText.ShowText(PopupMessages.GetFailMessage());
     }
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)

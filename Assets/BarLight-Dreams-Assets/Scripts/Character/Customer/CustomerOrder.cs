@@ -127,10 +127,11 @@ public class CustomerOrder : MonoBehaviour
         if (drinkData.recipe == currentOrder)
         {
             ReceiveDrink();
+            PlayerHoldItem.instance.Clear();
         }
         else
         {
-            popupText.ShowText("Wrong drink!");
+            popupText.ShowText(PopupMessages.GetWrongDrinkMessage());
         }
     }
 
@@ -147,18 +148,16 @@ public class CustomerOrder : MonoBehaviour
 
         if (Random.value > finalTipChance) return 0;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier);
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier * CustomerManager.instance.GetTipMultiplier());
 
         DayStatsManager.instance.AddTips(tipAmount);
 
         return tipAmount;
     }
 
-    void ReceiveDrink()
+    public void ReceiveDrink()
     {
         OrderQueueManager.instance.RemoveOrder(customer);
-
-        PlayerHoldItem.instance.Clear();
 
         drinkBubble.SetActive(false);
 
@@ -170,15 +169,15 @@ public class CustomerOrder : MonoBehaviour
 
         if (tipAmount > 0)
         {
-            popupText.ShowText($"Thanks! +{tipAmount} Tip!");
+            popupText.ShowText(PopupMessages.GetTipMessage(tipAmount));
         }
         else if (patience.PatiencePercentUsed > 0.8f)
         {
-            popupText.ShowText("Too slow...");
+            popupText.ShowText(PopupMessages.GetSlowMessage());
         }
         else
         {
-            popupText.ShowText("Thanks!");
+            popupText.ShowText(PopupMessages.GetThanksMessage());
         }
 
         DayStatsManager.instance.AddEarnings(currentOrder.price);

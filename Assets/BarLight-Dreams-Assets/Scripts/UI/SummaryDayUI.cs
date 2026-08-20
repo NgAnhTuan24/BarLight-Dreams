@@ -13,6 +13,9 @@ public class SummaryDayUI : MonoBehaviour
     [SerializeField] private TMP_Text totalIncomeText;
     [SerializeField] private Button nextButton;
 
+    [SerializeField] private UpgradeUI upgradeUI;
+    [SerializeField] private Button upgradeButton;
+
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform panel;
 
@@ -23,15 +26,13 @@ public class SummaryDayUI : MonoBehaviour
     private void Awake()
     {
         nextButton.onClick.AddListener(OnClickNext);
+        upgradeButton.onClick.AddListener(OnClickUpgrade);
     }
 
     public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
     {
         UIManager.Instance.LockGameplayInput();
         UIManager.Instance.LockPauseInput();
-
-        nextButton.transform.DOKill();
-        nextButton.transform.localScale = Vector3.one;
 
         gameObject.SetActive(true);
 
@@ -100,28 +101,34 @@ public class SummaryDayUI : MonoBehaviour
                 0.9f
             )
         );
+    }
 
-        seq.OnComplete(() =>
-        {
-            nextButton.transform
-                .DOScale(1.05f, 0.6f)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.InOutSine);
-        });
+    public void ShowFromUpgrade()
+    {
+        gameObject.SetActive(true);
+
+        canvasGroup.alpha = 0f;
+        panel.anchoredPosition = new Vector2(-1800f, 0);
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(canvasGroup.DOFade(1f, 0.2f));
+
+        seq.Join(
+            panel.DOAnchorPos(Vector2.zero, 0.35f)
+                 .SetEase(Ease.OutCubic)
+        );
     }
 
     void OnClickNext()
     {
-        nextButton.transform.DOKill();
-
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(
-            canvasGroup.DOFade(0f, 0.2f)
-        );
+        seq.Append(canvasGroup.DOFade(0f, 0.2f));
 
         seq.Join(
-            panel.DOScale(0f, 0.2f).SetEase(Ease.InBack)
+            panel.DOScale(0f, 0.2f)
+                 .SetEase(Ease.InBack)
         );
 
         seq.OnComplete(() =>
@@ -140,10 +147,29 @@ public class SummaryDayUI : MonoBehaviour
         });
     }
 
+    private void OnClickUpgrade()
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(canvasGroup.DOFade(0f, 0.2f));
+
+        seq.Join(
+            panel.DOAnchorPos(new Vector2(-1800f, 0), 0.35f)
+                 .SetEase(Ease.InCubic)
+        );
+
+        seq.OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+
+            panel.anchoredPosition = Vector2.zero;
+
+            upgradeUI.Show();
+        });
+    }
+
     private void OnDestroy()
     {
-        nextButton.transform.DOKill();
-
         if (UIManager.Instance != null)
             UIManager.Instance.UnlockGameplayInput();
     }

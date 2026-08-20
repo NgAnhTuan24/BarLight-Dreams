@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 1.75}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3638419697347988264
 Canvas:
@@ -89,7 +89,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 2491983212829511418}
   popupText: {fileID: 1087225127873010934}
   moveUpDistance: 1
-  duration: 0.75
+  duration: 2
 --- !u!1 &1657213738775105638
 GameObject:
   m_ObjectHideFlags: 0

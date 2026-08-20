@@ -24,6 +24,7 @@ public class OrderQueueManager : MonoBehaviour
     [SerializeField] private float stackOffset = 0f;
 
     private const int MAX_QUEUE = 6;
+    [SerializeField] private int slotCount = 2;
 
     private OrderData[] activeOrders = new OrderData[MAX_QUEUE];
 
@@ -33,7 +34,7 @@ public class OrderQueueManager : MonoBehaviour
     {
         get
         {
-            for (int i = 0; i < MAX_QUEUE; i++)
+            for (int i = 0; i < slotCount; i++)
             {
                 if (activeOrders[i] == null)
                     return false;
@@ -65,7 +66,7 @@ public class OrderQueueManager : MonoBehaviour
     {
         if (recipe == null || customer == null) return;
 
-        for (int i = 0; i < MAX_QUEUE; i++)
+        for (int i = 0; i < slotCount; i++)
         {
             if (activeOrders[i] == null)
             {
@@ -100,6 +101,13 @@ public class OrderQueueManager : MonoBehaviour
     {
         for (int i = 0; i < MAX_QUEUE; i++)
         {
+            bool unlocked = i < slotCount;
+
+            slots[i].gameObject.SetActive(unlocked);
+
+            if (!unlocked)
+                continue;
+
             if (activeOrders[i] != null)
                 slots[i].SetOrder(activeOrders[i].recipe);
             else
@@ -124,7 +132,19 @@ public class OrderQueueManager : MonoBehaviour
     {
         if (slot == null || slot.CurrentRecipe == null) return;
 
-        if (currentSelectedSlot == slot) return;
+        if (currentSelectedSlot == slot)
+        {
+            if (orderRecipeDetailViewer.IsShowing)
+            {
+                orderRecipeDetailViewer.Hide();
+            }
+            else
+            {
+                orderRecipeDetailViewer.Show(slot.CurrentRecipe);
+            }
+
+            return;
+        }
 
         if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(false);
 
@@ -143,5 +163,29 @@ public class OrderQueueManager : MonoBehaviour
             currentSelectedSlot = null;
         }
         orderRecipeDetailViewer.Hide();
+    }
+
+    public void SetSlotCount(int count)
+    {
+        slotCount = Mathf.Clamp(count, 1, MAX_QUEUE);
+
+        RefreshUI();
+    }
+
+    public OrderData GetSelectedOrder()
+    {
+        if (currentSelectedSlot == null)
+            return null;
+
+        for (int i = 0; i < MAX_QUEUE; i++)
+        {
+            if (activeOrders[i] == null)
+                continue;
+
+            if (slots[i] == currentSelectedSlot)
+                return activeOrders[i];
+        }
+
+        return null;
     }
 }

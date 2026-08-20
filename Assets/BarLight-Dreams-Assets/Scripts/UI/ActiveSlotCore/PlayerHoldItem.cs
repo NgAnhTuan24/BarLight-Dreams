@@ -18,7 +18,6 @@ public class PlayerHoldItem : MonoBehaviour
     public HoldItemType CurrentType { get; private set; }
 
     private DrinkData currentDrinkData;
-    private Sprite currentIcon;
 
     public DrinkData CurrentDrinkData => currentDrinkData;
 
@@ -29,8 +28,6 @@ public class PlayerHoldItem : MonoBehaviour
 
     public void Hold(Sprite icon, HoldItemType type)
     {
-        currentIcon = icon;
-
         CurrentType = type;
 
         ActiveSlotUI.instance.Show(icon);
@@ -40,8 +37,6 @@ public class PlayerHoldItem : MonoBehaviour
     {
         currentDrinkData = new DrinkData(recipe);
 
-        currentIcon = recipe.drinkIcon;
-
         CurrentType = HoldItemType.Drink;
 
         ActiveSlotUI.instance.Show(recipe.drinkIcon);
@@ -50,8 +45,6 @@ public class PlayerHoldItem : MonoBehaviour
     public void Clear()
     {
         currentDrinkData = null;
-
-        currentIcon = null;
 
         CurrentType = HoldItemType.None;
 

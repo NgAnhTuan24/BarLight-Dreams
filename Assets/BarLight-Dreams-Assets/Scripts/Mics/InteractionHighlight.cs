@@ -26,6 +26,9 @@ public class InteractionHighlight : MonoBehaviour
     [Header("Mix Drink")]
     [SerializeField] private DrinkMixer drinkMixer;
 
+    [Header("Pickup Drink")]
+    [SerializeField] private PickupCounter pickupCounter;
+
     private bool playerInRange;
     private bool canShowTextUI;
 
@@ -57,6 +60,12 @@ public class InteractionHighlight : MonoBehaviour
 
         if (Input.GetKeyDown(interactKey))
         {
+            if (pickupCounter != null)
+            {
+                if (pickupCounter.TryPlaceDrink())
+                    return;
+            }
+
             if (targetPopup != null)
             {
                 targetPopup.Toggle();
@@ -103,6 +112,11 @@ public class InteractionHighlight : MonoBehaviour
         if (drinkMixer != null)
         {
             return drinkMixer.CanMix();
+        }
+
+        if (pickupCounter != null)
+        {
+            return PlayerHoldItem.instance.HasDrink() && pickupCounter.HasSpace();
         }
 
         return true;

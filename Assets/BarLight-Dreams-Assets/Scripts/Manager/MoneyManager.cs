@@ -21,6 +21,15 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
+    //test
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddMoney(1000);
+        }
+    }
+
     public void AddMoney(int amount)
     {
         CurrentMoney += amount;

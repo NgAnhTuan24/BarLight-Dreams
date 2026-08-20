@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81554d7051f7056459843e38909f6848, type: 3}
+  m_Name: Counter Upgrade
+  m_EditorClassIdentifier: 
+  upgradeType: 0
+  icon: {fileID: 21300000, guid: 065f5bedcbc018945ae7a8d4ec9d196c, type: 3}
+  title: Counter
+  description: Increase the number of customers who can stand and order at the same
+    time.
+  levels:
+  - price: 0
+    capacity: 1
+  - price: 1000
+    capacity: 2
+  - price: 1200
+    capacity: 3
+  - price: 1600
+    capacity: 4
+  - price: 2000
+    capacity: 5

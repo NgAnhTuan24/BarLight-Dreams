@@ -7,6 +7,9 @@ public class CustomerManager : MonoBehaviour
 
     private List<CustomerController> customers = new List<CustomerController>();
 
+    [SerializeField] private float patienceMultiplier = 1f;
+    [SerializeField] private float tipMultiplier = 1f;
+
     public int CurrentCustomerCount => customers.Count;
 
     private void Awake()
@@ -24,6 +27,26 @@ public class CustomerManager : MonoBehaviour
     private void Start()
     {
         GameClock.instance.OnBarClosed += ForceAllCustomersLeave;
+    }
+
+    public void SetPatienceMultiplier(float multiplier)
+    {
+        patienceMultiplier = multiplier;
+    }
+
+    public float GetPatienceMultiplier()
+    {
+        return patienceMultiplier;
+    }
+
+    public void SetTipMultiplier(float multiplier)
+    {
+        tipMultiplier = multiplier;
+    }
+
+    public float GetTipMultiplier()
+    {
+        return tipMultiplier;
     }
 
     public void RegisterCustomer(CustomerController customer)
