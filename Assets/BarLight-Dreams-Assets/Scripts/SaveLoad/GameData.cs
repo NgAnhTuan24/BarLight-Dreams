@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 [System.Serializable]
 public class GameData
 {
@@ -12,6 +14,8 @@ public class GameData
     public int totalMoneyEarned;
     public int totalServedCustomers;
     public int totalAngryCustomers;
+
+    public List<UpgradeRuntimeData> upgrades = new();
 
     public string saveTime;
 }

@@ -126,4 +126,14 @@ public class StaffManager : MonoBehaviour
 
         return null;
     }
+
+    public void ApplySavedStaffCount()
+    {
+        int targetStaffCount = GetMaxStaffCount();
+
+        while (staffs.Count < targetStaffCount)
+        {
+            SpawnStaff();
+        }
+    }
 }
