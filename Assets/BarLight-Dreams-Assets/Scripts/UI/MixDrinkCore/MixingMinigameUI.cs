@@ -44,6 +44,9 @@ public class MixingMinigameUI : MonoBehaviour
 
         playing = true;
 
+        UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
+
         PlayerController.instance.movement.SetCanMove(false);
     }
 
@@ -152,6 +155,9 @@ public class MixingMinigameUI : MonoBehaviour
         root.SetActive(false);
 
         PlayerController.instance.movement.SetCanMove(true);
+
+        UIManager.Instance.UnlockGameplayInput();
+        UIManager.Instance.UnlockPauseInput();
 
         onSuccess?.Invoke();
     }
