@@ -13,6 +13,10 @@ public class StaffController : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
 
     private AIPath aiPath;
+    private Animator animator;
+
+    private Vector2 moveDirection;
+    private Vector2 lastMoveDirection = Vector2.down;
 
     private PickupDrinkData currentDrink;
 
@@ -23,6 +27,7 @@ public class StaffController : MonoBehaviour
     private void Awake()
     {
         aiPath = GetComponent<AIPath>();
+        animator = GetComponent<Animator>();
 
         if (aiPath != null)
         {
@@ -62,6 +67,9 @@ public class StaffController : MonoBehaviour
     {
         if (aiPath == null)
             return;
+
+        UpdateMovementDirection();
+        UpdateAnimator();
 
         switch (currentState)
         {
@@ -299,6 +307,29 @@ public class StaffController : MonoBehaviour
         aiPath.canMove = false;
         gameObject.SetActive(false);
         Debug.Log("Staff: Reached spawn point.");
+    }
+
+    private void UpdateMovementDirection()
+    {
+        if (!aiPath.canMove)
+        {
+            moveDirection = Vector2.zero;
+            return;
+        }
+
+        moveDirection = aiPath.velocity;
+    }
+
+    private void UpdateAnimator()
+    {
+        if (moveDirection != Vector2.zero)
+        {
+            lastMoveDirection = moveDirection;
+        }
+
+        animator.SetFloat("MoveX", lastMoveDirection.x);
+        animator.SetFloat("MoveY", lastMoveDirection.y);
+        animator.SetFloat("Speed", moveDirection.sqrMagnitude);
     }
 }
 
