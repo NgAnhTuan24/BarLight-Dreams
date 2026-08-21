@@ -78,3 +78,11 @@ public enum UpgradeType
     Staff,
     Mixing
 }
+
+public enum RecipeTier
+{
+    Tier1,
+    Tier2,
+    Tier3,
+    Tier4
+}

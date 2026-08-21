@@ -14,6 +14,8 @@ public class DrinkRecipeSO : ScriptableObject
     public List<IngredientData> ingredients;
 
     public MixingSettings mixing = new();
+
+    public RecipeTier recipeTier;
 }
 
 [System.Serializable]

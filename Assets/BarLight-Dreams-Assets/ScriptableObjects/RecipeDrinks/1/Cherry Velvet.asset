@@ -25,3 +25,4 @@ MonoBehaviour:
     ingredientIcon: {fileID: 21300000, guid: cdfdcafa53b56404186b01d1cc4c9a4f, type: 3}
   mixing:
     arrowCount: 5
+  recipeTier: 1
