@@ -3320,7 +3320,7 @@ Tilemap:
       - {fileID: 763930784, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
       - {fileID: 470307520, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
       - {fileID: -1836374525, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
-      m_AnimationSpeed: 3
+      m_AnimationSpeed: 3.0000002
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -71659,6 +71659,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558310773}
   m_CullTransparentMesh: 1
+--- !u!1 &1560458225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1560458227}
+  - component: {fileID: 1560458226}
+  m_Layer: 0
+  m_Name: RecipeProgressionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1560458226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560458225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ccb44644f6d6b4f99609a9322708b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1560458227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560458225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1564864346
 GameObject:
   m_ObjectHideFlags: 0
@@ -93016,6 +93060,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1173331234}
   - {fileID: 502266748}
+  - {fileID: 1560458227}
   - {fileID: 1683949993}
   - {fileID: 498973301}
   - {fileID: 525120291}
