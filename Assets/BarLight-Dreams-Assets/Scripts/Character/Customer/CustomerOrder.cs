@@ -87,11 +87,38 @@ public class CustomerOrder : MonoBehaviour
         if (OrderQueueManager.instance.IsFull)
             return;
 
+        int unlockedOrderCount = 0;
+
+        foreach (DrinkRecipeSO recipe in possibleOrders)
+        {
+            if (RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            {
+                unlockedOrderCount++;
+            }
+        }
+
+        if (unlockedOrderCount == 0)
+            return;
+
         alertBubble.SetActive(false);
 
         patience.StopPatience();
 
-        currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
+        int randomIndex = Random.Range(0, unlockedOrderCount);
+
+        foreach (DrinkRecipeSO recipe in possibleOrders)
+        {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            if (randomIndex == 0)
+            {
+                currentOrder = recipe;
+                break;
+            }
+
+            randomIndex--;
+        }
 
         OrderQueueManager.instance.AddOrder(customer, currentOrder);
 
