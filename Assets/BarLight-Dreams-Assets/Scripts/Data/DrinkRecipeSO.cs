@@ -16,6 +16,9 @@ public class DrinkRecipeSO : ScriptableObject
     public MixingSettings mixing = new();
 
     public RecipeTier recipeTier;
+
+    [Min(1)]
+    public int unlockDay = 1;
 }
 
 [System.Serializable]
