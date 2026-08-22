@@ -26,3 +26,4 @@ MonoBehaviour:
   mixing:
     arrowCount: 7
   recipeTier: 1
+  unlockDay: 7
