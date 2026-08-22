@@ -24,9 +24,33 @@ public class RecipeBookUI : MonoBehaviour
     {
         CreateRecipeButtons();
 
-        if (recipes.Count > 0)
+        GameClock.instance.OnNewDayStarted += RefreshRecipeBook;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameClock.instance != null)
         {
-            ShowRecipe(recipes[0]);
+            GameClock.instance.OnNewDayStarted -= RefreshRecipeBook;
+        }
+    }
+
+    private void RefreshRecipeBook()
+    {
+        foreach (Transform child in recipeButtonParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        CreateRecipeButtons();
+
+        foreach (DrinkRecipeSO recipe in recipes)
+        {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            ShowRecipe(recipe);
+            break;
         }
     }
 
@@ -34,6 +58,9 @@ public class RecipeBookUI : MonoBehaviour
     {
         foreach (DrinkRecipeSO recipe in recipes)
         {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
             RecipeButtonUI button = Instantiate(recipeButtonPrefab, recipeButtonParent);
 
             button.Setup(recipe, this);
