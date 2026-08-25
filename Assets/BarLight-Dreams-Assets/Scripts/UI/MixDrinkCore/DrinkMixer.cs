@@ -55,6 +55,12 @@ public class DrinkMixer : MonoBehaviour
 
         DrinkRecipeSO recipe = GetCurrentRecipe();
 
+        if (recipe != null && !RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+        {
+            popupText.ShowText("Recipe not unlocked yet!");
+            return;
+        }
+
         if (Random.value <= instantChance)
         {
             Mix();
@@ -77,6 +83,9 @@ public class DrinkMixer : MonoBehaviour
 
         foreach (DrinkRecipeSO recipe in recipes)
         {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
             if (IsMatch(recipe, current))
             {
                 CounterBarUI.instance.CleanCounter();
