@@ -58,8 +58,8 @@ public class RecipeBookUI : MonoBehaviour
     {
         foreach (DrinkRecipeSO recipe in recipes)
         {
-            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
-                continue;
+            //if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            //    continue;
 
             RecipeButtonUI button = Instantiate(recipeButtonPrefab, recipeButtonParent);
 
