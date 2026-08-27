@@ -18,6 +18,7 @@ public class DayIntroUI : MonoBehaviour
     public void Show(string firstMessage, string secondMessage, Action onComplete = null)
     {
         UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
 
         gameObject.SetActive(true);
 
@@ -55,6 +56,7 @@ public class DayIntroUI : MonoBehaviour
         currentSequence.OnComplete(() =>
         {
             UIManager.Instance.UnlockGameplayInput();
+            UIManager.Instance.UnlockPauseInput();
             gameObject.SetActive(false);
             onComplete?.Invoke();
         });
@@ -67,6 +69,7 @@ public class DayIntroUI : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UnlockGameplayInput();
+            UIManager.Instance.UnlockPauseInput();
         }
     }
 }

@@ -20,6 +20,8 @@ public class RecipeBookUI : MonoBehaviour
     [SerializeField] private Transform ingredientParent;
     [SerializeField] private IngredientItemUI ingredientPrefab;
 
+    public IReadOnlyList<DrinkRecipeSO> Recipes => recipes;
+
     private void Start()
     {
         CreateRecipeButtons();
