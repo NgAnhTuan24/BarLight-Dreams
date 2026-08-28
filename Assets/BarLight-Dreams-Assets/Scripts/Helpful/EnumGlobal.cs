@@ -86,3 +86,13 @@ public enum RecipeTier
     Tier3,
     Tier4
 }
+
+public enum CustomerType
+{
+    Normal,
+    Student,
+    Impatient,
+    Tourist,
+    Rich,
+    VIP
+}

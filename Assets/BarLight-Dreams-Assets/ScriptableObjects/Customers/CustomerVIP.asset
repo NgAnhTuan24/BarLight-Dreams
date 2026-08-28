@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85ee5c14bf2daa43b336ad385755b61, type: 3}
   m_Name: CustomerVIP
   m_EditorClassIdentifier: 
+  customerType: 5
+  unlockDay: 10
+  spawnWeight: 3
   waitOrderTime: 35
   waitDrinkTime: 70
   tipChance: 1

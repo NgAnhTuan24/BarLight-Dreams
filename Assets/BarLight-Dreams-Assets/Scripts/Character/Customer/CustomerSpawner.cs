@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +28,8 @@ public class CustomerSpawner : MonoBehaviour
 
     private float timer;
 
+    private readonly HashSet<CustomerType> appearedTypesToday = new();
+
     private void Start()
     {
         ResetSpawnInterval();
@@ -40,7 +43,7 @@ public class CustomerSpawner : MonoBehaviour
 
         if (!GameClock.instance.IsRunning) return;
 
-            timer += Time.deltaTime;
+        timer += Time.deltaTime;
 
         while (timer >= currentSpawnInterval)
         {
@@ -55,6 +58,8 @@ public class CustomerSpawner : MonoBehaviour
     void ResetSpawnInterval()
     {
         timer = 0f;
+
+        appearedTypesToday.Clear();
 
         if (testSpawnEverySecond)
         {
@@ -100,13 +105,185 @@ public class CustomerSpawner : MonoBehaviour
             return;
         }
 
+        CustomerController customerPrefab = SelectCustomerPrefab();
+
+        if (customerPrefab == null)
+        {
+            Debug.LogWarning("CustomerSpawner: No valid Customer prefab is available for the current day.");
+            return;
+        }
+
         Vector3 spawnPos = GetRandomSpawnPosition();
 
-        int randomIndex = Random.Range(0, customerPrefabs.Length);
+        CustomerSO customerData = customerPrefab.Data;
 
-        CustomerController randomCustomer = customerPrefabs[randomIndex];
+        Instantiate(customerPrefab, spawnPos, Quaternion.identity);
 
-        Instantiate(randomCustomer, spawnPos, Quaternion.identity);
+        if (customerData != null)
+        {
+            appearedTypesToday.Add(customerData.customerType);
+        }
+    }
+
+    CustomerController SelectCustomerPrefab()
+    {
+        int currentDay = GameClock.instance.CurrentDay;
+
+        Dictionary<CustomerType, List<CustomerController>> customerGroups = BuildCustomerGroups();
+
+        List<CustomerType> unlockedTypes = new();
+        List<CustomerType> newlyUnlockedTypes = new();
+
+        foreach (KeyValuePair<CustomerType, List<CustomerController>> group in customerGroups)
+        {
+            CustomerType customerType = group.Key;
+            List<CustomerController> prefabs = group.Value;
+
+            if (prefabs.Count == 0)
+                continue;
+
+            CustomerSO customerData = prefabs[0].Data;
+
+            if (customerData == null)
+                continue;
+
+            if (currentDay < customerData.unlockDay)
+                continue;
+
+            unlockedTypes.Add(customerType);
+
+            if (customerData.unlockDay == currentDay && !appearedTypesToday.Contains(customerType))
+            {
+                newlyUnlockedTypes.Add(customerType);
+            }
+        }
+
+        if (newlyUnlockedTypes.Count > 0)
+        {
+            CustomerType selectedType = SelectRandomType(newlyUnlockedTypes);
+
+            return SelectRandomPrefab(customerGroups[selectedType]);
+        }
+
+        CustomerType weightedType = SelectWeightedType(unlockedTypes, customerGroups);
+
+        if (!customerGroups.ContainsKey(weightedType))
+        {
+            return null;
+        }
+
+        return SelectRandomPrefab(customerGroups[weightedType]);
+    }
+
+    Dictionary<CustomerType, List<CustomerController>> BuildCustomerGroups()
+    {
+        Dictionary<CustomerType, List<CustomerController>> groups = new();
+
+        foreach (CustomerController customerPrefab in customerPrefabs)
+        {
+            if (customerPrefab == null)
+                continue;
+
+            CustomerSO customerData = customerPrefab.Data;
+
+            if (customerData == null)
+                continue;
+
+            CustomerType customerType = customerData.customerType;
+
+            if (!groups.ContainsKey(customerType))
+            {
+                groups.Add(customerType, new List<CustomerController>());
+            }
+
+            groups[customerType].Add(customerPrefab);
+        }
+
+        return groups;
+    }
+
+    CustomerType SelectRandomType(List<CustomerType> customerTypes)
+    {
+        if (customerTypes == null || customerTypes.Count == 0)
+        {
+            return default;
+        }
+
+        int randomIndex = Random.Range(0, customerTypes.Count);
+
+        return customerTypes[randomIndex];
+    }
+
+    CustomerType SelectWeightedType(List<CustomerType> customerTypes, Dictionary<CustomerType, List<CustomerController>> customerGroups)
+    {
+        if (customerTypes == null || customerTypes.Count == 0)
+        {
+            return default;
+        }
+
+        float totalWeight = 0f;
+
+        foreach (CustomerType customerType in customerTypes)
+        {
+            List<CustomerController> prefabs = customerGroups[customerType];
+
+            if (prefabs == null || prefabs.Count == 0)
+                continue;
+
+            CustomerSO customerData = prefabs[0].Data;
+
+            if (customerData == null)
+                continue;
+
+            if (customerData.spawnWeight <= 0f)
+                continue;
+
+            totalWeight += customerData.spawnWeight;
+        }
+
+        if (totalWeight <= 0f)
+        {
+            return SelectRandomType(customerTypes);
+        }
+
+        float randomValue = Random.Range(0f, totalWeight);
+
+        foreach (CustomerType customerType in customerTypes)
+        {
+            List<CustomerController> prefabs = customerGroups[customerType];
+
+            if (prefabs == null || prefabs.Count == 0)
+                continue;
+
+            CustomerSO customerData = prefabs[0].Data;
+
+            if (customerData == null)
+                continue;
+
+            if (customerData.spawnWeight <= 0f)
+                continue;
+
+            randomValue -= customerData.spawnWeight;
+
+            if (randomValue <= 0f)
+            {
+                return customerType;
+            }
+        }
+
+        return customerTypes[customerTypes.Count - 1];
+    }
+
+    CustomerController SelectRandomPrefab(List<CustomerController> prefabs)
+    {
+        if (prefabs == null || prefabs.Count == 0)
+        {
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, prefabs.Count);
+
+        return prefabs[randomIndex];
     }
 
     Vector3 GetRandomSpawnPosition()
