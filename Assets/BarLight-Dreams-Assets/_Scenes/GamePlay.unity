@@ -92419,6 +92419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8254819851966721437}
+  - component: {fileID: 8254819851966721440}
   - component: {fileID: 8254819851966721438}
   - component: {fileID: 8254819851966721439}
   m_Layer: 5
@@ -93571,6 +93572,10 @@ MonoBehaviour:
   recipeUnlockItemPrefab: {fileID: 5486873783776526748, guid: 30cf4935591e55241ba150a739558fe3, type: 3}
   okButton: {fileID: 3771286241136026282}
   recipeBookUI: {fileID: 124120691}
+  canvasGroup: {fileID: 8254819851966721440}
+  showDuration: 0.6
+  hideDuration: 0.5
+  startScale: 0.95
 --- !u!114 &8254819851966721439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93584,6 +93589,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickSound: {fileID: 8300000, guid: 28f82b98ca6da9f4b91fcec52950cb93, type: 3}
+--- !u!225 &8254819851966721440
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371135828777300564}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &8277183543431883819
 MonoBehaviour:
   m_ObjectHideFlags: 0

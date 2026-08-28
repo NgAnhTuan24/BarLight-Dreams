@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,13 +16,24 @@ public class RecipeUnlockPopupUI : MonoBehaviour
     [Header("Recipe Source")]
     [SerializeField] private RecipeBookUI recipeBookUI;
 
+    [Header("Animation")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private float showDuration = 0.25f;
+    [SerializeField] private float hideDuration = 0.2f;
+    [SerializeField] private float startScale = 0.95f;
+
     private Action onClosed;
     private bool isShowing;
+
+    private Tween animationTween;
 
     private void Awake()
     {
         okButton.onClick.RemoveListener(OnClickOK);
         okButton.onClick.AddListener(OnClickOK);
+
+        if (canvasGroup == null)
+            canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void OnDestroy()
@@ -30,6 +42,8 @@ public class RecipeUnlockPopupUI : MonoBehaviour
         {
             okButton.onClick.RemoveListener(OnClickOK);
         }
+
+        animationTween?.Kill();
     }
 
     public bool Show(int currentDay, Action onPopupClosed)
@@ -60,6 +74,8 @@ public class RecipeUnlockPopupUI : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        PlayShowAnimation();
+
         return true;
     }
 
@@ -89,8 +105,7 @@ public class RecipeUnlockPopupUI : MonoBehaviour
         }
     }
 
-    private void CreateRecipeItems(
-        List<DrinkRecipeSO> newlyUnlockedRecipes)
+    private void CreateRecipeItems(List<DrinkRecipeSO> newlyUnlockedRecipes)
     {
         foreach (DrinkRecipeSO recipe in newlyUnlockedRecipes)
         {
@@ -112,6 +127,19 @@ public class RecipeUnlockPopupUI : MonoBehaviour
         }
     }
 
+    private void PlayShowAnimation()
+    {
+        animationTween?.Kill();
+
+        transform.localScale = Vector3.one * startScale;
+        canvasGroup.alpha = 0f;
+
+        animationTween = DOTween.Sequence()
+            .Join(canvasGroup.DOFade(1f, showDuration))
+            .Join(transform.DOScale(1f, showDuration)
+                .SetEase(Ease.OutBack));
+    }
+
     private void OnClickOK()
     {
         if (!isShowing)
@@ -119,6 +147,22 @@ public class RecipeUnlockPopupUI : MonoBehaviour
 
         isShowing = false;
 
+        PlayHideAnimation();
+    }
+
+    private void PlayHideAnimation()
+    {
+        animationTween?.Kill();
+
+        animationTween = DOTween.Sequence()
+            .Join(canvasGroup.DOFade(0f, hideDuration))
+            .Join(transform.DOScale(startScale, hideDuration)
+                .SetEase(Ease.InBack))
+            .OnComplete(FinishClose);
+    }
+
+    private void FinishClose()
+    {
         gameObject.SetActive(false);
 
         UIManager.Instance.UnlockGameplayInput();
