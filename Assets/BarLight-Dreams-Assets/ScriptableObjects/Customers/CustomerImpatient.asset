@@ -19,4 +19,6 @@ MonoBehaviour:
   waitDrinkTime: 60
   tipChance: 0.4
   tipMultiplier: 1.5
-  favoriteDrinks: []
+  favoriteDrinks:
+  - {fileID: 11400000, guid: 22a4451ae9f970d44960aca04a91a432, type: 2}
+  - {fileID: 11400000, guid: dd9f3822970893445950a5847c56f51f, type: 2}

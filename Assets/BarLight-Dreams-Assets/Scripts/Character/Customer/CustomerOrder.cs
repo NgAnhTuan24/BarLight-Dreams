@@ -9,6 +9,10 @@ public class CustomerOrder : MonoBehaviour
 
     [SerializeField] private DrinkRecipeSO currentOrder;
 
+    [Header("Favorite Drink")]
+    [SerializeField, Range(0f, 1f)] private float favoriteDrinkChance = 0.3f;
+    private bool isFavoriteOrder;
+
     [Header("Alert Bubble")]
     [SerializeField] private GameObject alertBubble;
 
@@ -87,6 +91,8 @@ public class CustomerOrder : MonoBehaviour
         if (OrderQueueManager.instance.IsFull)
             return;
 
+        isFavoriteOrder = false;
+
         int unlockedOrderCount = 0;
 
         foreach (DrinkRecipeSO recipe in possibleOrders)
@@ -104,20 +110,37 @@ public class CustomerOrder : MonoBehaviour
 
         patience.StopPatience();
 
-        int randomIndex = Random.Range(0, unlockedOrderCount);
-
-        foreach (DrinkRecipeSO recipe in possibleOrders)
+        // 30% cơ hội chọn favorite drink
+        if (Random.value < favoriteDrinkChance)
         {
-            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
-                continue;
+            DrinkRecipeSO favoriteRecipe = GetUnlockedFavoriteDrink();
 
-            if (randomIndex == 0)
+            if (favoriteRecipe != null)
             {
-                currentOrder = recipe;
-                break;
+                currentOrder = favoriteRecipe;
+                isFavoriteOrder = true;
+            }
+        }
+
+        if (currentOrder == null || !isFavoriteOrder)
+        {
+            int randomIndex = Random.Range(0, unlockedOrderCount);
+
+            foreach (DrinkRecipeSO recipe in possibleOrders)
+            {
+                if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                    continue;
+
+                if (randomIndex == 0)
+                {
+                    currentOrder = recipe;
+                    break;
+                }
+
+                randomIndex--;
             }
 
-            randomIndex--;
+            isFavoriteOrder = false;
         }
 
         OrderQueueManager.instance.AddOrder(customer, currentOrder);
@@ -129,6 +152,48 @@ public class CustomerOrder : MonoBehaviour
         customer.ReleaseCounterSlot();
 
         customer.ChangeState(CustomerState.FindSeat);
+    }
+
+    private DrinkRecipeSO GetUnlockedFavoriteDrink()
+    {
+        if (customer.Data.favoriteDrinks == null || customer.Data.favoriteDrinks.Length == 0)
+        {
+            return null;
+        }
+
+        int unlockedFavoriteCount = 0;
+
+        foreach (DrinkRecipeSO recipe in customer.Data.favoriteDrinks)
+        {
+            if (recipe == null)
+                continue;
+
+            if (RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            {
+                unlockedFavoriteCount++;
+            }
+        }
+
+        if (unlockedFavoriteCount == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, unlockedFavoriteCount);
+
+        foreach (DrinkRecipeSO recipe in customer.Data.favoriteDrinks)
+        {
+            if (recipe == null)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            if (randomIndex == 0)
+                return recipe;
+
+            randomIndex--;
+        }
+
+        return null;
     }
 
     void ShowOrderBubble()
@@ -175,7 +240,14 @@ public class CustomerOrder : MonoBehaviour
 
         if (Random.value > finalTipChance) return 0;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier * CustomerManager.instance.GetTipMultiplier());
+        float finalTipMultiplier = customer.Data.tipMultiplier;
+
+        if (isFavoriteOrder)
+        {
+            finalTipMultiplier *= 1.5f;
+        }
+
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * finalTipMultiplier * CustomerManager.instance.GetTipMultiplier());
 
         DayStatsManager.instance.AddTips(tipAmount);
 
