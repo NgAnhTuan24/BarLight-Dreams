@@ -25,6 +25,7 @@ public class RecipeBookUI : MonoBehaviour
     private void Start()
     {
         CreateRecipeButtons();
+        ShowFirstUnlockedRecipe();
 
         GameClock.instance.OnNewDayStarted += RefreshRecipeBook;
     }
@@ -45,15 +46,7 @@ public class RecipeBookUI : MonoBehaviour
         }
 
         CreateRecipeButtons();
-
-        foreach (DrinkRecipeSO recipe in recipes)
-        {
-            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
-                continue;
-
-            ShowRecipe(recipe);
-            break;
-        }
+        ShowFirstUnlockedRecipe();
     }
 
     private void CreateRecipeButtons()
@@ -89,6 +82,18 @@ public class RecipeBookUI : MonoBehaviour
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
             item.SetupRecipeIngredient(ingredient);
+        }
+    }
+
+    private void ShowFirstUnlockedRecipe()
+    {
+        foreach (DrinkRecipeSO recipe in recipes)
+        {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            ShowRecipe(recipe);
+            break;
         }
     }
 }
