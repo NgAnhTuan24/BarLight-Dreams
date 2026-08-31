@@ -21,5 +21,5 @@ public class CustomerSO : ScriptableObject
     public float tipMultiplier = 1f;
 
     [Header("Drink Preference")]
-    public DrinkRecipeSO[] favoriteDrinks; //làm sau
+    public DrinkRecipeSO[] favoriteDrinks;
 }

@@ -110,7 +110,6 @@ public class CustomerOrder : MonoBehaviour
 
         patience.StopPatience();
 
-        // 30% cơ hội chọn favorite drink
         if (Random.value < favoriteDrinkChance)
         {
             DrinkRecipeSO favoriteRecipe = GetUnlockedFavoriteDrink();

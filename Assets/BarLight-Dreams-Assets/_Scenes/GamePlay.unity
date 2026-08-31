@@ -3320,7 +3320,7 @@ Tilemap:
       - {fileID: 763930784, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
       - {fileID: 470307520, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
       - {fileID: -1836374525, guid: e7da16da04573874d84fcfb86649ed50, type: 3}
-      m_AnimationSpeed: 3.0000002
+      m_AnimationSpeed: 3
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -71696,6 +71696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ccb44644f6d6b4f99609a9322708b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recipeBookUI: {fileID: 124120691}
 --- !u!4 &1560458227
 Transform:
   m_ObjectHideFlags: 0

@@ -4,6 +4,9 @@ public class RecipeProgressionManager : MonoBehaviour
 {
     public static RecipeProgressionManager instance { get; private set; }
 
+    [Header("Recipe Source")]
+    [SerializeField] private RecipeBookUI recipeBookUI;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -21,5 +24,33 @@ public class RecipeProgressionManager : MonoBehaviour
             return false;
 
         return GameClock.instance.CurrentDay >= recipe.unlockDay;
+    }
+
+    public RecipeTier GetHighestUnlockedTier()
+    {
+        if (recipeBookUI == null)
+        {
+            Debug.LogWarning("RecipeProgressionManager: RecipeBookUI reference is missing.");
+
+            return RecipeTier.Tier1;
+        }
+
+        RecipeTier highestTier = RecipeTier.Tier1;
+
+        foreach (DrinkRecipeSO recipe in recipeBookUI.Recipes)
+        {
+            if (recipe == null)
+                continue;
+
+            if (!IsRecipeUnlocked(recipe))
+                continue;
+
+            if (recipe.recipeTier > highestTier)
+            {
+                highestTier = recipe.recipeTier;
+            }
+        }
+
+        return highestTier;
     }
 }
