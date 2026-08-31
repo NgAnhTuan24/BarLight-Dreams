@@ -92,27 +92,54 @@ public class CustomerOrder : MonoBehaviour
             return;
 
         isFavoriteOrder = false;
+        currentOrder = null;
 
-        int unlockedOrderCount = 0;
+        bool isVIP = customer.Data != null && customer.Data.customerType == CustomerType.VIP;
+
+        RecipeTier highestTier = RecipeTier.Tier1;
+
+        if (isVIP)
+        {
+            if (RecipeProgressionManager.instance == null)
+                return;
+
+            highestTier = RecipeProgressionManager.instance.GetHighestUnlockedTier();
+        }
+
+        int candidateOrderCount = 0;
 
         foreach (DrinkRecipeSO recipe in possibleOrders)
         {
-            if (RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
-            {
-                unlockedOrderCount++;
-            }
+            if (recipe == null)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            if (isVIP && recipe.recipeTier != highestTier)
+                continue;
+
+            candidateOrderCount++;
         }
 
-        if (unlockedOrderCount == 0)
+        if (candidateOrderCount == 0)
             return;
 
         alertBubble.SetActive(false);
-
         patience.StopPatience();
 
         if (Random.value < favoriteDrinkChance)
         {
-            DrinkRecipeSO favoriteRecipe = GetUnlockedFavoriteDrink();
+            DrinkRecipeSO favoriteRecipe;
+
+            if (isVIP)
+            {
+                favoriteRecipe = GetUnlockedFavoriteDrinkForVIP(highestTier);
+            }
+            else
+            {
+                favoriteRecipe = GetUnlockedFavoriteDrink();
+            }
 
             if (favoriteRecipe != null)
             {
@@ -123,11 +150,17 @@ public class CustomerOrder : MonoBehaviour
 
         if (currentOrder == null || !isFavoriteOrder)
         {
-            int randomIndex = Random.Range(0, unlockedOrderCount);
+            int randomIndex = Random.Range(0, candidateOrderCount);
 
             foreach (DrinkRecipeSO recipe in possibleOrders)
             {
+                if (recipe == null)
+                    continue;
+
                 if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                    continue;
+
+                if (isVIP && recipe.recipeTier != highestTier)
                     continue;
 
                 if (randomIndex == 0)
@@ -141,6 +174,9 @@ public class CustomerOrder : MonoBehaviour
 
             isFavoriteOrder = false;
         }
+
+        if (currentOrder == null)
+            return;
 
         OrderQueueManager.instance.AddOrder(customer, currentOrder);
 
@@ -193,6 +229,78 @@ public class CustomerOrder : MonoBehaviour
         }
 
         return null;
+    }
+
+    private DrinkRecipeSO GetUnlockedFavoriteDrinkForVIP(RecipeTier highestTier)
+    {
+        if (customer == null || customer.Data == null)
+            return null;
+
+        if (customer.Data.favoriteDrinks == null || customer.Data.favoriteDrinks.Length == 0)
+            return null;
+
+        if (possibleOrders == null || possibleOrders.Length == 0)
+            return null;
+
+        int validFavoriteCount = 0;
+
+        foreach (DrinkRecipeSO favoriteRecipe in customer.Data.favoriteDrinks)
+        {
+            if (favoriteRecipe == null)
+                continue;
+
+            if (favoriteRecipe.recipeTier != highestTier)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(favoriteRecipe))
+                continue;
+
+            if (!IsRecipeInPossibleOrders(favoriteRecipe))
+                continue;
+
+            validFavoriteCount++;
+        }
+
+        if (validFavoriteCount == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, validFavoriteCount);
+
+        foreach (DrinkRecipeSO favoriteRecipe in customer.Data.favoriteDrinks)
+        {
+            if (favoriteRecipe == null)
+                continue;
+
+            if (favoriteRecipe.recipeTier != highestTier)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(favoriteRecipe))
+                continue;
+
+            if (!IsRecipeInPossibleOrders(favoriteRecipe))
+                continue;
+
+            if (randomIndex == 0)
+                return favoriteRecipe;
+
+            randomIndex--;
+        }
+
+        return null;
+    }
+
+    private bool IsRecipeInPossibleOrders(DrinkRecipeSO targetRecipe)
+    {
+        if (targetRecipe == null || possibleOrders == null)
+            return false;
+
+        foreach (DrinkRecipeSO recipe in possibleOrders)
+        {
+            if (recipe == targetRecipe)
+                return true;
+        }
+
+        return false;
     }
 
     void ShowOrderBubble()

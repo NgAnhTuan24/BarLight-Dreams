@@ -21,7 +21,7 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    //test
+    #if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -29,6 +29,7 @@ public class MoneyManager : MonoBehaviour
             AddMoney(1000);
         }
     }
+    #endif
 
     public void AddMoney(int amount)
     {
