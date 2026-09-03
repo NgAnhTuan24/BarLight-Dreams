@@ -46,6 +46,16 @@ public class InteractionHighlight : MonoBehaviour
     {
         if (!playerInRange) return;
 
+        if (pickupCounter != null)
+        {
+            if (UpgradeManager.instance != null && !UpgradeManager.instance.HasStaffUpgrade())
+            {
+                interactionUI?.ShowMessage(textAnchor, "Staff upgrade required!");
+
+                return;
+            }
+        }
+
         bool newCanShowTextUI = CanInteract();
 
         if (newCanShowTextUI != canShowTextUI)
@@ -116,6 +126,11 @@ public class InteractionHighlight : MonoBehaviour
 
         if (pickupCounter != null)
         {
+            if (UpgradeManager.instance == null || !UpgradeManager.instance.HasStaffUpgrade())
+            {
+                return false;
+            }
+
             return PlayerHoldItem.instance.HasDrink() && pickupCounter.HasSpace();
         }
 

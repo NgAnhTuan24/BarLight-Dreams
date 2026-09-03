@@ -32,6 +32,16 @@ public class InteractionUIText : MonoBehaviour
         root.SetActive(true);
     }
 
+    public void ShowMessage(Transform anchor, string message)
+    {
+        currentAnchor = anchor;
+
+        messageKeyText.text = message;
+
+        transform.position = anchor.position;
+        root.SetActive(true);
+    }
+
     public void Hide()
     {
         currentAnchor = null;

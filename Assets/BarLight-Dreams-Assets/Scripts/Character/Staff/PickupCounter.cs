@@ -123,14 +123,19 @@ public class PickupCounter : MonoBehaviour
 
     public bool TryPlaceDrink()
     {
+        if (UpgradeManager.instance == null || !UpgradeManager.instance.HasStaffUpgrade())
+            return false;
+
         if (PlayerHoldItem.instance == null || !PlayerHoldItem.instance.HasDrink())
             return false;
 
         DrinkData drinkData = PlayerHoldItem.instance.CurrentDrinkData;
+       
         if (drinkData == null || drinkData.recipe == null)
             return false;
 
         OrderData orderData = OrderQueueManager.instance.GetSelectedOrder();
+        
         if (orderData == null)
             return false;
 
@@ -138,6 +143,7 @@ public class PickupCounter : MonoBehaviour
             return false;
 
         PickupDrinkData pickupDrink = new PickupDrinkData(orderData.customer, drinkData.recipe);
+        
         if (!AddDrink(pickupDrink))
             return false;
 

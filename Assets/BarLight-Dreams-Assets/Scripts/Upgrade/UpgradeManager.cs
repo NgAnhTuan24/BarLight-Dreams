@@ -24,6 +24,11 @@ public class UpgradeManager : MonoBehaviour
     [Header("Runtime")]
     [SerializeField] private List<UpgradeRuntimeData> runtimeData = new();
 
+    public bool HasStaffUpgrade()
+    {
+        return GetLevel(UpgradeType.Staff) >= 1;
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)
