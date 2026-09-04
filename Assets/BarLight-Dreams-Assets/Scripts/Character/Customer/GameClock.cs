@@ -237,6 +237,7 @@ public class GameClock : MonoBehaviour
             CurrentDay,
             DayStatsManager.instance.MoneyEarnedToday,
             DayStatsManager.instance.TipsToday,
+            DayStatsManager.instance.ObjectiveRewardToday,
             DayStatsManager.instance.ServedCustomersToday,
             StartNextDay
         );

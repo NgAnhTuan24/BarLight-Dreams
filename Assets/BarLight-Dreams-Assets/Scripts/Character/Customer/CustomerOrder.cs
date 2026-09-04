@@ -389,6 +389,13 @@ public class CustomerOrder : MonoBehaviour
         DayStatsManager.instance.AddEarnings(currentOrder.price);
         DayStatsManager.instance.AddCustomersServed();
 
+        if (DailyObjectiveManager.instance != null)
+        {
+            DailyObjectiveManager.instance.RegisterCustomerServed(customer, currentOrder);
+
+            DailyObjectiveManager.instance.RefreshEarnMoneyProgress();
+        }
+
         AudioManager.instance.PlaySFX(collectionSFX);
 
         customer.OnDrinkReceived();

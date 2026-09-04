@@ -92,6 +92,11 @@ public class DrinkMixer : MonoBehaviour
 
                 PlayerHoldItem.instance.HoldDrink(recipe);
 
+                if (DailyObjectiveManager.instance != null)
+                {
+                    DailyObjectiveManager.instance.RegisterDrinkMixed(recipe);
+                }
+
                 popupText.ShowText(PopupMessages.GetSuccessMessage());
 
                 return;
