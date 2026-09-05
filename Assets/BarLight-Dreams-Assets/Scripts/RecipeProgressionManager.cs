@@ -8,7 +8,7 @@ public class RecipeProgressionManager : MonoBehaviour
     [SerializeField] private RecipeBookUI recipeBookUI;
 
     #if UNITY_EDITOR
-    [Header("Test")]
+    [Header("Test Mode")]
     [SerializeField] private bool unlockAllRecipes = false;
     #endif
 

@@ -84,7 +84,6 @@ public class StaffManager : MonoBehaviour
 
         if (staffController == null)
         {
-            Debug.LogWarning("StaffManager: Staff prefab doesn't have StaffController!");
             Destroy(staffObject);
             return;
         }

@@ -100,7 +100,6 @@ public class DailyObjectiveManager : MonoBehaviour
 
     private void HandleNewDayStarted()
     {
-        Debug.Log("DailyObjectiveManager: New Day Started!");
         GenerateNewObjective();
     }
 
@@ -110,7 +109,6 @@ public class DailyObjectiveManager : MonoBehaviour
 
         if (validTypes.Count == 0)
         {
-            Debug.LogWarning("DailyObjectiveManager: No valid Daily Objective can be generated.");
 
             currentObjective = null;
             return;
@@ -122,12 +120,8 @@ public class DailyObjectiveManager : MonoBehaviour
 
         if (currentObjective == null)
         {
-            Debug.LogWarning("DailyObjectiveManager: Failed to create Daily Objective.");
-
             return;
         }
-
-        Debug.Log($"DailyObjectiveManager: New Objective -> {GetObjectiveDescription()}");
 
         OnObjectiveChanged?.Invoke(currentObjective);
     }
@@ -379,7 +373,7 @@ public class DailyObjectiveManager : MonoBehaviour
         if (DayStatsManager.instance == null)
             return;
 
-        int totalEarned =DayStatsManager.instance.MoneyEarnedToday + DayStatsManager.instance.TipsToday;
+        int totalEarned = DayStatsManager.instance.MoneyEarnedToday + DayStatsManager.instance.TipsToday;
 
         currentObjective.SetProgress(totalEarned);
 

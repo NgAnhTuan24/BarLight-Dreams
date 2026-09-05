@@ -4,6 +4,6 @@ using UnityEngine;
 [Serializable]
 public class MixingSettings
 {
-    [Min(1)]
-    public int arrowCount = 4;
+    [Min(1f)]
+    public float requiredShakeDistance = 1000f;
 }

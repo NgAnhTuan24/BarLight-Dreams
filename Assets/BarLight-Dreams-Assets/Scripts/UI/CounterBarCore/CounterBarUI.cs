@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,10 @@ public class CounterBarUI : MonoBehaviour
 
     private List<CounterIngredientData> spawnedItems = new();
 
+    private Func<GameObject, bool> ingredientClickHandler;
+
+    public bool HasIngredientClickHandler => ingredientClickHandler != null;
+
     private void Awake()
     {
         instance = this;
@@ -39,7 +44,7 @@ public class CounterBarUI : MonoBehaviour
 
         CounterIngredientUI item = Instantiate(itemPrefab, itemParent);
 
-        item.Setup(icon, size, posY);
+        item.Setup(icon, type, size, posY);
 
         spawnedItems.Add(new CounterIngredientData(type, item.gameObject));
     }
@@ -85,5 +90,25 @@ public class CounterBarUI : MonoBehaviour
         }
 
         return list;
+    }
+
+    public void SetIngredientClickHandler(Func<GameObject, bool> handler)
+    {
+        ingredientClickHandler = handler;
+    }
+
+    public void ClearIngredientClickHandler()
+    {
+        ingredientClickHandler = null;
+    }
+
+    public bool HandleIngredientClick(GameObject item)
+    {
+        if (ingredientClickHandler == null)
+        {
+            return false;
+        }
+
+        return ingredientClickHandler.Invoke(item);
     }
 }

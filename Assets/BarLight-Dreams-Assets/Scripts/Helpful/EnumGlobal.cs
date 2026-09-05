@@ -62,14 +62,6 @@ public enum HoldItemType
     Drink
 }
 
-public enum ArrowType
-{
-    Up,
-    Down,
-    Left,
-    Right
-}
-
 public enum UpgradeType
 {
     Counter,

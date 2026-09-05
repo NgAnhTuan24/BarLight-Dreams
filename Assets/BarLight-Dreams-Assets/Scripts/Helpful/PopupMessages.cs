@@ -18,18 +18,14 @@ public static class PopupMessages
         "Drink Ready!"
     };
 
-    private static readonly string[] mixFailMessages =
+    private static readonly string[] wrongRecipeMessages =
     {
         "Wrong Recipe!",
-        "Oops!",
-        "That Didn't Work!",
         "Recipe Failed!",
         "Wrong Ingredients!",
-        "Try Again!",
         "Not Quite Right!",
         "The Mix Is Off!",
         "Something Went Wrong!",
-        "Better Luck Next Time!"
     };
 
     public static string GetSuccessMessage()
@@ -37,9 +33,9 @@ public static class PopupMessages
         return GetRandom(mixSuccessMessages);
     }
 
-    public static string GetFailMessage()
+    public static string GetWrongRecipeMessage()
     {
-        return GetRandom(mixFailMessages);
+        return GetRandom(wrongRecipeMessages);
     }
 
     #endregion

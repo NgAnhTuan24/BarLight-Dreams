@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,16 +14,21 @@ public class CounterIngredientUI : MonoBehaviour
     [SerializeField] private float hiddenOffsetY = -100f;
 
     private RectTransform rect;
+    private IngredientType ingredientType;
+
+    public IngredientType IngredientType => ingredientType;
 
     private void Awake()
     {
         rect = iconImage.rectTransform;
     }
 
-    public void Setup(Sprite icon, Vector2 size, float posY)
+    public void Setup(Sprite icon, IngredientType type, Vector2 size, float posY)
     {
         iconImage.sprite = icon;
         iconImage.preserveAspect = true;
+
+        ingredientType = type;
 
         rect.sizeDelta = size;
 
@@ -45,6 +51,18 @@ public class CounterIngredientUI : MonoBehaviour
 
     private void OnClick()
     {
+        if (CounterBarUI.instance != null && CounterBarUI.instance.HasIngredientClickHandler)
+        {
+            bool accepted = CounterBarUI.instance.HandleIngredientClick(gameObject);
+
+            if (accepted)
+            {
+                removeButton.interactable = false;
+            }
+
+            return;
+        }
+
         removeButton.interactable = false;
 
         Sequence seq = DOTween.Sequence();
@@ -56,6 +74,55 @@ public class CounterIngredientUI : MonoBehaviour
         seq.OnComplete(() =>
         {
             CounterBarUI.instance.RemoveIngredient(gameObject);
+        });
+    }
+
+    public void MoveToTarget(Transform target, Action onComplete)
+    {
+        if (target == null)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        removeButton.interactable = false;
+
+        RectTransform targetRect = target as RectTransform;
+
+        if (targetRect == null)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        Vector3 targetWorldPosition = targetRect.position;
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Join(
+            rect.DOMove(
+                targetWorldPosition,
+                moveDuration
+            ).SetEase(Ease.InOutCubic)
+        );
+
+        seq.Join(
+            rect.DOScale(
+                0.6f,
+                moveDuration
+            ).SetEase(Ease.InOutCubic)
+        );
+
+        seq.Join(
+            canvasGroup.DOFade(
+                0.4f,
+                moveDuration
+            )
+        );
+
+        seq.OnComplete(() =>
+        {
+            onComplete?.Invoke();
         });
     }
 }

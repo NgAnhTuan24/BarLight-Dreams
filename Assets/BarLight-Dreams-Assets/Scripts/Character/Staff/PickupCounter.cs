@@ -48,8 +48,6 @@ public class PickupCounter : MonoBehaviour
         drinks.Add(drinkData);
         RefreshDrinkSlots();
 
-        Debug.Log($"PickupCounter: Added {drinkData.recipe.displayName} for {drinkData.customer.name}");
-
         if (StaffManager.instance != null)
         {
             StaffManager.instance.TrySpawnStaff();
