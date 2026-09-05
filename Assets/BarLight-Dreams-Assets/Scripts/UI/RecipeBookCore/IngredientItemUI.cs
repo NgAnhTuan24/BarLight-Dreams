@@ -6,8 +6,9 @@ public class IngredientItemUI : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text numberText;
 
-    public void SetupRecipeIngredient(IngredientData data)
+    public void SetupRecipeIngredient(IngredientData data, int index)
     {
         iconImage.sprite = data.ingredientIcon;
 
@@ -16,9 +17,11 @@ public class IngredientItemUI : MonoBehaviour
         iconImage.rectTransform.sizeDelta = IconSizeHelper.GetIngredientSize(data.ingredientType);
 
         nameText.text = data.ingredientType.ToString().Replace("_", " ");
+
+        numberText.text = index.ToString();
     }
 
-    public void SetupOrderIngredient(IngredientData data)
+    public void SetupOrderIngredient(IngredientData data, int index)
     {
         iconImage.sprite = data.ingredientIcon;
 
@@ -27,5 +30,7 @@ public class IngredientItemUI : MonoBehaviour
         iconImage.rectTransform.sizeDelta = IconSizeHelper.GetOrderIngredientSize(data.ingredientType);
 
         nameText.text = data.ingredientType.ToString().Replace("_", " ");
+
+        numberText.text = index.ToString();
     }
 }

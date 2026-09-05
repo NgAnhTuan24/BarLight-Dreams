@@ -56,10 +56,11 @@ public class OrderRecipeDetailViewer : MonoBehaviour
 
         ingredientItems.Clear();
 
-        foreach (IngredientData ingredient in recipe.ingredients)
+        for (int i = 0; i < recipe.ingredients.Count; i++)
         {
+            IngredientData ingredient = recipe.ingredients[i];
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
-            item.SetupOrderIngredient(ingredient);
+            item.SetupOrderIngredient(ingredient, i + 1);
             ingredientItems.Add(item);
         }
 

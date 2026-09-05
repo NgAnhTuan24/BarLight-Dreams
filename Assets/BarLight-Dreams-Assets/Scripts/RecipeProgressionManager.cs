@@ -7,6 +7,11 @@ public class RecipeProgressionManager : MonoBehaviour
     [Header("Recipe Source")]
     [SerializeField] private RecipeBookUI recipeBookUI;
 
+    #if UNITY_EDITOR
+    [Header("Test")]
+    [SerializeField] private bool unlockAllRecipes = false;
+    #endif
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -22,6 +27,11 @@ public class RecipeProgressionManager : MonoBehaviour
     {
         if (recipe == null)
             return false;
+        
+        #if UNITY_EDITOR
+        if (unlockAllRecipes)
+            return true;
+        #endif
 
         return GameClock.instance.CurrentDay >= recipe.unlockDay;
     }

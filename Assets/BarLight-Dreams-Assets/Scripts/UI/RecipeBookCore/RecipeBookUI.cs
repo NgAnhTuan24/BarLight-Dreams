@@ -77,11 +77,13 @@ public class RecipeBookUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (IngredientData ingredient in recipe.ingredients)
+        for (int i = 0; i < recipe.ingredients.Count; i++)
         {
+            IngredientData ingredient = recipe.ingredients[i];
+
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
-            item.SetupRecipeIngredient(ingredient);
+            item.SetupRecipeIngredient(ingredient, i + 1);
         }
     }
 
