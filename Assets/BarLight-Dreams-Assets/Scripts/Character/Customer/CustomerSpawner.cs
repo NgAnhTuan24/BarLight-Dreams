@@ -15,6 +15,9 @@ public class CustomerSpawner : MonoBehaviour
 
     [Header("Time")]
     [SerializeField] private float[] spawnIntervals;
+    [SerializeField, Range(0f, 1f)] private float intervalReductionPerDay = 0.0375f;
+    [SerializeField] private float minimumSpawnInterval = 8f;
+
     private float currentSpawnInterval;
 
     [SerializeField] private int maxCustomers = 12;
@@ -81,14 +84,35 @@ public class CustomerSpawner : MonoBehaviour
 
         if (GameClock.instance.IsRushHour)
         {
-            currentSpawnInterval = 10f;
+            currentSpawnInterval = 5f;
+            return;
         }
-        else
-        {
-            int randomIndex = Random.Range(0, spawnIntervals.Length);
 
-            currentSpawnInterval = spawnIntervals[randomIndex];
+        if (spawnIntervals == null || spawnIntervals.Length == 0)
+        {
+            currentSpawnInterval = minimumSpawnInterval;
+
+            return;
         }
+
+        int randomIndex = Random.Range(0, spawnIntervals.Length);
+
+        float baseInterval = spawnIntervals[randomIndex];
+
+        currentSpawnInterval = GetScaledSpawnInterval(baseInterval);
+    }
+
+    float GetScaledSpawnInterval(float baseInterval)
+    {
+        int currentDay = GameClock.instance.CurrentDay;
+
+        float dayMultiplier = 1f - intervalReductionPerDay * (currentDay - 1);
+
+        dayMultiplier = Mathf.Max(dayMultiplier, 0f);
+
+        float scaledInterval = baseInterval * dayMultiplier;
+
+        return Mathf.Max(scaledInterval, minimumSpawnInterval);
     }
 
     void TrySpawnCustomer()
@@ -109,7 +133,6 @@ public class CustomerSpawner : MonoBehaviour
 
         if (customerPrefab == null)
         {
-            Debug.LogWarning("CustomerSpawner: No valid Customer prefab is available for the current day.");
             return;
         }
 
