@@ -40,8 +40,6 @@ public class RecipeProgressionManager : MonoBehaviour
     {
         if (recipeBookUI == null)
         {
-            Debug.LogWarning("RecipeProgressionManager: RecipeBookUI reference is missing.");
-
             return RecipeTier.Tier1;
         }
 

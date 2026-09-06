@@ -12,7 +12,6 @@ public class RecipeUnlockItem : MonoBehaviour
     {
         if (recipe == null)
         {
-            Debug.LogError("RecipeUnlockItem.Setup received a null recipe.");
             return;
         }
 

@@ -56,14 +56,30 @@ public class DailyObjectiveManager : MonoBehaviour
     [SerializeField] private Vector2Int serveDrinkRange = new Vector2Int(2, 5);
     [SerializeField] private Vector2Int earnMoneyRange = new Vector2Int(500, 1500);
 
+    [Header("Objective Reward")]
+    [SerializeField] private Vector2Int rewardRange = new Vector2Int(100, 300);
+
     [Header("Customer Source")]
     [SerializeField] private CustomerController[] customerPrefabs;
 
     [Header("Recipe Source")]
     [SerializeField] private RecipeBookUI recipeBookUI;
 
-    [Header("Objective Reward")]
-    [SerializeField] private Vector2Int rewardRange = new Vector2Int(100, 300);
+    [Header("Difficulty")]
+    [SerializeField] private int serveCustomersGrowthPerDay = 1;
+    [SerializeField] private int serveCustomerTypeGrowthPerDay = 1;
+    [SerializeField] private int mixDrinkGrowthPerDay = 1;
+    [SerializeField] private int serveDrinkGrowthPerDay = 1;
+    [SerializeField] private int earnMoneyGrowthPerDay = 150;
+    [SerializeField] private int rewardGrowthPerDay = 25;
+
+    [Header("Difficulty Caps")]
+    [SerializeField] private int serveCustomersTargetCap = 20;
+    [SerializeField] private int serveCustomerTypeTargetCap = 8;
+    [SerializeField] private int mixDrinkTargetCap = 10;
+    [SerializeField] private int serveDrinkTargetCap = 10;
+    [SerializeField] private int earnMoneyTargetCap = 3000;
+    [SerializeField] private int rewardCap = 500;
 
     private DailyObjective currentObjective;
 
@@ -156,8 +172,12 @@ public class DailyObjectiveManager : MonoBehaviour
         switch (type)
         {
             case DailyObjectiveType.ServeCustomers:
-                objective.target = GetRandomTarget(serveCustomersRange);
-                break;
+                {
+                    Vector2Int range = GetScaledRange(serveCustomersRange, serveCustomersGrowthPerDay, serveCustomersTargetCap);
+
+                    objective.target = GetRandomTarget(range);
+                    break;
+                }
 
             case DailyObjectiveType.ServeCustomerType:
                 {
@@ -167,7 +187,10 @@ public class DailyObjectiveManager : MonoBehaviour
                         return null;
 
                     objective.customerType = customer.customerType;
-                    objective.target = GetRandomTarget(serveCustomerTypeRange);
+
+                    Vector2Int range = GetScaledRange(serveCustomerTypeRange, serveCustomerTypeGrowthPerDay, serveCustomerTypeTargetCap);
+
+                    objective.target = GetRandomTarget(range);
                     break;
                 }
 
@@ -179,7 +202,10 @@ public class DailyObjectiveManager : MonoBehaviour
                         return null;
 
                     objective.drinkRecipe = recipe;
-                    objective.target = GetRandomTarget(mixDrinkRange);
+
+                    Vector2Int range = GetScaledRange(mixDrinkRange, mixDrinkGrowthPerDay, mixDrinkTargetCap);
+
+                    objective.target = GetRandomTarget(range);
                     break;
                 }
 
@@ -191,16 +217,24 @@ public class DailyObjectiveManager : MonoBehaviour
                         return null;
 
                     objective.drinkRecipe = recipe;
-                    objective.target = GetRandomTarget(serveDrinkRange);
+
+                    Vector2Int range = GetScaledRange(serveDrinkRange, serveDrinkGrowthPerDay, serveDrinkTargetCap);
+
+                    objective.target = GetRandomTarget(range);
                     break;
                 }
 
             case DailyObjectiveType.EarnMoney:
-                objective.target = GetRandomTarget(earnMoneyRange);
-                break;
+                {
+                    Vector2Int range = GetScaledRange(earnMoneyRange, earnMoneyGrowthPerDay, earnMoneyTargetCap);
+
+                    objective.target = GetRandomTarget(range);
+                    break;
+                }
         }
 
-        objective.reward = GetRandomTarget(rewardRange);
+        Vector2Int rewardRangeScaled = GetScaledRewardRange();
+        objective.reward = GetRandomTarget(rewardRangeScaled);
 
         return objective;
     }
@@ -430,5 +464,37 @@ public class DailyObjectiveManager : MonoBehaviour
         DayStatsManager.instance.AddObjectiveReward(currentObjective.reward);
 
         currentObjective.rewardClaimed = true;
+    }
+
+    private int GetDayGrowth(int growthPerDay)
+    {
+        int currentDay = GetCurrentDay();
+        return Mathf.Max(0, currentDay - 1) * growthPerDay;
+    }
+
+    private Vector2Int GetScaledRange(Vector2Int baseRange, int growthPerDay, int maxValue)
+    {
+        int growth = GetDayGrowth(growthPerDay);
+
+        int min = baseRange.x + growth;
+        int max = baseRange.y + growth;
+
+        min = Mathf.Min(min, maxValue);
+        max = Mathf.Min(max, maxValue);
+
+        return new Vector2Int(min, max);
+    }
+
+    private Vector2Int GetScaledRewardRange()
+    {
+        int growth = GetDayGrowth(rewardGrowthPerDay);
+
+        int min = rewardRange.x + growth;
+        int max = rewardRange.y + growth;
+
+        min = Mathf.Min(min, rewardCap);
+        max = Mathf.Min(max, rewardCap);
+
+        return new Vector2Int(min, max);
     }
 }

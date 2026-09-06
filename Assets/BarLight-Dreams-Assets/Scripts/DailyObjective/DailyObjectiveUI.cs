@@ -30,7 +30,6 @@ public class DailyObjectiveUI : MonoBehaviour
     {
         if (DailyObjectiveManager.instance == null)
         {
-            Debug.LogWarning("DailyObjectiveUI: DailyObjectiveManager not found.");
             return;
         }
 

@@ -53,7 +53,6 @@ public class RecipeUnlockPopupUI : MonoBehaviour
 
         if (recipeBookUI == null)
         {
-            Debug.LogError("RecipeUnlockPopupUI: RecipeBookUI reference is missing.");
             return false;
         }
 
