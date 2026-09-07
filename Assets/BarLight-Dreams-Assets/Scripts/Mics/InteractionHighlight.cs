@@ -29,6 +29,9 @@ public class InteractionHighlight : MonoBehaviour
     [Header("Pickup Drink")]
     [SerializeField] private PickupCounter pickupCounter;
 
+    [Header("Tutorial")]
+    [SerializeField] private TutorialStep tutorialRequiredStep = TutorialStep.None;
+
     private bool playerInRange;
     private bool canShowTextUI;
 
@@ -45,6 +48,12 @@ public class InteractionHighlight : MonoBehaviour
     private void Update()
     {
         if (!playerInRange) return;
+
+        if (!IsInteractionAllowed())
+        {
+            interactionUI?.Hide();
+            return;
+        }
 
         if (pickupCounter != null)
         {
@@ -115,6 +124,16 @@ public class InteractionHighlight : MonoBehaviour
                 drinkMixer.StartMixing();
             }
         }
+    }
+
+    private bool IsInteractionAllowed()
+    {
+        TutorialManager tutorial = TutorialManager.instance;
+
+        if (tutorial == null || !tutorial.IsTutorialActive)
+            return true;
+
+        return tutorialRequiredStep == tutorial.CurrentStep;
     }
 
     private bool CanInteract()

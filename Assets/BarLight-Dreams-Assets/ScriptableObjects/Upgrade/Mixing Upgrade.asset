@@ -22,9 +22,9 @@ MonoBehaviour:
     instantChance: 0
   - price: 1000
     instantChance: 0.1
-  - price: 1500
-    instantChance: 0.2
-  - price: 2000
-    instantChance: 0.35
   - price: 3000
-    instantChance: 0.5
+    instantChance: 0.2
+  - price: 5000
+    instantChance: 0.3
+  - price: 9000
+    instantChance: 0.4

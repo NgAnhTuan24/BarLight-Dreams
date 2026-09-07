@@ -308,10 +308,24 @@ public class GameClock : MonoBehaviour
 
     private void StartGameplay()
     {
-        IsRunning = true;
-
         PlayerController.instance.movement.SetCanMove(true);
 
         OnNewDayStarted?.Invoke();
+
+        if (TutorialManager.instance != null && TutorialManager.instance.IsTutorialActive)
+        {
+            IsRunning = false;
+            return;
+        }
+
+        IsRunning = true;
+    }
+
+    public void StartClock()
+    {
+        if (dayEnded)
+            return;
+
+        IsRunning = true;
     }
 }

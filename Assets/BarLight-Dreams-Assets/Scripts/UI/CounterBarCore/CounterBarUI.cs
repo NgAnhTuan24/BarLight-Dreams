@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class CounterIngredientData
 {
     public IngredientType type;
@@ -30,6 +30,8 @@ public class CounterBarUI : MonoBehaviour
 
     public bool HasIngredientClickHandler => ingredientClickHandler != null;
 
+    public event Action<IngredientType> OnIngredientAdded;
+
     private void Awake()
     {
         instance = this;
@@ -47,6 +49,8 @@ public class CounterBarUI : MonoBehaviour
         item.Setup(icon, type, size, posY);
 
         spawnedItems.Add(new CounterIngredientData(type, item.gameObject));
+
+        OnIngredientAdded?.Invoke(type);
     }
 
     public void RemoveIngredient(GameObject item)

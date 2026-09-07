@@ -30,6 +30,8 @@ public class OrderQueueManager : MonoBehaviour
 
     private OrderSlotUI currentSelectedSlot;
 
+    public event System.Action<OrderData> OnOrderSelected;
+
     public bool IsFull
     {
         get
@@ -153,6 +155,8 @@ public class OrderQueueManager : MonoBehaviour
         if (currentSelectedSlot != null) currentSelectedSlot.SetHighlight(true);
 
         orderRecipeDetailViewer.Show(slot.CurrentRecipe);
+
+        OnOrderSelected?.Invoke(GetSelectedOrder());
     }
 
     public void DeselectSlot()

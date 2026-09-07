@@ -33,18 +33,34 @@ public class CustomerSpawner : MonoBehaviour
 
     private readonly HashSet<CustomerType> appearedTypesToday = new();
 
+    private bool tutorialSpawnLocked;
+    private bool tutorialFirstCustomerSpawned;
+
     private void Start()
     {
         ResetSpawnInterval();
 
-        GameClock.instance.OnNewDayStarted += ResetSpawnInterval;
+        if (GameClock.instance != null)
+        {
+            GameClock.instance.OnNewDayStarted += ResetSpawnInterval;
+        }
+
+        if (TutorialManager.instance != null)
+        {
+            TutorialManager.instance.OnStepChanged += HandleTutorialStepChanged;
+            TutorialManager.instance.OnTutorialCompleted += HandleTutorialCompleted;
+        }
     }
 
     private void Update()
     {
         UpdateCustomerUI();
 
+        if (GameClock.instance == null) return;
+
         if (!GameClock.instance.IsRunning) return;
+
+        if (tutorialSpawnLocked) return;
 
         timer += Time.deltaTime;
 
@@ -63,6 +79,14 @@ public class CustomerSpawner : MonoBehaviour
         timer = 0f;
 
         appearedTypesToday.Clear();
+
+        tutorialSpawnLocked = false;
+        tutorialFirstCustomerSpawned = false;
+
+        if (TutorialManager.instance != null && GameClock.instance != null && GameClock.instance.CurrentDay == 1 && TutorialManager.instance.IsTutorialActive)
+        {
+            tutorialSpawnLocked = true;
+        }
 
         if (testSpawnEverySecond)
         {
@@ -119,22 +143,15 @@ public class CustomerSpawner : MonoBehaviour
     {
         if (PlayerController.instance.health.CurrentHP == 0) return;
 
-        if (!GameClock.instance.CanReceiveCustomers)
-        {
-            return;
-        }
+        if (!GameClock.instance.CanReceiveCustomers) return;
 
-        if (CustomerManager.instance.CurrentCustomerCount >= maxCustomers)
-        {
-            return;
-        }
+        if (CustomerManager.instance.CurrentCustomerCount >= maxCustomers) return;
+
+        if (tutorialSpawnLocked) return;
 
         CustomerController customerPrefab = SelectCustomerPrefab();
 
-        if (customerPrefab == null)
-        {
-            return;
-        }
+        if (customerPrefab == null) return;
 
         Vector3 spawnPos = GetRandomSpawnPosition();
 
@@ -145,6 +162,12 @@ public class CustomerSpawner : MonoBehaviour
         if (customerData != null)
         {
             appearedTypesToday.Add(customerData.customerType);
+        }
+
+        if (GameClock.instance.CurrentDay == 1 && TutorialManager.instance != null && TutorialManager.instance.IsTutorialActive)
+        {
+            tutorialFirstCustomerSpawned = true;
+            tutorialSpawnLocked = true;
         }
     }
 
@@ -327,6 +350,48 @@ public class CustomerSpawner : MonoBehaviour
         customerCountText.text = currentCustomers + "/" + totalChairs + " Customer";
     }
 
+    private void HandleTutorialStepChanged(TutorialStep step)
+    {
+        if (GameClock.instance == null)
+            return;
+
+        if (GameClock.instance.CurrentDay != 1)
+            return;
+
+        if (step == TutorialStep.Introduction)
+        {
+            tutorialSpawnLocked = true;
+            return;
+        }
+
+        if (step != TutorialStep.GoToCustomer)
+            return;
+
+        if (tutorialFirstCustomerSpawned)
+            return;
+
+        timer = 0f;
+        currentSpawnInterval = 2f;
+        tutorialSpawnLocked = false;
+    }
+
+    private void HandleTutorialCompleted()
+    {
+        if (GameClock.instance == null)
+            return;
+
+        if (GameClock.instance.CurrentDay != 1)
+            return;
+
+        tutorialSpawnLocked = false;
+
+        timer = 0f;
+
+        TrySpawnCustomer();
+
+        SetRandomSpawnInterval();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -339,6 +404,12 @@ public class CustomerSpawner : MonoBehaviour
         if (GameClock.instance != null)
         {
             GameClock.instance.OnNewDayStarted -= ResetSpawnInterval;
+        }
+
+        if (TutorialManager.instance != null)
+        {
+            TutorialManager.instance.OnStepChanged -= HandleTutorialStepChanged;
+            TutorialManager.instance.OnTutorialCompleted -= HandleTutorialCompleted;
         }
     }
 }

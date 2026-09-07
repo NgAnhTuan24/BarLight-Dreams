@@ -31,6 +31,9 @@ public class CustomerOrder : MonoBehaviour
     private CustomerPatience patience;
     private FloatingPopupText popupText;
 
+    public event System.Action<DrinkRecipeSO> OnOrderTaken;
+    public event System.Action OnDrinkServed;
+
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public GameObject AlertBubble => alertBubble;
     public GameObject DrinkBubble => drinkBubble;
@@ -179,6 +182,8 @@ public class CustomerOrder : MonoBehaviour
             return;
 
         OrderQueueManager.instance.AddOrder(customer, currentOrder);
+
+        OnOrderTaken?.Invoke(currentOrder);
 
         ShowOrderBubble();
 
@@ -397,6 +402,8 @@ public class CustomerOrder : MonoBehaviour
         }
 
         AudioManager.instance.PlaySFX(collectionSFX);
+
+        OnDrinkServed?.Invoke();
 
         customer.OnDrinkReceived();
     }

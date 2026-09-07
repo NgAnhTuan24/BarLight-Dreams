@@ -12,6 +12,8 @@ public class CustomerManager : MonoBehaviour
 
     public int CurrentCustomerCount => customers.Count;
 
+    public event System.Action<CustomerController> OnCustomerRegistered;
+
     private void Awake()
     {
         if (instance == null)
@@ -51,10 +53,15 @@ public class CustomerManager : MonoBehaviour
 
     public void RegisterCustomer(CustomerController customer)
     {
-        if (!customers.Contains(customer))
-        {
-            customers.Add(customer);
-        }
+        if (customer == null)
+            return;
+
+        if (customers.Contains(customer))
+            return;
+
+        customers.Add(customer);
+
+        OnCustomerRegistered?.Invoke(customer);
     }
 
     public void RemoveCustomer(CustomerController customer)

@@ -10,9 +10,9 @@ public class UpgradeEffectUI : MonoBehaviour
         valueText.text = $"{label}: {current} → {next} {unit}";
     }
 
-    public void SetMax(string label)
+    public void SetMax(string label, string value, string unit)
     {
-        valueText.text = $"{label}: MAX";
+        valueText.text = $"{label}: {value} {unit}";
     }
 
     public void Hide()

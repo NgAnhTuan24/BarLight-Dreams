@@ -15,6 +15,9 @@ public class DrinkMixer : MonoBehaviour
 
     private DrinkRecipeSO currentRecipe;
 
+    public event System.Action<DrinkRecipeSO> OnMixingStarted;
+    public event System.Action<DrinkRecipeSO> OnMixingCompleted;
+
     private void Awake()
     {
         instance = this;
@@ -73,6 +76,8 @@ public class DrinkMixer : MonoBehaviour
             return;
         }
 
+        OnMixingStarted?.Invoke(currentRecipe);
+
         if (Random.value <= instantChance)
         {
             Mix();
@@ -98,6 +103,8 @@ public class DrinkMixer : MonoBehaviour
         CounterBarUI.instance.CleanCounter();
 
         PlayerHoldItem.instance.HoldDrink(recipe);
+
+        OnMixingCompleted?.Invoke(recipe);
 
         if (DailyObjectiveManager.instance != null)
         {

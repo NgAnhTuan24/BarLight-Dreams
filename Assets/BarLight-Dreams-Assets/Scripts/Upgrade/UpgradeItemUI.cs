@@ -29,7 +29,7 @@ public class UpgradeItemUI : MonoBehaviour
 
         descriptionText.text = data.description;
 
-        levelText.text = data.isMaxLevel ? "MAX" : $"Lv {data.currentLevel}/{data.maxLevel}";
+        levelText.text = $"Lv {data.currentLevel}/{data.maxLevel}";
 
         if (data.isMaxLevel)
         {
@@ -42,7 +42,7 @@ public class UpgradeItemUI : MonoBehaviour
 
         if (data.isMaxLevel)
         {
-            effect1.SetMax(data.effect1Label);
+            effect1.SetMax(data.effect1Label, data.effect1Current, data.effect1Unit);
         }
         else
         {
@@ -61,7 +61,7 @@ public class UpgradeItemUI : MonoBehaviour
 
                 if (data.isMaxLevel)
                 {
-                    effect2.SetMax(data.effect2Label);
+                    effect2.SetMax(data.effect2Label, data.effect2Current, data.effect2Unit);
                 }
                 else
                 {

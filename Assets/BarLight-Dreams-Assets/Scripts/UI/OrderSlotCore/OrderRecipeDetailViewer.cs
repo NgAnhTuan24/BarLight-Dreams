@@ -10,6 +10,9 @@ public class OrderRecipeDetailViewer : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform panel;
 
+    [Header("Input Blocker")]
+    [SerializeField] private GameObject inputBlocker;
+
     [Header("Drink")]
     [SerializeField] private Image drinkImage;
     [SerializeField] private TMP_Text drinkNameText;
@@ -25,9 +28,13 @@ public class OrderRecipeDetailViewer : MonoBehaviour
 
     public bool IsShowing => root.activeSelf;
 
+    public event System.Action OnOrderDetailOpened;
+    public event System.Action OnOrderDetailClosed;
+
     private void Awake()
     {
         root.SetActive(false);
+        inputBlocker.SetActive(false);
 
         canvasGroup.alpha = 0f;
         panel.localScale = Vector3.one * 0.8f;
@@ -35,11 +42,17 @@ public class OrderRecipeDetailViewer : MonoBehaviour
 
     public void Show(DrinkRecipeSO recipe)
     {
+        if (recipe == null)
+            return;
+
         bool wasHidden = !root.activeSelf;
 
         if (wasHidden)
         {
             root.SetActive(true);
+            inputBlocker.SetActive(true);
+
+            OnOrderDetailOpened?.Invoke();
         }
 
         drinkImage.sprite = recipe.drinkIcon;
@@ -96,7 +109,13 @@ public class OrderRecipeDetailViewer : MonoBehaviour
         currentTween = DOTween.Sequence()
             .Append(canvasGroup.DOFade(0f, 0.5f))
             .Join(panel.DOScale(0.8f, 0.5f).SetEase(Ease.InBack))
-            .OnComplete(() => root.SetActive(false));
+            .OnComplete(() =>
+            {
+                root.SetActive(false);
+                inputBlocker.SetActive(false);
+
+                OnOrderDetailClosed?.Invoke();
+            });
     }
 
     private void OnDestroy()

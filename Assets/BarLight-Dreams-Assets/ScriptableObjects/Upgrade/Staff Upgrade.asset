@@ -19,9 +19,9 @@ MonoBehaviour:
   levels:
   - price: 0
     staffCount: 0
-  - price: 1000
-    staffCount: 1
   - price: 2000
+    staffCount: 1
+  - price: 4000
     staffCount: 2
-  - price: 3000
+  - price: 7000
     staffCount: 3
