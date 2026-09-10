@@ -31,6 +31,7 @@ public class GameClock : MonoBehaviour
     [SerializeField] private DayIntroUI dayIntroUI;
     [SerializeField] private SummaryDayUI summaryUI;
     [SerializeField] private RecipeUnlockPopupUI recipeUnlockPopupUI;
+    [SerializeField] private SceneTransition sceneTransition;
 
     public bool IsRunning { get; private set; }
 
@@ -88,14 +89,14 @@ public class GameClock : MonoBehaviour
 
             if (isNewDay)
             {
-                SceneTransition.instance.FadeIn(() =>
+                sceneTransition.FadeIn(() =>
                 {
                     ShowDayIntro(data.currentDay, false);
                 });
             }
             else
             {
-                SceneTransition.instance.FadeIn(() =>
+                sceneTransition.FadeIn(() =>
                 {
                     IsRunning = true;
                     PlayerController.instance.movement.SetCanMove(true);
@@ -107,7 +108,7 @@ public class GameClock : MonoBehaviour
 
         StartNewDay();
 
-        SceneTransition.instance.FadeIn(() =>
+        sceneTransition.FadeIn(() =>
         {
             ShowDayIntro(CurrentDay, false);
         });

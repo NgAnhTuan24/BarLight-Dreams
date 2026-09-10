@@ -108,7 +108,7 @@ public class CustomerSpawner : MonoBehaviour
 
         if (GameClock.instance.IsRushHour)
         {
-            currentSpawnInterval = 5f;
+            currentSpawnInterval = 10f;
             return;
         }
 

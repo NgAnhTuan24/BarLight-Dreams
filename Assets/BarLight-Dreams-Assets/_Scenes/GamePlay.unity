@@ -2721,6 +2721,7 @@ MonoBehaviour:
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 1
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &124120693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3620,6 +3621,7 @@ MonoBehaviour:
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 0
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &140884035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13391,10 +13393,10 @@ MonoBehaviour:
   spawnRangeX: 0.8
   spawnRangeY: 2.5
   spawnIntervals:
-  - 12
-  - 17
-  - 20
-  - 23
+  - 15
+  - 19
+  - 22
+  - 26
   intervalReductionPerDay: 0.0375
   minimumSpawnInterval: 8
   maxCustomers: 12
@@ -62898,6 +62900,7 @@ MonoBehaviour:
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 0
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &1091444174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75920,6 +75923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicInGame: {fileID: 8300000, guid: afe57770133f7a54a9fd42fdac851ed4, type: 3}
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &1639060282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76987,6 +76991,7 @@ MonoBehaviour:
   dayIntroUI: {fileID: 1813477229}
   summaryUI: {fileID: 579063921}
   recipeUnlockPopupUI: {fileID: 8254819851966721438}
+  sceneTransition: {fileID: 1997190521}
 --- !u!4 &1683949993
 Transform:
   m_ObjectHideFlags: 0
@@ -77639,7 +77644,7 @@ MonoBehaviour:
   orderRecipeDetailViewer: {fileID: 317637506}
   wineCabinetPopup: {fileID: 1091444173}
   fruitBowlPopup: {fileID: 2004143313}
-  introductionGreetingDuration: 5
+  introductionGreetingDuration: 4
 --- !u!4 &1748522715
 Transform:
   m_ObjectHideFlags: 0
@@ -81850,6 +81855,7 @@ MonoBehaviour:
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 1
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &1922423266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84718,6 +84724,7 @@ MonoBehaviour:
   duration: 0.5
   hiddenY: -1080
   pauseGameplay: 0
+  sceneTransition: {fileID: 1997190521}
 --- !u!114 &2004143314
 MonoBehaviour:
   m_ObjectHideFlags: 0

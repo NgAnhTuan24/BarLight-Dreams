@@ -5,6 +5,8 @@ public class InGame : MonoBehaviour
 {
     [SerializeField] private AudioClip musicInGame;
 
+    [SerializeField] private SceneTransition sceneTransition;
+
     void Start()
     {
         AudioManager.instance.PlayMusic(musicInGame);
@@ -18,7 +20,7 @@ public class InGame : MonoBehaviour
         {
             SaveManager.instance.StartLoadGame(slot);
 
-            SceneTransition.instance.FadeOut(() =>
+            sceneTransition.FadeOut(() =>
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             });

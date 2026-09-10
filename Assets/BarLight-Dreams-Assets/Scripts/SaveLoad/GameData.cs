@@ -17,5 +17,7 @@ public class GameData
 
     public List<UpgradeRuntimeData> upgrades = new();
 
+    public bool tutorialCompleted;
+
     public string saveTime;
 }

@@ -37,11 +37,16 @@ public class TutorialManager : MonoBehaviour
     [Header("Introduction")]
     [SerializeField] private float introductionGreetingDuration = 2f;
 
+    [Header("Test Mode")]
+    [SerializeField] private bool enableTutorial = true;
+
     public TutorialState State { get; private set; } = TutorialState.Inactive;
 
     public bool IsTutorialActive => State == TutorialState.Running;
 
     public TutorialStep CurrentStep { get; private set; } = TutorialStep.None;
+
+    public bool IsTutorialCompleted { get; private set; }
 
     private CustomerController tutorialCustomer;
     private DrinkRecipeSO tutorialRecipe;
@@ -57,7 +62,10 @@ public class TutorialManager : MonoBehaviour
     private bool pressedD;
 
     public event Action<TutorialStep> OnStepChanged;
+
     public event Action OnTutorialCompleted;
+    public event Action OnTutorialStateChanged;
+
     public event Action OnIntroductionInputReady;
 
     public event Action OnTutorialUIHideRequested;
@@ -220,6 +228,17 @@ public class TutorialManager : MonoBehaviour
 
     private void HandleNewDayStarted()
     {
+        if (!enableTutorial)
+        {
+            if (GameClock.instance != null)
+                GameClock.instance.StartClock();
+
+            if (UIManager.Instance != null)
+                UIManager.Instance.UnlockGameplayInput();
+
+            return;
+        }
+
         if (!CanStartTutorial())
             return;
 
@@ -579,6 +598,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         State = TutorialState.Completed;
+        IsTutorialCompleted = true;
 
         introductionInputReady = false;
         tutorialIngredientsReady = false;
@@ -597,5 +617,24 @@ public class TutorialManager : MonoBehaviour
         }
 
         OnTutorialCompleted?.Invoke();
+        OnTutorialStateChanged?.Invoke();
+    }
+
+    public void LoadTutorialState(bool completed)
+    {
+        IsTutorialCompleted = completed;
+
+        if (completed)
+        {
+            State = TutorialState.Completed;
+            CurrentStep = TutorialStep.None;
+        }
+        else
+        {
+            State = TutorialState.Inactive;
+            CurrentStep = TutorialStep.None;
+        }
+
+        OnTutorialStateChanged?.Invoke();
     }
 }

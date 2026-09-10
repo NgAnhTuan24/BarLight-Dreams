@@ -32,6 +32,11 @@ public class GameLoader : MonoBehaviour
             DayStatsManager.instance.LoadTotalStats(data.totalMoneyEarned, data.totalServedCustomers, data.totalAngryCustomers);
         }
 
+        if (TutorialManager.instance != null)
+        {
+            TutorialManager.instance.LoadTutorialState(data.tutorialCompleted);
+        }
+
         if (GameClock.instance != null)
         {
             GameClock.instance.SetDay(data.currentDay);

@@ -17,6 +17,10 @@ public class UIPopup : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private bool pauseGameplay = false;
 
+    [Space(10)]
+
+    [SerializeField] private SceneTransition sceneTransition;
+
     private Vector2 shownPosition;
     private Tween currentTween;
 
@@ -34,7 +38,7 @@ public class UIPopup : MonoBehaviour
 
     public void Open()
     {
-        if (SceneTransition.instance != null && SceneTransition.instance.IsTransitioning) return;
+        if (sceneTransition != null && sceneTransition.IsTransitioning) return;
 
         if (IsOpen) return;
 
