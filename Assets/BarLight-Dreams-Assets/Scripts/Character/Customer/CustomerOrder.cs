@@ -9,6 +9,10 @@ public class CustomerOrder : MonoBehaviour
 
     [SerializeField] private DrinkRecipeSO currentOrder;
 
+    [Header("Favorite Drink")]
+    [SerializeField, Range(0f, 1f)] private float favoriteDrinkChance = 0.3f;
+    private bool isFavoriteOrder;
+
     [Header("Alert Bubble")]
     [SerializeField] private GameObject alertBubble;
 
@@ -26,6 +30,9 @@ public class CustomerOrder : MonoBehaviour
     private CustomerController customer;
     private CustomerPatience patience;
     private FloatingPopupText popupText;
+
+    public event System.Action<DrinkRecipeSO> OnOrderTaken;
+    public event System.Action OnDrinkServed;
 
     public DrinkRecipeSO CurrentOrder => currentOrder;
     public GameObject AlertBubble => alertBubble;
@@ -87,13 +94,96 @@ public class CustomerOrder : MonoBehaviour
         if (OrderQueueManager.instance.IsFull)
             return;
 
-        alertBubble.SetActive(false);
+        isFavoriteOrder = false;
+        currentOrder = null;
 
+        bool isVIP = customer.Data != null && customer.Data.customerType == CustomerType.VIP;
+
+        RecipeTier highestTier = RecipeTier.Tier1;
+
+        if (isVIP)
+        {
+            if (RecipeProgressionManager.instance == null)
+                return;
+
+            highestTier = RecipeProgressionManager.instance.GetHighestUnlockedTier();
+        }
+
+        int candidateOrderCount = 0;
+
+        foreach (DrinkRecipeSO recipe in possibleOrders)
+        {
+            if (recipe == null)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            if (isVIP && recipe.recipeTier != highestTier)
+                continue;
+
+            candidateOrderCount++;
+        }
+
+        if (candidateOrderCount == 0)
+            return;
+
+        alertBubble.SetActive(false);
         patience.StopPatience();
 
-        currentOrder = possibleOrders[Random.Range(0, possibleOrders.Length)];
+        if (Random.value < favoriteDrinkChance)
+        {
+            DrinkRecipeSO favoriteRecipe;
+
+            if (isVIP)
+            {
+                favoriteRecipe = GetUnlockedFavoriteDrinkForVIP(highestTier);
+            }
+            else
+            {
+                favoriteRecipe = GetUnlockedFavoriteDrink();
+            }
+
+            if (favoriteRecipe != null)
+            {
+                currentOrder = favoriteRecipe;
+                isFavoriteOrder = true;
+            }
+        }
+
+        if (currentOrder == null || !isFavoriteOrder)
+        {
+            int randomIndex = Random.Range(0, candidateOrderCount);
+
+            foreach (DrinkRecipeSO recipe in possibleOrders)
+            {
+                if (recipe == null)
+                    continue;
+
+                if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                    continue;
+
+                if (isVIP && recipe.recipeTier != highestTier)
+                    continue;
+
+                if (randomIndex == 0)
+                {
+                    currentOrder = recipe;
+                    break;
+                }
+
+                randomIndex--;
+            }
+
+            isFavoriteOrder = false;
+        }
+
+        if (currentOrder == null)
+            return;
 
         OrderQueueManager.instance.AddOrder(customer, currentOrder);
+
+        OnOrderTaken?.Invoke(currentOrder);
 
         ShowOrderBubble();
 
@@ -102,6 +192,120 @@ public class CustomerOrder : MonoBehaviour
         customer.ReleaseCounterSlot();
 
         customer.ChangeState(CustomerState.FindSeat);
+    }
+
+    private DrinkRecipeSO GetUnlockedFavoriteDrink()
+    {
+        if (customer.Data.favoriteDrinks == null || customer.Data.favoriteDrinks.Length == 0)
+        {
+            return null;
+        }
+
+        int unlockedFavoriteCount = 0;
+
+        foreach (DrinkRecipeSO recipe in customer.Data.favoriteDrinks)
+        {
+            if (recipe == null)
+                continue;
+
+            if (RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            {
+                unlockedFavoriteCount++;
+            }
+        }
+
+        if (unlockedFavoriteCount == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, unlockedFavoriteCount);
+
+        foreach (DrinkRecipeSO recipe in customer.Data.favoriteDrinks)
+        {
+            if (recipe == null)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            if (randomIndex == 0)
+                return recipe;
+
+            randomIndex--;
+        }
+
+        return null;
+    }
+
+    private DrinkRecipeSO GetUnlockedFavoriteDrinkForVIP(RecipeTier highestTier)
+    {
+        if (customer == null || customer.Data == null)
+            return null;
+
+        if (customer.Data.favoriteDrinks == null || customer.Data.favoriteDrinks.Length == 0)
+            return null;
+
+        if (possibleOrders == null || possibleOrders.Length == 0)
+            return null;
+
+        int validFavoriteCount = 0;
+
+        foreach (DrinkRecipeSO favoriteRecipe in customer.Data.favoriteDrinks)
+        {
+            if (favoriteRecipe == null)
+                continue;
+
+            if (favoriteRecipe.recipeTier != highestTier)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(favoriteRecipe))
+                continue;
+
+            if (!IsRecipeInPossibleOrders(favoriteRecipe))
+                continue;
+
+            validFavoriteCount++;
+        }
+
+        if (validFavoriteCount == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, validFavoriteCount);
+
+        foreach (DrinkRecipeSO favoriteRecipe in customer.Data.favoriteDrinks)
+        {
+            if (favoriteRecipe == null)
+                continue;
+
+            if (favoriteRecipe.recipeTier != highestTier)
+                continue;
+
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(favoriteRecipe))
+                continue;
+
+            if (!IsRecipeInPossibleOrders(favoriteRecipe))
+                continue;
+
+            if (randomIndex == 0)
+                return favoriteRecipe;
+
+            randomIndex--;
+        }
+
+        return null;
+    }
+
+    private bool IsRecipeInPossibleOrders(DrinkRecipeSO targetRecipe)
+    {
+        if (targetRecipe == null || possibleOrders == null)
+            return false;
+
+        foreach (DrinkRecipeSO recipe in possibleOrders)
+        {
+            if (recipe == targetRecipe)
+                return true;
+        }
+
+        return false;
     }
 
     void ShowOrderBubble()
@@ -148,7 +352,14 @@ public class CustomerOrder : MonoBehaviour
 
         if (Random.value > finalTipChance) return 0;
 
-        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * customer.Data.tipMultiplier * CustomerManager.instance.GetTipMultiplier());
+        float finalTipMultiplier = customer.Data.tipMultiplier;
+
+        if (isFavoriteOrder)
+        {
+            finalTipMultiplier *= 1.5f;
+        }
+
+        int tipAmount = Mathf.RoundToInt(currentOrder.price * Random.Range(0.1f, 0.5f) * finalTipMultiplier * CustomerManager.instance.GetTipMultiplier());
 
         DayStatsManager.instance.AddTips(tipAmount);
 
@@ -183,7 +394,16 @@ public class CustomerOrder : MonoBehaviour
         DayStatsManager.instance.AddEarnings(currentOrder.price);
         DayStatsManager.instance.AddCustomersServed();
 
+        if (DailyObjectiveManager.instance != null)
+        {
+            DailyObjectiveManager.instance.RegisterCustomerServed(customer, currentOrder);
+
+            DailyObjectiveManager.instance.RefreshEarnMoneyProgress();
+        }
+
         AudioManager.instance.PlaySFX(collectionSFX);
+
+        OnDrinkServed?.Invoke();
 
         customer.OnDrinkReceived();
     }

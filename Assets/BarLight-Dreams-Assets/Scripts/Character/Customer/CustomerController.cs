@@ -25,6 +25,7 @@ public class CustomerController : MonoBehaviour
     private CustomerOrder order;
     private CustomerPatience patience;
     private FloatingPopupText popupText;
+    private CustomerTypePopupText customerTypePopupText;
 
     private Vector2 moveDirection;
     private Vector2 lastMoveDirection = Vector2.left;
@@ -40,11 +41,17 @@ public class CustomerController : MonoBehaviour
         order = GetComponent<CustomerOrder>();
         patience = GetComponent<CustomerPatience>();
         popupText = GetComponentInChildren<FloatingPopupText>();
+        customerTypePopupText = GetComponentInChildren<CustomerTypePopupText>();
     }
 
     private void Start()
     {
         leavePoint = GameObject.FindGameObjectWithTag("ExitPoint").transform;
+
+        if (customerData != null)
+        {
+            customerTypePopupText?.Show(customerData.customerType);
+        }
 
         EnterBar();
     }

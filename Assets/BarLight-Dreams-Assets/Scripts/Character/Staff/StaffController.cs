@@ -319,7 +319,6 @@ public class StaffController : MonoBehaviour
         currentState = StaffState.Idle;
         aiPath.canMove = false;
         gameObject.SetActive(false);
-        Debug.Log("Staff: Reached spawn point.");
     }
 
     private void UpdateMovementDirection()

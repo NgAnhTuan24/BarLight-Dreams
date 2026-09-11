@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class UIPopup : MonoBehaviour
@@ -16,12 +17,19 @@ public class UIPopup : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private bool pauseGameplay = false;
 
+    [Space(10)]
+
+    [SerializeField] private SceneTransition sceneTransition;
+
     private Vector2 shownPosition;
     private Tween currentTween;
 
     private static UIPopup currentOpenPopup;
 
     public bool IsOpen { get; private set; }
+
+    public event Action OnOpened;
+    public event Action OnClosed;
 
     private void Awake()
     {
@@ -30,7 +38,7 @@ public class UIPopup : MonoBehaviour
 
     public void Open()
     {
-        if (SceneTransition.instance != null && SceneTransition.instance.IsTransitioning) return;
+        if (sceneTransition != null && sceneTransition.IsTransitioning) return;
 
         if (IsOpen) return;
 
@@ -58,6 +66,8 @@ public class UIPopup : MonoBehaviour
         panel.anchoredPosition = new Vector2(shownPosition.x, hiddenY);
 
         currentTween = panel.DOAnchorPos(shownPosition, duration).SetEase(Ease.OutCubic).SetUpdate(true);
+
+        OnOpened?.Invoke(); 
     }
 
     public void Close()
@@ -90,6 +100,8 @@ public class UIPopup : MonoBehaviour
                 }
 
                 gameObject.SetActive(false);
+
+                OnClosed?.Invoke();
             });
     }
 
@@ -100,12 +112,4 @@ public class UIPopup : MonoBehaviour
         else
             Open();
     }
-
-    //private void OnDisable()
-    //{
-    //    if (pauseGameplay)
-    //    {
-    //        Time.timeScale = 1f;
-    //    }
-    //}
 }

@@ -16,6 +16,10 @@ public class SaveSlotUI : MonoBehaviour
     [SerializeField] private Button slotButton;
     [SerializeField] private Button deleteButton;
 
+    [Space(10)]
+
+    [SerializeField] private SceneTransition sceneTransition;
+
     [SerializeField] private int slotID;
 
     private void Start()
@@ -56,7 +60,7 @@ public class SaveSlotUI : MonoBehaviour
 
         SaveManager.instance.StartLoadGame(slotID);
 
-        SceneTransition.instance.FadeOut(() =>
+        sceneTransition.FadeOut(() =>
         {
             SceneManager.LoadScene("GamePlay");
         });

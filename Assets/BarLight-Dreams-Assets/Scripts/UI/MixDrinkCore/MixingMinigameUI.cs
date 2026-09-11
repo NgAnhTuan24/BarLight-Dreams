@@ -1,19 +1,57 @@
+using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum MixingPhase
+{
+    AddIngredients,
+    Shake,
+    Complete
+}
 
 public class MixingMinigameUI : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private GameObject root;
-    [SerializeField] private Transform arrowParent;
-    [SerializeField] private MixingArrowUI arrowPrefab;
+    [SerializeField] private CanvasGroup rootCanvasGroup;
+    [SerializeField] private float fadeInDuration = 0.5f;
+    [SerializeField] private float fadeOutDuration = 0.5f;
+    [SerializeField] private float rootStartScale = 0.9f;
 
-    private MixingSettings settings;
+    private Vector3 rootOriginalScale;
 
-    private List<ArrowType> sequence = new();
-    private List<MixingArrowUI> spawnedArrows = new();
+    [Header("Ingredient Progress")]
+    [SerializeField] private GameObject ingredientRoot;
+    [SerializeField] private TMP_Text ingredientProgressText;
+    [SerializeField] private TMP_Text ingredientInstructionText;
+    private Coroutine ingredientInstructionCoroutine;
+
+    [Header("Shaker")]
+    [SerializeField] private GameObject shakerRoot;
+    [SerializeField] private Transform shakerTarget;
+
+    [Header("Shaker Movement")]
+    [SerializeField] private float shakerMoveMultiplier = 1f;
+    [SerializeField] private float maxShakerOffset = 225f;
+    [SerializeField] private float maxShakerRotation = -45f;
+
+    private Vector3 shakerStartPosition;
+    private Quaternion shakerStartRotation;
+
+    [Header("Shaker UI")]
+    [SerializeField] private Slider shakeProgressSlider;
+    [SerializeField] private TMP_Text shakePercentText;
+    [SerializeField] private TMP_Text shakeInstructionText;
+
+    private float requiredShakeDistance;
+
+    [Header("Complete")]
+    [SerializeField] private float completeDelay = 1f;
+
+    private DrinkRecipeSO currentRecipe;
 
     private int currentIndex;
 
@@ -21,138 +59,493 @@ public class MixingMinigameUI : MonoBehaviour
 
     private bool playing;
 
-    private void Update()
-    {
-        if (!playing) return;
+    private bool processingIngredient;
 
-        if (Input.anyKeyDown)
+    private MixingPhase currentPhase;
+
+    private float shakeDistance;
+    private float leftShakeDistance;
+    private float rightShakeDistance;
+    private Vector3 lastMousePosition;
+    private bool hasLastMousePosition;
+
+    private void Awake()
+    {
+        if (root != null)
         {
-            CheckInput();
+            rootOriginalScale = root.transform.localScale;
+
+            if (rootCanvasGroup == null)
+            {
+                rootCanvasGroup = root.GetComponent<CanvasGroup>();
+            }
         }
+
+        shakerStartPosition = shakerRoot.transform.localPosition;
+        shakerStartRotation = shakerRoot.transform.localRotation;
     }
 
-    public void StartGame(MixingSettings settings, Action successCallback)
+    public void StartGame(DrinkRecipeSO recipe, MixingSettings settings, Action successCallback)
     {
-        this.settings = settings;
+        currentRecipe = recipe;
         onSuccess = successCallback;
 
-        root.SetActive(true);
+        requiredShakeDistance = settings.requiredShakeDistance;
 
-        GenerateSequence();
+        root.SetActive(true);
+        PlayRootFadeIn();
+
+        if (shakerRoot != null)
+        {
+            shakerRoot.SetActive(true);
+        }
+
+        if (ingredientRoot != null)
+        {
+            ingredientRoot.SetActive(true);
+        }
 
         currentIndex = 0;
 
         playing = true;
+        processingIngredient = false;
+
+        currentPhase = MixingPhase.AddIngredients;
+
+        ResetShaker();
+
+        ResetShakeUI();
+
+        UpdateIngredientProgress();
+
+        CounterBarUI.instance.SetIngredientClickHandler(HandleIngredientClick);
+
+        UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
 
         PlayerController.instance.movement.SetCanMove(false);
     }
 
-    private void GenerateSequence()
+    private void ResetShaker()
     {
-        sequence.Clear();
-
-        foreach (Transform child in arrowParent)
+        if (shakerRoot == null)
         {
-            Destroy(child.gameObject);
+            return;
         }
 
-        spawnedArrows.Clear();
+        shakerRoot.transform.localPosition = shakerStartPosition;
+        shakerRoot.transform.localRotation = shakerStartRotation;
+    }
 
-        for (int i = 0; i < settings.arrowCount; i++)
+    private void Update()
+    {
+        if (!playing)
         {
-            ArrowType randomArrow = (ArrowType)UnityEngine.Random.Range(0, 4);
+            return;
+        }
 
-            sequence.Add(randomArrow);
-
-            MixingArrowUI arrow = Instantiate(arrowPrefab, arrowParent);
-
-            arrow.Setup(randomArrow);
-
-            spawnedArrows.Add(arrow);
+        if (currentPhase == MixingPhase.Shake)
+        {
+            UpdateShake();
         }
     }
 
-    private void CheckInput()
+    private bool HandleIngredientClick(GameObject clickedObject)
     {
-        ArrowType? input = GetInputArrow();
-
-        if (input == null) return;
-
-        ArrowType target = sequence[currentIndex];
-
-        if (input == target)
+        if (!playing)
         {
-            spawnedArrows[currentIndex].SetCorrect();
+            return false;
+        }
 
-            currentIndex++;
+        if (currentPhase != MixingPhase.AddIngredients)
+        {
+            return false;
+        }
 
-            if (currentIndex >= sequence.Count)
+        if (processingIngredient)
+        {
+            return false;
+        }
+
+        if (currentRecipe == null)
+        {
+            return false;
+        }
+
+        if (currentRecipe.ingredients == null || currentRecipe.ingredients.Count == 0)
+        {
+            return false;
+        }
+
+        if (currentIndex >= currentRecipe.ingredients.Count)
+        {
+            return false;
+        }
+
+        CounterIngredientUI ingredientUI = clickedObject.GetComponent<CounterIngredientUI>();
+
+        if (ingredientUI == null)
+        {
+            return false;
+        }
+
+        IngredientType clickedIngredient = ingredientUI.IngredientType;
+
+        IngredientType requiredIngredient = currentRecipe.ingredients[currentIndex].ingredientType;
+
+        if (clickedIngredient != requiredIngredient)
+        {
+            WrongIngredientFeedback(clickedIngredient, requiredIngredient);
+            return false;
+        }
+
+        CorrectIngredientFeedback(clickedIngredient);
+
+        processingIngredient = true;
+
+        ingredientUI.MoveToTarget(
+            shakerTarget,
+            () =>
             {
-                Success();
+                CounterBarUI.instance.RemoveIngredient(clickedObject);
+
+                currentIndex++;
+
+                processingIngredient = false;
+
+                UpdateIngredientProgress();
+
+                if (currentIndex >= currentRecipe.ingredients.Count)
+                {
+                    AddIngredientsInShakeComplete();
+                }
+            }
+        );
+
+        return true;
+    }
+
+    private void CorrectIngredientFeedback(IngredientType ingredient)
+    {
+        if (ingredientInstructionText == null)
+        {
+            return;
+        }
+
+        ingredientInstructionText.text = $"Correct ingredient: {FormatIngredientName(ingredient)}";
+
+        ShowIngredientInstruction();
+    }
+
+    private void WrongIngredientFeedback(IngredientType clicked, IngredientType required)
+    {
+        if (ingredientInstructionText == null)
+        {
+            return;
+        }
+
+        ingredientInstructionText.text = $"Wrong! Add {FormatIngredientName(required)}";
+
+        ShowIngredientInstruction();
+    }
+
+    private void ShowIngredientInstruction()
+    {
+        if (ingredientInstructionCoroutine != null)
+        {
+            StopCoroutine(ingredientInstructionCoroutine);
+        }
+
+        ingredientInstructionText.gameObject.SetActive(true);
+
+        ingredientInstructionCoroutine = StartCoroutine(HideIngredientInstructionAfterDelay());
+    }
+
+    private IEnumerator HideIngredientInstructionAfterDelay()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (ingredientInstructionText != null)
+        {
+            ingredientInstructionText.gameObject.SetActive(false);
+        }
+
+        ingredientInstructionCoroutine = null;
+    }
+
+    private void UpdateIngredientProgress()
+    {
+        if (currentRecipe == null || currentRecipe.ingredients == null)
+        {
+            return;
+        }
+
+        int total = currentRecipe.ingredients.Count;
+
+        if (ingredientProgressText != null)
+        {
+            ingredientProgressText.text = $"{Mathf.Min(currentIndex, total)} / {total}";
+        }
+    }
+
+    private string FormatIngredientName(IngredientType ingredient)
+    {
+        return ingredient.ToString().Replace("_", " ");
+    }
+
+    private void AddIngredientsInShakeComplete()
+    {
+        CounterBarUI.instance.ClearIngredientClickHandler();
+
+        StartShakePhase();
+    }
+
+    private void StartShakePhase()
+    {
+        currentPhase = MixingPhase.Shake;
+
+        if (ingredientRoot != null)
+        {
+            ingredientRoot.SetActive(false);
+        }
+
+        shakeDistance = 0f;
+
+        hasLastMousePosition = false;
+
+        ResetShakeUI();
+
+        if (shakeProgressSlider != null)
+        {
+            shakeProgressSlider.gameObject.SetActive(true);
+        }
+
+        if (shakeInstructionText != null)
+        {
+            shakeInstructionText.text = "Hold LMB + Move Left & Right";
+        }
+    }
+
+    private void UpdateShake()
+    {
+        if (currentPhase != MixingPhase.Shake)
+        {
+            return;
+        }
+
+        if (!Input.GetMouseButton(0))
+        {
+            hasLastMousePosition = false;
+            return;
+        }
+
+        Vector3 currentMousePosition = Input.mousePosition;
+
+        if (!hasLastMousePosition)
+        {
+            lastMousePosition = currentMousePosition;
+            hasLastMousePosition = true;
+            return;
+        }
+
+        Vector3 mouseDelta = currentMousePosition - lastMousePosition;
+
+        lastMousePosition = currentMousePosition;
+
+        float actualMovementX = UpdateShakerMovement(mouseDelta);
+
+        if (actualMovementX < 0f)
+        {
+            leftShakeDistance += Mathf.Abs(actualMovementX);
+        }
+        else if (actualMovementX > 0f)
+        {
+            rightShakeDistance += actualMovementX;
+        }
+
+        shakeDistance = Mathf.Min(leftShakeDistance, rightShakeDistance);
+
+        float progress = Mathf.Clamp01(shakeDistance / requiredShakeDistance);
+
+        UpdateShakeUI(progress);
+
+        if (progress >= 1f)
+        {
+            ShakeComplete();
+        }
+    }
+
+    private float UpdateShakerMovement(Vector3 mouseDelta)
+    {
+        if (shakerRoot == null)
+        {
+            return 0f;
+        }
+
+        Vector3 currentPosition = shakerRoot.transform.localPosition;
+
+        float newX = currentPosition.x + mouseDelta.x * shakerMoveMultiplier;
+
+        float minX = shakerStartPosition.x - maxShakerOffset;
+        float maxX = shakerStartPosition.x + maxShakerOffset;
+
+        newX = Mathf.Clamp(newX, minX, maxX);
+
+        float actualMovementX = newX - currentPosition.x;
+
+        shakerRoot.transform.localPosition = new Vector3(newX, shakerStartPosition.y, shakerStartPosition.z);
+
+        float offset = newX - shakerStartPosition.x;
+
+        float normalizedOffset = Mathf.Clamp(offset / maxShakerOffset, -1f, 1f);
+
+        float rotationZ = normalizedOffset * maxShakerRotation;
+
+        shakerRoot.transform.localRotation = shakerStartRotation * Quaternion.Euler(0f, 0f, rotationZ);
+
+        return actualMovementX;
+    }
+
+    private void UpdateShakeUI(float progress)
+    {
+        if (shakeProgressSlider != null)
+        {
+            shakeProgressSlider.value = progress;
+        }
+
+        if (shakePercentText != null)
+        {
+            if (progress >= 1f)
+            {
+                shakePercentText.text = "COMPLETED!";
+            }
+            else
+            {
+                int percent = Mathf.RoundToInt(progress * 100f);
+
+                shakePercentText.text = $"{percent}%";
             }
         }
-        else
+    }
+
+    private void ResetShakeUI()
+    {
+        shakeDistance = 0f;
+        leftShakeDistance = 0f;
+        rightShakeDistance = 0f;
+
+        hasLastMousePosition = false;
+
+        if (shakeProgressSlider != null)
         {
-            Wrong();
+            shakeProgressSlider.minValue = 0f;
+            shakeProgressSlider.maxValue = 1f;
+            shakeProgressSlider.value = 0f;
+
+            shakeProgressSlider.gameObject.SetActive(false);
+        }
+
+        if (shakePercentText != null)
+        {
+            shakePercentText.text = "0%";
+        }
+
+        if (shakeInstructionText != null)
+        {
+            shakeInstructionText.text = "Add the correct ingredient";
         }
     }
 
-    private ArrowType? GetInputArrow()
+    private void ShakeComplete()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            return ArrowType.Up;
+        currentPhase = MixingPhase.Complete;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            return ArrowType.Down;
+        hasLastMousePosition = false;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            return ArrowType.Left;
+        UpdateShakeUI(1f);
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            return ArrowType.Right;
+        if (shakeInstructionText != null)
+        {
+            shakeInstructionText.text = "SHAKE COMPLETE";
+        }
 
-        return null;
+        StartCoroutine(CompleteMixing());
     }
 
-    private void Wrong()
+    private IEnumerator CompleteMixing()
     {
         playing = false;
 
-        foreach (MixingArrowUI arrow in spawnedArrows)
-        {
-            arrow.SetWrong();
-        }
+        ResetShaker();
 
-        Invoke(nameof(ResetSequence), 1f);
-    }
+        yield return new WaitForSeconds(completeDelay);
 
-    private void ResetSequence()
-    {
-        foreach (MixingArrowUI arrow in spawnedArrows)
-        {
-            arrow.ResetColor();
-        }
+        CounterBarUI.instance.ClearIngredientClickHandler();
 
-        currentIndex = 0;
-
-        playing = true;
-    }
-
-    private void Success()
-    {
-        playing = false;
-
-        StartCoroutine(MoveDelay());
-    }
-
-    IEnumerator MoveDelay()
-    {
-        yield return new WaitForSeconds(.25f);
+        yield return PlayRootFadeOut();
 
         root.SetActive(false);
+
+        UIManager.Instance.UnlockGameplayInput();
+
+        UIManager.Instance.UnlockPauseInput();
 
         PlayerController.instance.movement.SetCanMove(true);
 
         onSuccess?.Invoke();
+
+        onSuccess = null;
+
+        currentRecipe = null;
+    }
+
+    private void PlayRootFadeIn()
+    {
+        if (rootCanvasGroup == null || root == null)
+        {
+            return;
+        }
+
+        Transform rootTransform = root.transform;
+
+        rootCanvasGroup.DOKill();
+        rootTransform.DOKill();
+
+        rootCanvasGroup.alpha = 0f;
+        rootTransform.localScale = rootOriginalScale * rootStartScale;
+
+        rootCanvasGroup
+            .DOFade(1f, fadeInDuration)
+            .SetEase(Ease.OutQuad);
+
+        rootTransform
+            .DOScale(rootOriginalScale, fadeInDuration)
+            .SetEase(Ease.OutBack);
+    }
+
+    private IEnumerator PlayRootFadeOut()
+    {
+        if (rootCanvasGroup == null || root == null)
+        {
+            yield break;
+        }
+
+        Transform rootTransform = root.transform;
+
+        rootCanvasGroup.DOKill();
+        rootTransform.DOKill();
+
+        Tween fadeTween = rootCanvasGroup
+            .DOFade(0f, fadeOutDuration)
+            .SetEase(Ease.InQuad);
+
+        rootTransform
+            .DOScale(rootOriginalScale * rootStartScale, fadeOutDuration)
+            .SetEase(Ease.InQuad);
+
+        yield return fadeTween.WaitForCompletion();
+
+        rootCanvasGroup.alpha = 0f;
+        rootTransform.localScale = rootOriginalScale;
     }
 }

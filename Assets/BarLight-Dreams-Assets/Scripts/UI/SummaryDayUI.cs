@@ -9,6 +9,7 @@ public class SummaryDayUI : MonoBehaviour
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text earningsTodayText;
     [SerializeField] private TMP_Text tipsTodayText;
+    [SerializeField] private TMP_Text objectRewardTodayText;
     [SerializeField] private TMP_Text customersServedText;
     [SerializeField] private TMP_Text totalIncomeText;
     [SerializeField] private Button nextButton;
@@ -29,7 +30,7 @@ public class SummaryDayUI : MonoBehaviour
         upgradeButton.onClick.AddListener(OnClickUpgrade);
     }
 
-    public void Show(int day, int earnings, int tips, int customers, Action nextCallback)
+    public void Show(int day, int earnings, int tips, int reward, int customers, Action nextCallback)
     {
         UIManager.Instance.LockGameplayInput();
         UIManager.Instance.LockPauseInput();
@@ -51,10 +52,11 @@ public class SummaryDayUI : MonoBehaviour
 
         earningsTodayText.text = "0";
         tipsTodayText.text = "0";
+        objectRewardTodayText.text = "0";
         customersServedText.text = "0";
         totalIncomeText.text = "0";
 
-        int totalIncome = earnings + tips;
+        int totalIncome = earnings + tips + reward;
 
         Sequence seq = DOTween.Sequence();
 
@@ -83,6 +85,15 @@ public class SummaryDayUI : MonoBehaviour
                 0.9f
             )
         );
+
+        seq.Join(
+        DOTween.To(
+            () => 0,
+            x => objectRewardTodayText.text = x.ToString(),
+            reward,
+            0.9f
+        )
+    );
 
         seq.Join(
             DOTween.To(

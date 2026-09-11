@@ -86,7 +86,6 @@ public class UpgradeUI : MonoBehaviour
     {
         if (UpgradeManager.instance.IsMaxLevel(type))
         {
-            Debug.Log($"Upgrade {type} is already at max level.");
             return;
         }
 
@@ -94,7 +93,6 @@ public class UpgradeUI : MonoBehaviour
 
         if (!MoneyManager.instance.SpendMoney(price))
         {
-            Debug.Log($"Not enough money to upgrade {type}. Required: {price}");
             return;
         }
 

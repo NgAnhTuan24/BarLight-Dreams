@@ -84,7 +84,6 @@ public class StaffManager : MonoBehaviour
 
         if (staffController == null)
         {
-            Debug.LogWarning("StaffManager: Staff prefab doesn't have StaffController!");
             Destroy(staffObject);
             return;
         }
@@ -125,5 +124,15 @@ public class StaffManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void ApplySavedStaffCount()
+    {
+        int targetStaffCount = GetMaxStaffCount();
+
+        while (staffs.Count < targetStaffCount)
+        {
+            SpawnStaff();
+        }
     }
 }

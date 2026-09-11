@@ -67,6 +67,10 @@ public class SaveManager : MonoBehaviour
         data.totalServedCustomers = DayStatsManager.instance.TotalServedCustomers;
         data.totalAngryCustomers = DayStatsManager.instance.TotalAngryCustomers;
 
+        data.upgrades = UpgradeManager.instance.GetSaveData();
+
+        data.tutorialCompleted = TutorialManager.instance != null && TutorialManager.instance.IsTutorialCompleted;
+
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
         SaveLoadSystem.SaveGame(data, CurrentSlot);

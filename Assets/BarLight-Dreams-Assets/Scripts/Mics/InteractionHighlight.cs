@@ -29,6 +29,9 @@ public class InteractionHighlight : MonoBehaviour
     [Header("Pickup Drink")]
     [SerializeField] private PickupCounter pickupCounter;
 
+    [Header("Tutorial")]
+    [SerializeField] private TutorialStep tutorialRequiredStep = TutorialStep.None;
+
     private bool playerInRange;
     private bool canShowTextUI;
 
@@ -45,6 +48,22 @@ public class InteractionHighlight : MonoBehaviour
     private void Update()
     {
         if (!playerInRange) return;
+
+        if (!IsInteractionAllowed())
+        {
+            interactionUI?.Hide();
+            return;
+        }
+
+        if (pickupCounter != null)
+        {
+            if (UpgradeManager.instance != null && !UpgradeManager.instance.HasStaffUpgrade())
+            {
+                interactionUI?.ShowMessage(textAnchor, "Staff upgrade required!");
+
+                return;
+            }
+        }
 
         bool newCanShowTextUI = CanInteract();
 
@@ -107,6 +126,16 @@ public class InteractionHighlight : MonoBehaviour
         }
     }
 
+    private bool IsInteractionAllowed()
+    {
+        TutorialManager tutorial = TutorialManager.instance;
+
+        if (tutorial == null || !tutorial.IsTutorialActive)
+            return true;
+
+        return tutorialRequiredStep == tutorial.CurrentStep;
+    }
+
     private bool CanInteract()
     {
         if (drinkMixer != null)
@@ -116,6 +145,11 @@ public class InteractionHighlight : MonoBehaviour
 
         if (pickupCounter != null)
         {
+            if (UpgradeManager.instance == null || !UpgradeManager.instance.HasStaffUpgrade())
+            {
+                return false;
+            }
+
             return PlayerHoldItem.instance.HasDrink() && pickupCounter.HasSpace();
         }
 

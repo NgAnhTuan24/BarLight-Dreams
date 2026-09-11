@@ -22,9 +22,19 @@ public class GameLoader : MonoBehaviour
             MoneyManager.instance.SetMoney(data.currentMoney);
         }
 
+        if (UpgradeManager.instance != null)
+        {
+            UpgradeManager.instance.LoadSaveData(data.upgrades);
+        }
+
         if (DayStatsManager.instance != null)
         {
             DayStatsManager.instance.LoadTotalStats(data.totalMoneyEarned, data.totalServedCustomers, data.totalAngryCustomers);
+        }
+
+        if (TutorialManager.instance != null)
+        {
+            TutorialManager.instance.LoadTutorialState(data.tutorialCompleted);
         }
 
         if (GameClock.instance != null)

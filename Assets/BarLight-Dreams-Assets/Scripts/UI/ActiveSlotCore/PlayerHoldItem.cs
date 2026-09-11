@@ -15,6 +15,8 @@ public class PlayerHoldItem : MonoBehaviour
 {
     public static PlayerHoldItem instance;
 
+    public event System.Action OnCupHeld;
+
     public HoldItemType CurrentType { get; private set; }
 
     private DrinkData currentDrinkData;
@@ -31,6 +33,11 @@ public class PlayerHoldItem : MonoBehaviour
         CurrentType = type;
 
         ActiveSlotUI.instance.Show(icon);
+
+        if (type == HoldItemType.Cup)
+        {
+            OnCupHeld?.Invoke();
+        }
     }
 
     public void HoldDrink(DrinkRecipeSO recipe)

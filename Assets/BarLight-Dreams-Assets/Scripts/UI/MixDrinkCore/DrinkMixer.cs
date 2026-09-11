@@ -13,6 +13,11 @@ public class DrinkMixer : MonoBehaviour
 
     [SerializeField] private float instantChance;
 
+    private DrinkRecipeSO currentRecipe;
+
+    public event System.Action<DrinkRecipeSO> OnMixingStarted;
+    public event System.Action<DrinkRecipeSO> OnMixingCompleted;
+
     private void Awake()
     {
         instance = this;
@@ -53,7 +58,25 @@ public class DrinkMixer : MonoBehaviour
             return;
         }
 
-        DrinkRecipeSO recipe = GetCurrentRecipe();
+        currentRecipe = GetCurrentRecipe();
+
+        if (currentRecipe == null)
+        {
+            popupText.ShowText(PopupMessages.GetWrongRecipeMessage());
+
+            return;
+        }
+
+        if (!RecipeProgressionManager.instance.IsRecipeUnlocked(currentRecipe))
+        {
+            popupText.ShowText("Recipe not unlocked yet!");
+
+            currentRecipe = null;
+
+            return;
+        }
+
+        OnMixingStarted?.Invoke(currentRecipe);
 
         if (Random.value <= instantChance)
         {
@@ -61,58 +84,64 @@ public class DrinkMixer : MonoBehaviour
             return;
         }
 
-        MixingSettings settings = recipe != null ? recipe.mixing : new MixingSettings();
+        MixingSettings settings = currentRecipe.mixing;
 
-        minigameUI.StartGame(settings, Mix);
+        minigameUI.StartGame(currentRecipe, settings, Mix);
     }
 
     public void Mix()
     {
-        if (!CanMix())
+        if (currentRecipe == null)
         {
             return;
         }
 
-        List<IngredientType> current = CounterBarUI.instance.GetIngredients();
+        DrinkRecipeSO recipe = currentRecipe;
 
-        foreach (DrinkRecipeSO recipe in recipes)
-        {
-            if (IsMatch(recipe, current))
-            {
-                CounterBarUI.instance.CleanCounter();
-
-                PlayerHoldItem.instance.HoldDrink(recipe);
-
-                popupText.ShowText(PopupMessages.GetSuccessMessage());
-
-                return;
-            }
-        }
+        currentRecipe = null;
 
         CounterBarUI.instance.CleanCounter();
-        PlayerHoldItem.instance.Clear();
-        popupText.ShowText(PopupMessages.GetFailMessage());
+
+        PlayerHoldItem.instance.HoldDrink(recipe);
+
+        OnMixingCompleted?.Invoke(recipe);
+
+        if (DailyObjectiveManager.instance != null)
+        {
+            DailyObjectiveManager.instance.RegisterDrinkMixed(recipe);
+        }
+
+        popupText.ShowText(PopupMessages.GetSuccessMessage());
     }
 
     private bool IsMatch(DrinkRecipeSO recipe, List<IngredientType> current)
     {
+        if (recipe == null || recipe.ingredients == null || current == null)
+        {
+            return false;
+        }
+
         if (recipe.ingredients.Count != current.Count)
         {
             return false;
         }
 
-        for (int i = 0; i < recipe.ingredients.Count; i++)
+        List<IngredientType> remainingIngredients = new List<IngredientType>(current);
+
+        foreach (IngredientData recipeIngredientData in recipe.ingredients)
         {
-            IngredientType recipeIngredient = recipe.ingredients[i].ingredientType;
+            IngredientType recipeIngredient = recipeIngredientData.ingredientType;
 
-            IngredientType currentIngredient = current[i];
+            int foundIndex = remainingIngredients.IndexOf(recipeIngredient);
 
-            if (recipeIngredient != currentIngredient)
+            if (foundIndex == -1)
             {
                 return false;
             }
+
+            remainingIngredients.RemoveAt(foundIndex);
         }
 
-        return true;
+        return remainingIngredients.Count == 0;
     }
 }

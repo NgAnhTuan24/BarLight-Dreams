@@ -62,14 +62,6 @@ public enum HoldItemType
     Drink
 }
 
-public enum ArrowType
-{
-    Up,
-    Down,
-    Left,
-    Right
-}
-
 public enum UpgradeType
 {
     Counter,
@@ -77,4 +69,22 @@ public enum UpgradeType
     Chair,
     Staff,
     Mixing
+}
+
+public enum RecipeTier
+{
+    Tier1,
+    Tier2,
+    Tier3,
+    Tier4
+}
+
+public enum CustomerType
+{
+    Normal,
+    Student,
+    Impatient,
+    Tourist,
+    Rich,
+    VIP
 }

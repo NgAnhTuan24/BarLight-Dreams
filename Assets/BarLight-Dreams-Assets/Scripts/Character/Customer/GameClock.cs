@@ -30,6 +30,9 @@ public class GameClock : MonoBehaviour
     [Header("UI In Game")]
     [SerializeField] private DayIntroUI dayIntroUI;
     [SerializeField] private SummaryDayUI summaryUI;
+    [SerializeField] private RecipeUnlockPopupUI recipeUnlockPopupUI;
+    [SerializeField] private SceneTransition sceneTransition;
+
     public bool IsRunning { get; private set; }
 
     private float timer;
@@ -86,14 +89,14 @@ public class GameClock : MonoBehaviour
 
             if (isNewDay)
             {
-                SceneTransition.instance.FadeIn(() =>
+                sceneTransition.FadeIn(() =>
                 {
-                    ShowDayIntro(data.currentDay);
+                    ShowDayIntro(data.currentDay, false);
                 });
             }
             else
             {
-                SceneTransition.instance.FadeIn(() =>
+                sceneTransition.FadeIn(() =>
                 {
                     IsRunning = true;
                     PlayerController.instance.movement.SetCanMove(true);
@@ -105,9 +108,9 @@ public class GameClock : MonoBehaviour
 
         StartNewDay();
 
-        SceneTransition.instance.FadeIn(() =>
+        sceneTransition.FadeIn(() =>
         {
-            ShowDayIntro(CurrentDay);
+            ShowDayIntro(CurrentDay, false);
         });
     }
 
@@ -235,6 +238,7 @@ public class GameClock : MonoBehaviour
             CurrentDay,
             DayStatsManager.instance.MoneyEarnedToday,
             DayStatsManager.instance.TipsToday,
+            DayStatsManager.instance.ObjectiveRewardToday,
             DayStatsManager.instance.ServedCustomersToday,
             StartNextDay
         );
@@ -248,7 +252,7 @@ public class GameClock : MonoBehaviour
 
         StartNewDay();
 
-        ShowDayIntro(CurrentDay);
+        ShowDayIntro(CurrentDay, true);
 
         SaveManager.instance.SaveGame();
     }
@@ -284,19 +288,45 @@ public class GameClock : MonoBehaviour
         InitializeDay(true);
     }
 
-    private void ShowDayIntro(int day)
+    private void ShowDayIntro(int day, bool allowRecipeUnlockPopup)
     {
         dayIntroUI.Show(
             $"DAY {day}",
             "OPEN BAR",
-            () =>
-            {
-                IsRunning = true;
-
-                PlayerController.instance.movement.SetCanMove(true);
-
-                OnNewDayStarted?.Invoke();
-            }
+            () => ContinueNewDayFlow(allowRecipeUnlockPopup)
         );
+    }
+
+    private void ContinueNewDayFlow(bool allowRecipeUnlockPopup)
+    {
+        if (allowRecipeUnlockPopup && recipeUnlockPopupUI != null && recipeUnlockPopupUI.Show(CurrentDay, StartGameplay))
+        {
+            return;
+        }
+
+        StartGameplay();
+    }
+
+    private void StartGameplay()
+    {
+        PlayerController.instance.movement.SetCanMove(true);
+
+        OnNewDayStarted?.Invoke();
+
+        if (TutorialManager.instance != null && TutorialManager.instance.IsTutorialActive)
+        {
+            IsRunning = false;
+            return;
+        }
+
+        IsRunning = true;
+    }
+
+    public void StartClock()
+    {
+        if (dayEnded)
+            return;
+
+        IsRunning = true;
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -24,6 +23,11 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("Runtime")]
     [SerializeField] private List<UpgradeRuntimeData> runtimeData = new();
+
+    public bool HasStaffUpgrade()
+    {
+        return GetLevel(UpgradeType.Staff) >= 1;
+    }
 
     private void Awake()
     {
@@ -368,5 +372,54 @@ public class UpgradeManager : MonoBehaviour
         MixingLevelData data = (MixingLevelData)GetCurrentLevelData(UpgradeType.Mixing);
 
         return data.instantChance;
+    }
+
+    public List<UpgradeRuntimeData> GetSaveData()
+    {
+        List<UpgradeRuntimeData> saveData = new();
+
+        foreach (UpgradeRuntimeData data in runtimeData)
+        {
+            saveData.Add(new UpgradeRuntimeData
+            {
+                upgradeType = data.upgradeType,
+                currentLevel = data.currentLevel
+            });
+        }
+
+        return saveData;
+    }
+
+    public void LoadSaveData(List<UpgradeRuntimeData> saveData)
+    {
+        if (saveData == null)
+            return;
+
+        foreach (UpgradeRuntimeData savedData in saveData)
+        {
+            UpgradeRuntimeData runtime = GetRuntime(savedData.upgradeType);
+
+            if (runtime == null)
+                continue;
+
+            int maxLevel = GetMaxLevel(savedData.upgradeType);
+
+            runtime.currentLevel = Mathf.Clamp(
+                savedData.currentLevel,
+                0,
+                maxLevel
+            );
+        }
+
+        ApplyLoadedUpgrades();
+    }
+
+    private void ApplyLoadedUpgrades()
+    {
+        ApplyUpgrade(UpgradeType.Counter);
+        ApplyUpgrade(UpgradeType.OrderSlot);
+        ApplyUpgrade(UpgradeType.Chair);
+        ApplyUpgrade(UpgradeType.Mixing);
+        StaffManager.instance.ApplySavedStaffCount();
     }
 }

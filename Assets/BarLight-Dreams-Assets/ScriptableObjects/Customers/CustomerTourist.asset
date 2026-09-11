@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85ee5c14bf2daa43b336ad385755b61, type: 3}
   m_Name: CustomerTourist
   m_EditorClassIdentifier: 
+  customerType: 3
+  unlockDay: 5
+  spawnWeight: 10
   waitOrderTime: 65
   waitDrinkTime: 120
   tipChance: 0.6
   tipMultiplier: 1.2
-  favoriteDrinks: []
+  favoriteDrinks:
+  - {fileID: 11400000, guid: 02e0feab9daa4f944892b896a5559d5e, type: 2}
+  - {fileID: 11400000, guid: ef7a74843d850154f90affdbd302ea19, type: 2}
+  - {fileID: 11400000, guid: 425bff0d3ea66a94cb444fd6a3fc1ae5, type: 2}

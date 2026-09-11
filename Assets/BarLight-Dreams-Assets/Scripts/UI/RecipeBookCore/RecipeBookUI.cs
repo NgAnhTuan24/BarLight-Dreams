@@ -20,20 +20,42 @@ public class RecipeBookUI : MonoBehaviour
     [SerializeField] private Transform ingredientParent;
     [SerializeField] private IngredientItemUI ingredientPrefab;
 
+    public IReadOnlyList<DrinkRecipeSO> Recipes => recipes;
+
     private void Start()
     {
         CreateRecipeButtons();
+        ShowFirstUnlockedRecipe();
 
-        if (recipes.Count > 0)
+        GameClock.instance.OnNewDayStarted += RefreshRecipeBook;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameClock.instance != null)
         {
-            ShowRecipe(recipes[0]);
+            GameClock.instance.OnNewDayStarted -= RefreshRecipeBook;
         }
+    }
+
+    private void RefreshRecipeBook()
+    {
+        foreach (Transform child in recipeButtonParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        CreateRecipeButtons();
+        ShowFirstUnlockedRecipe();
     }
 
     private void CreateRecipeButtons()
     {
         foreach (DrinkRecipeSO recipe in recipes)
         {
+            //if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            //    continue;
+
             RecipeButtonUI button = Instantiate(recipeButtonPrefab, recipeButtonParent);
 
             button.Setup(recipe, this);
@@ -55,11 +77,25 @@ public class RecipeBookUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (IngredientData ingredient in recipe.ingredients)
+        for (int i = 0; i < recipe.ingredients.Count; i++)
         {
+            IngredientData ingredient = recipe.ingredients[i];
+
             IngredientItemUI item = Instantiate(ingredientPrefab, ingredientParent);
 
-            item.SetupRecipeIngredient(ingredient);
+            item.SetupRecipeIngredient(ingredient, i + 1);
+        }
+    }
+
+    private void ShowFirstUnlockedRecipe()
+    {
+        foreach (DrinkRecipeSO recipe in recipes)
+        {
+            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+                continue;
+
+            ShowRecipe(recipe);
+            break;
         }
     }
 }

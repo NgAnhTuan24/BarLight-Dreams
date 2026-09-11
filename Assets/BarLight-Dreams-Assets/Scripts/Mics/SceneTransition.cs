@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class SceneTransition : MonoBehaviour
 {
-    public static SceneTransition instance;
-
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private float delayBeforeFade = 1f;
     [SerializeField] private float fadeDuration = 1f;
 
     public bool IsTransitioning { get; private set; }
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     public void FadeIn(Action onComplete = null)
     {

@@ -9,6 +9,9 @@ public class MenuGame : MonoBehaviour
 
     [SerializeField] private AudioClip musicGame;
 
+    [SerializeField] private SceneTransition fadeIn;
+    [SerializeField] private SceneTransition fadeOut;
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -16,6 +19,8 @@ public class MenuGame : MonoBehaviour
         versionText.text = $"DEMO v{Application.version}";
 
         AudioManager.instance.PlayMusic(musicGame);
+
+        fadeIn.FadeIn();
     }
 
     public void StartNewGame()
@@ -29,7 +34,7 @@ public class MenuGame : MonoBehaviour
 
         SaveManager.instance.StartNewGame(slot);
 
-        SceneTransition.instance.FadeOut(() =>
+        fadeOut.FadeOut(() =>
         {
             SceneManager.LoadScene(sceneName);
         });
