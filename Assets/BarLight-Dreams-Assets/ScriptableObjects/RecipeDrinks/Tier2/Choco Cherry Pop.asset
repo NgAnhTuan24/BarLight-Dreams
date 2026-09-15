@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
+  m_Name: Choco Cherry Pop
+  m_EditorClassIdentifier: 
+  drinkType: 4
+  displayName: Choco Cherry Pop
+  drinkIcon: {fileID: 21300000, guid: f16809c961640504c831f615d872f00f, type: 3}
+  price: 150
+  ingredients:
+  - ingredientType: 1
+    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
+  - ingredientType: 17
+    ingredientIcon: {fileID: 21300000, guid: bf0309323bc8c4c4883fcafc2e617d76, type: 3}
+  - ingredientType: 4
+    ingredientIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}
+  mixing:
+    requiredShakeDistance: 1800
+  recipeTier: 1
+  unlockDay: 5

@@ -40,6 +40,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Test Mode")]
     [SerializeField] private bool enableTutorial = true;
 
+    public bool IsTutorialEnabled => enableTutorial;
+
     public TutorialState State { get; private set; } = TutorialState.Inactive;
 
     public bool IsTutorialActive => State == TutorialState.Running;

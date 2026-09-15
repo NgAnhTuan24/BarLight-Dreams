@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Tequila Sunrise
+  m_Name: Amber Sparkle
   m_EditorClassIdentifier: 
-  drinkType: 2
-  displayName: Tequila Sunrise
-  drinkIcon: {fileID: 21300000, guid: ba1477a738f94ab42bbf4a460892df07, type: 3}
+  drinkType: 12
+  displayName: Amber Sparkle
+  drinkIcon: {fileID: 21300000, guid: 68d1ccaa9f793f7489c59866ea72219a, type: 3}
   price: 100
   ingredients:
-  - ingredientType: 15
-    ingredientIcon: {fileID: 21300000, guid: 389b2a733a19c9348b11899fa7c5f014, type: 3}
+  - ingredientType: 20
+    ingredientIcon: {fileID: 21300000, guid: 17ebdbce97fd270438bd4e4b50ce904b, type: 3}
   - ingredientType: 8
     ingredientIcon: {fileID: 21300000, guid: 8f1f35e10be30834fa062675ee2bfcee, type: 3}
   mixing:
-    arrowCount: 3
+    requiredShakeDistance: 1000
+  recipeTier: 0
+  unlockDay: 1

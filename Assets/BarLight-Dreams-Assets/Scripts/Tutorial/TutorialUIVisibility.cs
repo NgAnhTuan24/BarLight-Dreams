@@ -18,13 +18,13 @@ public class TutorialObjectHider : MonoBehaviour
     {
         if (TutorialManager.instance != null)
         {
-            TutorialManager.instance.OnTutorialCompleted -= RefreshObjects;
+            TutorialManager.instance.OnTutorialStateChanged -= RefreshObjects;
         }
     }
 
     private void RefreshObjects()
     {
-        bool showObjects = TutorialManager.instance.IsTutorialCompleted;
+        bool showObjects = !TutorialManager.instance.IsTutorialEnabled || TutorialManager.instance.IsTutorialCompleted;
 
         foreach (GameObject obj in objectsToShowAfterTutorial)
         {

@@ -24,6 +24,6 @@ MonoBehaviour:
   - ingredientType: 2
     ingredientIcon: {fileID: 21300000, guid: cdfdcafa53b56404186b01d1cc4c9a4f, type: 3}
   mixing:
-    arrowCount: 5
+    requiredShakeDistance: 1500
   recipeTier: 1
   unlockDay: 3

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Amber Moonlight
+  m_Name: Velvet Kiss
   m_EditorClassIdentifier: 
-  drinkType: 8
-  displayName: Amber Moonlight
-  drinkIcon: {fileID: 21300000, guid: d2d02d0e27d767d4895e601f834fde04, type: 3}
+  drinkType: 19
+  displayName: Velvet Kiss
+  drinkIcon: {fileID: 21300000, guid: 1a3654c2fc590b04293ca59fcba44608, type: 3}
   price: 150
   ingredients:
+  - ingredientType: 18
+    ingredientIcon: {fileID: 21300000, guid: 4a709f4315bd3b24eba664da998ad981, type: 3}
   - ingredientType: 21
     ingredientIcon: {fileID: 21300000, guid: 0dbc697f0a46f6a4e9c750227b8f64fc, type: 3}
-  - ingredientType: 19
-    ingredientIcon: {fileID: 21300000, guid: 4bad6fb3c5c533a48b9f737c824a32e6, type: 3}
-  - ingredientType: 4
-    ingredientIcon: {fileID: 21300000, guid: 4551979cf223b9042b45f4ecc370cf03, type: 3}
+  - ingredientType: 3
+    ingredientIcon: {fileID: 21300000, guid: a598385ae3524b34f9cd252a8536f2f1, type: 3}
   mixing:
-    arrowCount: 5
+    requiredShakeDistance: 2250
   recipeTier: 1
-  unlockDay: 4
+  unlockDay: 8

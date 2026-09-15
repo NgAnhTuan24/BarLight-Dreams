@@ -13620,10 +13620,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serveCustomersRange: {x: 5, y: 8}
-  serveCustomerTypeRange: {x: 3, y: 5}
+  serveCustomerTypeRange: {x: 2, y: 4}
   mixDrinkRange: {x: 2, y: 5}
   serveDrinkRange: {x: 2, y: 4}
-  earnMoneyRange: {x: 500, y: 1500}
+  earnMoneyRange: {x: 500, y: 1000}
   rewardRange: {x: 100, y: 200}
   customerPrefabs:
   - {fileID: 4001223003319005604, guid: a844d176fce7b1e4a9f6b42ba9caf9ae, type: 3}
@@ -13641,17 +13641,17 @@ MonoBehaviour:
   - {fileID: 1751953953958820347, guid: 954baa8bd9c00054b9e25ad19ef2ffb6, type: 3}
   recipeBookUI: {fileID: 124120691}
   serveCustomersGrowthPerDay: 1
-  serveCustomerTypeGrowthPerDay: 1
+  serveCustomerTypeGrowthPerDay: 0
   mixDrinkGrowthPerDay: 1
   serveDrinkGrowthPerDay: 1
-  earnMoneyGrowthPerDay: 200
-  rewardGrowthPerDay: 50
-  serveCustomersTargetCap: 20
-  serveCustomerTypeTargetCap: 8
-  mixDrinkTargetCap: 10
+  earnMoneyGrowthPerDay: 250
+  rewardGrowthPerDay: 20
+  serveCustomersTargetCap: 18
+  serveCustomerTypeTargetCap: 4
+  mixDrinkTargetCap: 8
   serveDrinkTargetCap: 8
   earnMoneyTargetCap: 3000
-  rewardCap: 750
+  rewardCap: 400
 --- !u!1 &503521548
 GameObject:
   m_ObjectHideFlags: 0
@@ -77645,6 +77645,7 @@ MonoBehaviour:
   wineCabinetPopup: {fileID: 1091444173}
   fruitBowlPopup: {fileID: 2004143313}
   introductionGreetingDuration: 4
+  enableTutorial: 1
 --- !u!4 &1748522715
 Transform:
   m_ObjectHideFlags: 0

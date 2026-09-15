@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Green Velvet
+  m_Name: Jade Breeze
   m_EditorClassIdentifier: 
-  drinkType: 1
-  displayName: Green Velvet
-  drinkIcon: {fileID: 21300000, guid: 20888eebd3044e34ea50c8861b6a0822, type: 3}
+  drinkType: 10
+  displayName: Jade Breeze
+  drinkIcon: {fileID: 21300000, guid: b64e8e7385aa6d441800f6970d018964, type: 3}
   price: 150
   ingredients:
+  - ingredientType: 11
+    ingredientIcon: {fileID: 21300000, guid: a52fce28260d84b4ca21fd9be31b8590, type: 3}
   - ingredientType: 10
     ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
-  - ingredientType: 16
-    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
-  - ingredientType: 5
-    ingredientIcon: {fileID: 21300000, guid: 999895756be91fe4593d3ba605355779, type: 3}
+  - ingredientType: 9
+    ingredientIcon: {fileID: 21300000, guid: fd514ec0f29bbfb4ca1a6b61335a2aa3, type: 3}
   mixing:
-    arrowCount: 5
+    requiredShakeDistance: 1900
   recipeTier: 1
-  unlockDay: 4
+  unlockDay: 5

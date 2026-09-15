@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Gin & Tonic
+  m_Name: Aurora Cloud
   m_EditorClassIdentifier: 
-  drinkType: 7
-  displayName: Gin & Tonic
-  drinkIcon: {fileID: 21300000, guid: d0bb3a5b0b5d7944d960680134c3a06b, type: 3}
+  drinkType: 9
+  displayName: Aurora Cloud
+  drinkIcon: {fileID: 21300000, guid: 4224332384aaf6f4c8a59e9c7f2f7bad, type: 3}
   price: 200
   ingredients:
-  - ingredientType: 1
-    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
-  - ingredientType: 15
-    ingredientIcon: {fileID: 21300000, guid: 389b2a733a19c9348b11899fa7c5f014, type: 3}
   - ingredientType: 16
     ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
-  - ingredientType: 9
-    ingredientIcon: {fileID: 21300000, guid: fd514ec0f29bbfb4ca1a6b61335a2aa3, type: 3}
+  - ingredientType: 19
+    ingredientIcon: {fileID: 21300000, guid: 4bad6fb3c5c533a48b9f737c824a32e6, type: 3}
+  - ingredientType: 13
+    ingredientIcon: {fileID: 21300000, guid: 58d803dd4bc6a9c428258aa6f1f9093e, type: 3}
+  - ingredientType: 6
+    ingredientIcon: {fileID: 21300000, guid: fcf11c9c60bfc4c4f9fee7b51b397bee, type: 3}
   mixing:
-    arrowCount: 8
+    requiredShakeDistance: 2800
   recipeTier: 2
-  unlockDay: 11
+  unlockDay: 12

@@ -24,7 +24,7 @@ MonoBehaviour:
     capacity: 2
   - price: 1700
     capacity: 3
-  - price: 2250
+  - price: 2500
     capacity: 4
   - price: 3500
     capacity: 5

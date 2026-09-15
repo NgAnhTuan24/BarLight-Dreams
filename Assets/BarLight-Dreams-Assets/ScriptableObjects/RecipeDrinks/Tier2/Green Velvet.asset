@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Mystic Martini
+  m_Name: Green Velvet
   m_EditorClassIdentifier: 
-  drinkType: 11
-  displayName: Mystic Martini
-  drinkIcon: {fileID: 21300000, guid: 503c7182fe6b74045933077691c7e58a, type: 3}
+  drinkType: 1
+  displayName: Green Velvet
+  drinkIcon: {fileID: 21300000, guid: 20888eebd3044e34ea50c8861b6a0822, type: 3}
   price: 150
   ingredients:
-  - ingredientType: 21
-    ingredientIcon: {fileID: 21300000, guid: 0dbc697f0a46f6a4e9c750227b8f64fc, type: 3}
   - ingredientType: 10
     ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
-  - ingredientType: 3
-    ingredientIcon: {fileID: 21300000, guid: a598385ae3524b34f9cd252a8536f2f1, type: 3}
+  - ingredientType: 16
+    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
+  - ingredientType: 5
+    ingredientIcon: {fileID: 21300000, guid: 999895756be91fe4593d3ba605355779, type: 3}
   mixing:
-    arrowCount: 6
+    requiredShakeDistance: 1700
   recipeTier: 1
-  unlockDay: 6
+  unlockDay: 4

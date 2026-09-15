@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6d6ce6ba76010340988c3ba2faa023b, type: 3}
-  m_Name: Green Hornet
+  m_Name: Green Oasis
   m_EditorClassIdentifier: 
-  drinkType: 6
-  displayName: Green Hornet
-  drinkIcon: {fileID: 21300000, guid: 6ae4b51974c234748afd69afb6faa15f, type: 3}
+  drinkType: 17
+  displayName: Green Oasis
+  drinkIcon: {fileID: 21300000, guid: 59b19d1f4c03e264ea0e5059413e7ca3, type: 3}
   price: 200
   ingredients:
-  - ingredientType: 1
-    ingredientIcon: {fileID: 21300000, guid: 58d7dcd07f317df408e2df11ee160fbe, type: 3}
   - ingredientType: 10
     ingredientIcon: {fileID: 21300000, guid: ef1be579263d4ee45bf0ff8e2b1987ee, type: 3}
-  - ingredientType: 11
-    ingredientIcon: {fileID: 21300000, guid: a52fce28260d84b4ca21fd9be31b8590, type: 3}
+  - ingredientType: 16
+    ingredientIcon: {fileID: 21300000, guid: 22a551669f36bbd4a926a8fdb9cfd9b0, type: 3}
+  - ingredientType: 5
+    ingredientIcon: {fileID: 21300000, guid: 999895756be91fe4593d3ba605355779, type: 3}
   - ingredientType: 5
     ingredientIcon: {fileID: 21300000, guid: 999895756be91fe4593d3ba605355779, type: 3}
   mixing:
-    arrowCount: 7
+    requiredShakeDistance: 2900
   recipeTier: 2
-  unlockDay: 9
+  unlockDay: 13
