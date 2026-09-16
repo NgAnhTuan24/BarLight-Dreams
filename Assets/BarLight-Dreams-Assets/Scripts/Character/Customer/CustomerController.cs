@@ -13,7 +13,10 @@ public class CustomerController : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip hurtSFX;
 
-    float counterCheckTimer;
+    [Header("Counter Waiting")]
+    [SerializeField] private float counterWaitTime = 5f;
+
+    private float counterCheckTimer;
 
     private CounterSlot targetCounterSlot;
 
@@ -119,11 +122,24 @@ public class CustomerController : MonoBehaviour
     {
         counterCheckTimer += Time.deltaTime;
 
-        if (counterCheckTimer < 2f) return;
+        if (counterCheckTimer < counterWaitTime) return;
 
         counterCheckTimer = 0f;
 
-        currentState = CustomerState.FindCounter;
+        CounterSlot slot = CounterManager.instance.ReserveSlot(this);
+
+        if (slot == null)
+        {
+            LeaveBar();
+            return;
+        }
+
+        targetCounterSlot = slot;
+
+        currentState = CustomerState.MovingToCounter;
+
+        aiPath.destination = slot.transform.position;
+        aiPath.canMove = true;
     }
 
     void MoveToCounter()
@@ -132,6 +148,8 @@ public class CustomerController : MonoBehaviour
 
         if (slot == null)
         {
+            counterCheckTimer = 0f;
+
             currentState = CustomerState.WaitingForCounter;
             return;
         }

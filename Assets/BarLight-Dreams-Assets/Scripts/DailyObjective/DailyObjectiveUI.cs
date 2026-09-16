@@ -1,30 +1,32 @@
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DailyObjectiveUI : MonoBehaviour
 {
     [Header("Panel")]
     [SerializeField] private GameObject panel;
 
-    [Header("UI")]
-    [SerializeField] private TMP_Text objectiveTypeText;
-    [SerializeField] private TMP_Text objectiveText;
-    [SerializeField] private TMP_Text progressText;
-    [SerializeField] private TMP_Text rewardText;
-    [SerializeField] private Slider progressBar;
-    [SerializeField] private TMP_Text progressPercentText;
+    [Header("Objective Items")]
+    [SerializeField] private DailyObjectiveItemUI[] objectiveItems;
+
+    [Header("Optional Notification")]
+    [SerializeField] private DailyObjectiveNotificationUI notificationUI;
 
     [Header("Animation")]
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private float animationDuration = 0.25f;
-    [SerializeField] private Ease openEase = Ease.OutBack;
-    [SerializeField] private Ease closeEase = Ease.InBack;
+    [SerializeField] private float showDuration = 0.2f;
+    [SerializeField] private float hideDuration = 0.15f;
+    [SerializeField] private float startScale = 0.8f;
 
-    private Tween currentTween;
+    private RectTransform panelRect;
 
-    private bool wasCompleted;
+    private void Awake()
+    {
+        if (panel != null)
+        {
+            panelRect = panel.GetComponent<RectTransform>();
+        }
+    }
 
     private void Start()
     {
@@ -33,230 +35,161 @@ public class DailyObjectiveUI : MonoBehaviour
             return;
         }
 
-        DailyObjectiveManager.instance.OnObjectiveChanged += UpdateUI;
+        DailyObjectiveManager.instance.OnObjectivesChanged += UpdateUI;
 
-        if (DailyObjectiveManager.instance.CurrentObjective != null)
+        DailyObjectiveManager.instance.OnObjectiveCompleted += HandleObjectiveCompleted;
+
+        DailyObjectiveManager.instance.OnAllObjectivesCompleted += HandleAllObjectivesCompleted;
+
+        UpdateUI(DailyObjectiveManager.instance.CurrentObjectives);
+
+        if (canvasGroup != null)
         {
-            UpdateUI(DailyObjectiveManager.instance.CurrentObjective);
+            canvasGroup.alpha = 0f;
         }
-        else
+
+        if (panelRect != null)
         {
-            ClearUI();
+            panelRect.localScale = Vector3.one;
         }
     }
 
     private void OnDestroy()
     {
-        if (DailyObjectiveManager.instance != null)
+        if (DailyObjectiveManager.instance == null)
         {
-            DailyObjectiveManager.instance.OnObjectiveChanged -= UpdateUI;
-        }
-    }
-
-    private void UpdateUI(DailyObjective objective)
-    {
-        if (objective == null)
-        {
-            ClearUI();
-            wasCompleted = false;
             return;
         }
 
-        if (objectiveTypeText != null)
+        DailyObjectiveManager.instance.OnObjectivesChanged -= UpdateUI;
+
+        DailyObjectiveManager.instance.OnObjectiveCompleted -= HandleObjectiveCompleted;
+
+        DailyObjectiveManager.instance.OnAllObjectivesCompleted -= HandleAllObjectivesCompleted;
+
+        if (canvasGroup != null)
         {
-            objectiveTypeText.text = GetObjectiveTypeName(objective.type);
+            canvasGroup.DOKill();
         }
 
-        if (objectiveText != null)
+        if (panelRect != null)
         {
-            objectiveText.text = DailyObjectiveManager.instance.GetObjectiveDescription();
+            panelRect.DOKill();
+        }
+    }
+
+    private void UpdateUI(DailyObjective[] objectives)
+    {
+        if (objectiveItems == null)
+        {
+            return;
         }
 
-        float progress = 0f;
-
-        if (objective.target > 0)
+        for (int i = 0; i < objectiveItems.Length; i++)
         {
-            progress = (float)objective.progress / objective.target;
-        }
-
-        progress = Mathf.Clamp01(progress);
-
-        if (progressBar != null)
-        {
-            progressBar.value = progress;
-        }
-
-        if (progressPercentText != null)
-        {
-            if (objective.IsCompleted)
+            if (objectiveItems[i] == null)
             {
-                progressPercentText.text = "COMPLETED!";
+                continue;
+            }
+
+            if (objectives != null && i < objectives.Length && objectives[i] != null)
+            {
+                objectiveItems[i].SetObjective(objectives[i]);
             }
             else
             {
-                progressPercentText.text = $"{Mathf.RoundToInt(progress * 100f)}%";
+                objectiveItems[i].ClearUI();
             }
-        }
-
-        if (objective.IsCompleted)
-        {
-            if (progressText != null)
-            {
-                progressText.gameObject.SetActive(false);
-            }
-
-            if (rewardText != null)
-            {
-                rewardText.gameObject.SetActive(true);
-                rewardText.text = $"REWARD: +{objective.reward} Money";
-            }
-
-            if (!wasCompleted)
-            {
-                wasCompleted = true;
-                OpenPanel();
-            }
-        }
-        else
-        {
-            if (progressText != null)
-            {
-                progressText.gameObject.SetActive(true);
-                progressText.text = $"Progress: {objective.progress} / {objective.target}";
-            }
-
-            if (rewardText != null)
-            {
-                rewardText.gameObject.SetActive(false);
-            }
-
-            wasCompleted = false;
         }
     }
 
-    private string GetObjectiveTypeName(DailyObjectiveType type)
+    private void HandleObjectiveCompleted(DailyObjective objective)
     {
-        switch (type)
+        if (objective == null)
         {
-            case DailyObjectiveType.ServeCustomers:
-            case DailyObjectiveType.ServeCustomerType:
-                return "Serve Customers";
-
-            case DailyObjectiveType.MixDrink:
-                return "Mix Drink";
-
-            case DailyObjectiveType.ServeDrink:
-                return "Serve Drink";
-
-            case DailyObjectiveType.EarnMoney:
-                return "Earn Money";
+            return;
         }
 
-        return "Daily Objective";
+        if (notificationUI != null)
+        {
+            notificationUI.ShowObjectiveCompleted(objective);
+        }
     }
 
-    public void OpenPanel()
+    private void HandleAllObjectivesCompleted(int totalReward)
+    {
+        if (notificationUI != null)
+        {
+            notificationUI.ShowAllObjectivesCompleted(totalReward);
+        }
+    }
+
+    public void ShowPanel()
     {
         if (panel == null)
+        {
             return;
+        }
 
-        currentTween?.Kill();
+        canvasGroup?.DOKill();
+        panelRect?.DOKill();
 
         panel.SetActive(true);
-
-        UIManager.Instance.LockGameplayInput();
-        UIManager.Instance.LockPauseInput();
 
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 0f;
-            canvasGroup.transform.localScale = Vector3.one * 0.8f;
+        }
 
-            Sequence sequence = DOTween.Sequence();
+        if (panelRect != null)
+        {
+            panelRect.localScale = Vector3.one * startScale;
+        }
 
-            sequence.Append(canvasGroup.DOFade(1f, animationDuration));
+        if (canvasGroup != null)
+        {
+            canvasGroup.DOFade(1f, showDuration).SetEase(Ease.OutQuad);
+        }
 
-            sequence.Join(
-                canvasGroup.transform.DOScale(
-                    Vector3.one,
-                    animationDuration
-                ).SetEase(openEase)
-            );
-
-            currentTween = sequence;
+        if (panelRect != null)
+        {
+            panelRect.DOScale(Vector3.one, showDuration).SetEase(Ease.OutBack);
         }
     }
 
-    public void ClosePanel()
+    public void HidePanel()
     {
         if (panel == null)
-            return;
-
-        currentTween?.Kill();
-
-        if (canvasGroup == null)
         {
-            panel.SetActive(false);
             return;
         }
 
-        Sequence sequence = DOTween.Sequence();
+        canvasGroup?.DOKill();
+        panelRect?.DOKill();
 
-        sequence.Append(canvasGroup.DOFade(0f, animationDuration));
+        if (canvasGroup != null)
+        {
+            canvasGroup
+                .DOFade(0f, hideDuration)
+                .SetEase(Ease.InQuad)
+                .OnComplete(() =>
+                {
+                    panel.SetActive(false);
 
-        sequence.Join(
-            canvasGroup.transform.DOScale(
-                Vector3.one * 0.8f,
-                animationDuration
-            ).SetEase(closeEase)
-        );
-
-        sequence.OnComplete(() =>
+                    if (panelRect != null)
+                    {
+                        panelRect.localScale = Vector3.one;
+                    }
+                });
+        }
+        else
         {
             panel.SetActive(false);
 
-            UIManager.Instance.UnlockGameplayInput();
-            UIManager.Instance.UnlockPauseInput();
-
-            canvasGroup.alpha = 1f;
-            canvasGroup.transform.localScale = Vector3.one;
-        });
-
-        currentTween = sequence;
-    }
-
-    private void ClearUI()
-    {
-        if (objectiveTypeText != null)
-        {
-            objectiveTypeText.text = "";
-        }
-
-        if (objectiveText != null)
-        {
-            objectiveText.text = "";
-        }
-
-        if (progressText != null)
-        {
-            progressText.gameObject.SetActive(true);
-            progressText.text = "";
-        }
-
-        if (rewardText != null)
-        {
-            rewardText.gameObject.SetActive(false);
-            rewardText.text = "";
-        }
-
-        if (progressBar != null)
-        {
-            progressBar.value = 0f;
-        }
-
-        if (progressPercentText != null)
-        {
-            progressPercentText.text = "0%";
+            if (panelRect != null)
+            {
+                panelRect.localScale = Vector3.one;
+            }
         }
     }
 }

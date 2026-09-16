@@ -49,6 +49,8 @@ public class DailyObjectiveManager : MonoBehaviour
 {
     public static DailyObjectiveManager instance { get; private set; }
 
+    private const int OBJECTIVE_COUNT = 3;
+
     [Header("Objective Target")]
     [SerializeField] private Vector2Int serveCustomersRange = new Vector2Int(5, 10);
     [SerializeField] private Vector2Int serveCustomerTypeRange = new Vector2Int(2, 4);
@@ -81,11 +83,15 @@ public class DailyObjectiveManager : MonoBehaviour
     [SerializeField] private int earnMoneyTargetCap = 3000;
     [SerializeField] private int rewardCap = 500;
 
-    private DailyObjective currentObjective;
+    private DailyObjective[] currentObjectives = new DailyObjective[OBJECTIVE_COUNT];
 
-    public DailyObjective CurrentObjective => currentObjective;
+    public DailyObjective[] CurrentObjectives => currentObjectives;
 
-    public event Action<DailyObjective> OnObjectiveChanged;
+    public event Action<DailyObjective[]> OnObjectivesChanged;
+
+    public event Action<DailyObjective> OnObjectiveCompleted;
+
+    public event Action<int> OnAllObjectivesCompleted;
 
     private void Awake()
     {
@@ -104,6 +110,26 @@ public class DailyObjectiveManager : MonoBehaviour
         {
             GameClock.instance.OnNewDayStarted += HandleNewDayStarted;
         }
+
+        bool hasObjective = false;
+
+        for (int i = 0; i < currentObjectives.Length; i++)
+        {
+            if (currentObjectives[i] != null)
+            {
+                hasObjective = true;
+                break;
+            }
+        }
+
+        if (!hasObjective)
+        {
+            GenerateNewObjectives();
+        }
+        else
+        {
+            NotifyObjectivesChanged();
+        }
     }
 
     private void OnDestroy()
@@ -116,30 +142,41 @@ public class DailyObjectiveManager : MonoBehaviour
 
     private void HandleNewDayStarted()
     {
-        GenerateNewObjective();
+        GenerateNewObjectives();
     }
 
-    public void GenerateNewObjective()
+    public void GenerateNewObjectives()
     {
-        List<DailyObjectiveType> validTypes = GetValidObjectiveTypes();
+        List<DailyObjectiveType> availableTypes = GetValidObjectiveTypes();
 
-        if (validTypes.Count == 0)
+        currentObjectives = new DailyObjective[OBJECTIVE_COUNT];
+
+        for (int i = 0; i < OBJECTIVE_COUNT; i++)
         {
+            if (availableTypes.Count == 0)
+            {
+                break;
+            }
 
-            currentObjective = null;
-            return;
+            int randomIndex = UnityEngine.Random.Range(0, availableTypes.Count);
+
+            DailyObjectiveType selectedType = availableTypes[randomIndex];
+
+            DailyObjective objective = CreateObjective(selectedType);
+
+            availableTypes.RemoveAt(randomIndex);
+
+            if (objective != null)
+            {
+                currentObjectives[i] = objective;
+            }
+            else
+            {
+                i--;
+            }
         }
 
-        DailyObjectiveType selectedType = validTypes[UnityEngine.Random.Range(0, validTypes.Count)];
-
-        currentObjective = CreateObjective(selectedType);
-
-        if (currentObjective == null)
-        {
-            return;
-        }
-
-        OnObjectiveChanged?.Invoke(currentObjective);
+        NotifyObjectivesChanged();
     }
 
     private List<DailyObjectiveType> GetValidObjectiveTypes()
@@ -167,7 +204,10 @@ public class DailyObjectiveManager : MonoBehaviour
     private DailyObjective CreateObjective(DailyObjectiveType type)
     {
         DailyObjective objective = new DailyObjective();
+
         objective.type = type;
+        objective.progress = 0;
+        objective.rewardClaimed = false;
 
         switch (type)
         {
@@ -176,6 +216,7 @@ public class DailyObjectiveManager : MonoBehaviour
                     Vector2Int range = GetScaledRange(serveCustomersRange, serveCustomersGrowthPerDay, serveCustomersTargetCap);
 
                     objective.target = GetRandomTarget(range);
+
                     break;
                 }
 
@@ -184,13 +225,16 @@ public class DailyObjectiveManager : MonoBehaviour
                     CustomerSO customer = GetRandomUnlockedCustomer();
 
                     if (customer == null)
+                    {
                         return null;
+                    }
 
                     objective.customerType = customer.customerType;
 
                     Vector2Int range = GetScaledRange(serveCustomerTypeRange, serveCustomerTypeGrowthPerDay, serveCustomerTypeTargetCap);
 
                     objective.target = GetRandomTarget(range);
+
                     break;
                 }
 
@@ -199,13 +243,16 @@ public class DailyObjectiveManager : MonoBehaviour
                     DrinkRecipeSO recipe = GetRandomUnlockedRecipe();
 
                     if (recipe == null)
+                    {
                         return null;
+                    }
 
                     objective.drinkRecipe = recipe;
 
                     Vector2Int range = GetScaledRange(mixDrinkRange, mixDrinkGrowthPerDay, mixDrinkTargetCap);
 
                     objective.target = GetRandomTarget(range);
+
                     break;
                 }
 
@@ -214,13 +261,16 @@ public class DailyObjectiveManager : MonoBehaviour
                     DrinkRecipeSO recipe = GetRandomUnlockedRecipe();
 
                     if (recipe == null)
+                    {
                         return null;
+                    }
 
                     objective.drinkRecipe = recipe;
 
                     Vector2Int range = GetScaledRange(serveDrinkRange, serveDrinkGrowthPerDay, serveDrinkTargetCap);
 
                     objective.target = GetRandomTarget(range);
+
                     break;
                 }
 
@@ -229,22 +279,16 @@ public class DailyObjectiveManager : MonoBehaviour
                     Vector2Int range = GetScaledRange(earnMoneyRange, earnMoneyGrowthPerDay, earnMoneyTargetCap);
 
                     objective.target = GetRandomTarget(range);
+
                     break;
                 }
         }
 
         Vector2Int rewardRangeScaled = GetScaledRewardRange();
+
         objective.reward = GetRandomTarget(rewardRangeScaled);
 
         return objective;
-    }
-
-    private int GetRandomTarget(Vector2Int range)
-    {
-        int min = Mathf.Max(1, range.x);
-        int max = Mathf.Max(min, range.y);
-
-        return UnityEngine.Random.Range(min, max + 1);
     }
 
     private bool HasUnlockedCustomerType()
@@ -262,7 +306,9 @@ public class DailyObjectiveManager : MonoBehaviour
         List<CustomerSO> unlockedCustomers = GetUnlockedCustomers();
 
         if (unlockedCustomers.Count == 0)
+        {
             return null;
+        }
 
         return unlockedCustomers[UnityEngine.Random.Range(0, unlockedCustomers.Count)];
     }
@@ -272,22 +318,30 @@ public class DailyObjectiveManager : MonoBehaviour
         List<CustomerSO> result = new();
 
         if (customerPrefabs == null)
+        {
             return result;
+        }
 
         int currentDay = GetCurrentDay();
 
         foreach (CustomerController prefab in customerPrefabs)
         {
             if (prefab == null)
+            {
                 continue;
+            }
 
             CustomerSO data = prefab.Data;
 
             if (data == null)
+            {
                 continue;
+            }
 
             if (data.unlockDay > currentDay)
+            {
                 continue;
+            }
 
             bool alreadyAdded = false;
 
@@ -314,7 +368,9 @@ public class DailyObjectiveManager : MonoBehaviour
         List<DrinkRecipeSO> unlockedRecipes = GetUnlockedRecipes();
 
         if (unlockedRecipes.Count == 0)
+        {
             return null;
+        }
 
         return unlockedRecipes[UnityEngine.Random.Range(0, unlockedRecipes.Count)];
     }
@@ -324,18 +380,27 @@ public class DailyObjectiveManager : MonoBehaviour
         List<DrinkRecipeSO> result = new();
 
         if (recipeBookUI == null)
+        {
             return result;
+        }
 
         foreach (DrinkRecipeSO recipe in recipeBookUI.Recipes)
         {
             if (recipe == null)
+            {
                 continue;
+            }
 
             if (RecipeProgressionManager.instance == null)
+            {
                 continue;
+            }
 
-            if (!RecipeProgressionManager.instance.IsRecipeUnlocked(recipe))
+            if (!RecipeProgressionManager.instance
+                .IsRecipeUnlocked(recipe))
+            {
                 continue;
+            }
 
             result.Add(recipe);
         }
@@ -343,132 +408,332 @@ public class DailyObjectiveManager : MonoBehaviour
         return result;
     }
 
-    private int GetCurrentDay()
-    {
-        if (GameClock.instance == null)
-            return 1;
-
-        return GameClock.instance.CurrentDay;
-    }
-
     public void RegisterCustomerServed(CustomerController customer, DrinkRecipeSO servedDrink)
     {
-        if (currentObjective == null)
-            return;
-
-        switch (currentObjective.type)
+        if (currentObjectives == null)
         {
-            case DailyObjectiveType.ServeCustomers:
-                currentObjective.AddProgress();
-                break;
-
-            case DailyObjectiveType.ServeCustomerType:
-                if (customer != null && customer.Data != null && customer.Data.customerType == currentObjective.customerType)
-                {
-                    currentObjective.AddProgress();
-                }
-                break;
-
-            case DailyObjectiveType.ServeDrink:
-                if (servedDrink == currentObjective.drinkRecipe)
-                {
-                    currentObjective.AddProgress();
-                }
-                break;
+            return;
         }
 
-        NotifyObjectiveChanged();
+        bool changed = false;
+
+        foreach (DailyObjective objective in currentObjectives)
+        {
+            if (objective == null)
+            {
+                continue;
+            }
+
+            if (objective.IsCompleted)
+            {
+                continue;
+            }
+
+            switch (objective.type)
+            {
+                case DailyObjectiveType.ServeCustomers:
+
+                    objective.AddProgress();
+                    changed = true;
+
+                    break;
+
+                case DailyObjectiveType.ServeCustomerType:
+
+                    if (customer != null && customer.Data != null && customer.Data.customerType == objective.customerType)
+                    {
+                        objective.AddProgress();
+                        changed = true;
+                    }
+
+                    break;
+
+                case DailyObjectiveType.ServeDrink:
+
+                    if (servedDrink != null && servedDrink == objective.drinkRecipe)
+                    {
+                        objective.AddProgress();
+                        changed = true;
+                    }
+
+                    break;
+            }
+        }
+
+        if (changed)
+        {
+            NotifyObjectivesChanged();
+        }
     }
 
     public void RegisterDrinkMixed(DrinkRecipeSO recipe)
     {
-        if (currentObjective == null)
+        if (currentObjectives == null)
+        {
             return;
+        }
 
-        if (currentObjective.type != DailyObjectiveType.MixDrink)
+        if (recipe == null)
+        {
             return;
+        }
 
-        if (recipe != currentObjective.drinkRecipe)
-            return;
+        bool changed = false;
 
-        currentObjective.AddProgress();
+        foreach (DailyObjective objective in currentObjectives)
+        {
+            if (objective == null)
+            {
+                continue;
+            }
 
-        NotifyObjectiveChanged();
+            if (objective.IsCompleted)
+            {
+                continue;
+            }
+
+            if (objective.type != DailyObjectiveType.MixDrink)
+            {
+                continue;
+            }
+
+            if (recipe != objective.drinkRecipe)
+            {
+                continue;
+            }
+
+            objective.AddProgress();
+            changed = true;
+        }
+
+        if (changed)
+        {
+            NotifyObjectivesChanged();
+        }
     }
 
     public void RefreshEarnMoneyProgress()
     {
-        if (currentObjective == null)
+        if (currentObjectives == null)
+        {
             return;
-
-        if (currentObjective.type != DailyObjectiveType.EarnMoney)
-            return;
+        }
 
         if (DayStatsManager.instance == null)
+        {
             return;
+        }
 
         int totalEarned = DayStatsManager.instance.MoneyEarnedToday + DayStatsManager.instance.TipsToday;
 
-        currentObjective.SetProgress(totalEarned);
+        bool changed = false;
 
-        NotifyObjectiveChanged();
-    }
-
-    private void NotifyObjectiveChanged()
-    {
-        OnObjectiveChanged?.Invoke(currentObjective);
-
-        if (currentObjective.IsCompleted)
+        foreach (DailyObjective objective in currentObjectives)
         {
-            CompleteObjective();
+            if (objective == null)
+            {
+                continue;
+            }
+
+            if (objective.IsCompleted)
+            {
+                continue;
+            }
+
+            if (objective.type != DailyObjectiveType.EarnMoney)
+            {
+                continue;
+            }
+
+            int oldProgress = objective.progress;
+
+            objective.SetProgress(totalEarned);
+
+            if (oldProgress != objective.progress)
+            {
+                changed = true;
+            }
+        }
+
+        if (changed)
+        {
+            NotifyObjectivesChanged();
         }
     }
 
-    public string GetObjectiveDescription()
+    private void NotifyObjectivesChanged()
     {
-        if (currentObjective == null)
-            return string.Empty;
+        OnObjectivesChanged?.Invoke(currentObjectives);
 
-        switch (currentObjective.type)
+        foreach (DailyObjective objective in currentObjectives)
+        {
+            CheckObjectiveCompletion(objective);
+        }
+    }
+
+    private void CheckObjectiveCompletion(DailyObjective objective)
+    {
+        if (objective == null)
+        {
+            return;
+        }
+
+        if (!objective.IsCompleted)
+        {
+            return;
+        }
+
+        if (objective.rewardClaimed)
+        {
+            return;
+        }
+
+        CompleteObjective(objective);
+    }
+
+    private void CompleteObjective(DailyObjective objective)
+    {
+        if (objective == null)
+        {
+            return;
+        }
+
+        if (objective.rewardClaimed)
+        {
+            return;
+        }
+
+        if (MoneyManager.instance == null)
+        {
+            return;
+        }
+
+        if (DayStatsManager.instance == null)
+        {
+            return;
+        }
+
+        DayStatsManager.instance.AddObjectiveReward(objective.reward);
+
+        objective.rewardClaimed = true;
+
+        OnObjectiveCompleted?.Invoke(objective);
+
+        if (AreAllObjectivesCompleted())
+        {
+            int totalReward = GetTotalObjectiveReward();
+
+            OnAllObjectivesCompleted?.Invoke(totalReward);
+        }
+    }
+
+    public bool AreAllObjectivesCompleted()
+    {
+        if (currentObjectives == null)
+        {
+            return false;
+        }
+
+        if (currentObjectives.Length < OBJECTIVE_COUNT)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < OBJECTIVE_COUNT; i++)
+        {
+            if (currentObjectives[i] == null)
+            {
+                return false;
+            }
+
+            if (!currentObjectives[i].IsCompleted)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int GetTotalObjectiveReward()
+    {
+        int totalReward = 0;
+
+        if (currentObjectives == null)
+        {
+            return 0;
+        }
+
+        foreach (DailyObjective objective in currentObjectives)
+        {
+            if (objective == null)
+            {
+                continue;
+            }
+
+            totalReward += objective.reward;
+        }
+
+        return totalReward;
+    }
+
+    public string GetObjectiveDescription(DailyObjective objective)
+    {
+        if (objective == null)
+        {
+            return string.Empty;
+        }
+
+        switch (objective.type)
         {
             case DailyObjectiveType.ServeCustomers:
-                return $"Serve {currentObjective.target} Customers";
+
+                return $"Serve {objective.target} Customers";
 
             case DailyObjectiveType.ServeCustomerType:
-                return $"Serve {currentObjective.target} {currentObjective.customerType} Customers";
+
+                return $"Serve {objective.target} " + $"{objective.customerType} Customers";
 
             case DailyObjectiveType.MixDrink:
-                return $"Mix {currentObjective.target} {currentObjective.drinkRecipe.displayName}";
+
+                if (objective.drinkRecipe == null)
+                {
+                    return string.Empty;
+                }
+
+                return $"Mix {objective.target} " + $"{objective.drinkRecipe.displayName}";
 
             case DailyObjectiveType.ServeDrink:
-                return $"Serve {currentObjective.target} {currentObjective.drinkRecipe.displayName}";
+
+                if (objective.drinkRecipe == null)
+                {
+                    return string.Empty;
+                }
+
+                return $"Serve {objective.target} " + $"{objective.drinkRecipe.displayName}";
 
             case DailyObjectiveType.EarnMoney:
-                return $"Earn {currentObjective.target} Money";
+
+                return $"Earn {objective.target} Money";
         }
 
         return string.Empty;
     }
 
-    private void CompleteObjective()
+    private int GetCurrentDay()
     {
-        if (currentObjective == null)
-            return;
+        if (GameClock.instance == null)
+        {
+            return 1;
+        }
 
-        if (currentObjective.rewardClaimed)
-            return;
-
-        if (MoneyManager.instance == null)
-            return;
-
-        DayStatsManager.instance.AddObjectiveReward(currentObjective.reward);
-
-        currentObjective.rewardClaimed = true;
+        return GameClock.instance.CurrentDay;
     }
 
     private int GetDayGrowth(int growthPerDay)
     {
         int currentDay = GetCurrentDay();
+
         return Mathf.Max(0, currentDay - 1) * growthPerDay;
     }
 
@@ -477,9 +742,11 @@ public class DailyObjectiveManager : MonoBehaviour
         int growth = GetDayGrowth(growthPerDay);
 
         int min = baseRange.x + growth;
+
         int max = baseRange.y + growth;
 
         min = Mathf.Min(min, maxValue);
+
         max = Mathf.Min(max, maxValue);
 
         return new Vector2Int(min, max);
@@ -490,11 +757,22 @@ public class DailyObjectiveManager : MonoBehaviour
         int growth = GetDayGrowth(rewardGrowthPerDay);
 
         int min = rewardRange.x + growth;
+
         int max = rewardRange.y + growth;
 
         min = Mathf.Min(min, rewardCap);
+
         max = Mathf.Min(max, rewardCap);
 
         return new Vector2Int(min, max);
+    }
+
+    private int GetRandomTarget(Vector2Int range)
+    {
+        int min = Mathf.Max( 1, range.x);
+
+        int max = Mathf.Max(min, range.y);
+
+        return UnityEngine.Random.Range(min, max + 1);
     }
 }
