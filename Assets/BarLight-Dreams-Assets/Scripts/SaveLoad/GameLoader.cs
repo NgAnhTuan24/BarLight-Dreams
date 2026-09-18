@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameLoader : MonoBehaviour
 {
+    [SerializeField] private EndingUI endingUI;
+
     private void Start()
     {
         if (!SaveManager.instance.IsLoadingGame) return;
@@ -17,6 +19,38 @@ public class GameLoader : MonoBehaviour
 
         if (data == null) return;
 
+        if (data.gameCompleted)
+        {
+            if (GameClock.instance != null)
+            {
+                GameClock.instance.SetDay(data.currentDay);
+            }
+
+            if (MoneyManager.instance != null)
+            {
+                MoneyManager.instance.SetMoney(data.currentMoney);
+            }
+
+            if (TutorialManager.instance != null)
+            {
+                TutorialManager.instance.LoadTutorialState(data.tutorialCompleted);
+            }
+
+            if (EndingManager.instance != null)
+            {
+                EndingManager.instance.LoadFinalData(data);
+            }
+
+            SaveManager.instance.ClearLoadState();
+
+            if (endingUI != null)
+            {
+                endingUI.Show();
+            }
+
+            return;
+        }
+
         if (MoneyManager.instance != null)
         {
             MoneyManager.instance.SetMoney(data.currentMoney);
@@ -30,6 +64,11 @@ public class GameLoader : MonoBehaviour
         if (DayStatsManager.instance != null)
         {
             DayStatsManager.instance.LoadTotalStats(data.totalMoneyEarned, data.totalServedCustomers, data.totalAngryCustomers);
+        }
+
+        if (DailyObjectiveManager.instance != null)
+        {
+            DailyObjectiveManager.instance.LoadTotalObjectivesCompleted(data.totalObjectivesCompleted);
         }
 
         if (TutorialManager.instance != null)
