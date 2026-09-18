@@ -31,6 +31,8 @@ public class GameClock : MonoBehaviour
     [SerializeField] private DayIntroUI dayIntroUI;
     [SerializeField] private SummaryDayUI summaryUI;
     [SerializeField] private RecipeUnlockPopupUI recipeUnlockPopupUI;
+    [SerializeField] private FinalDayUI finalDayUI;
+    [SerializeField] private WinUI winUI;
     [SerializeField] private SceneTransition sceneTransition;
 
     public bool IsRunning { get; private set; }
@@ -83,6 +85,8 @@ public class GameClock : MonoBehaviour
 
             if (data == null) return;
 
+            if (data.gameCompleted) return;
+
             LoadDay();
 
             bool isNewDay = data.currentHour == startHour && data.currentMinute == startMinute;
@@ -103,7 +107,7 @@ public class GameClock : MonoBehaviour
                 });
             }
 
-                return;
+            return;
         }
 
         StartNewDay();
@@ -234,6 +238,15 @@ public class GameClock : MonoBehaviour
         CounterBarUI.instance.CleanCounter();
         PlayerHoldItem.instance.Clear();
 
+        if (CurrentDay == 15)
+        {
+            EndingManager.instance.CollectFinalData();
+            EndingManager.instance.CalculateFinalResult();
+
+            winUI.Show();
+            yield break;
+        }
+
         summaryUI.Show(
             CurrentDay,
             DayStatsManager.instance.MoneyEarnedToday,
@@ -290,6 +303,12 @@ public class GameClock : MonoBehaviour
 
     private void ShowDayIntro(int day, bool allowRecipeUnlockPopup)
     {
+        if (day == 15)
+        {
+            finalDayUI.Show();
+            return;
+        }
+
         dayIntroUI.Show(
             $"DAY {day}",
             "OPEN BAR",
@@ -307,7 +326,7 @@ public class GameClock : MonoBehaviour
         StartGameplay();
     }
 
-    private void StartGameplay()
+    public void StartGameplay()
     {
         PlayerController.instance.movement.SetCanMove(true);
 

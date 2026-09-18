@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuGame : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MenuGame : MonoBehaviour
     [SerializeField] private SceneTransition fadeIn;
     [SerializeField] private SceneTransition fadeOut;
 
+    [SerializeField] private Button newGameButton;
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -21,6 +24,15 @@ public class MenuGame : MonoBehaviour
         AudioManager.instance.PlayMusic(musicGame);
 
         fadeIn.FadeIn();
+
+        RefreshNewGameButton();
+    }
+
+    private void RefreshNewGameButton() 
+    { 
+        bool hasEmptySlot = SaveManager.instance.GetEmptySlot() != -1; 
+        
+        newGameButton.interactable = hasEmptySlot; 
     }
 
     public void StartNewGame()

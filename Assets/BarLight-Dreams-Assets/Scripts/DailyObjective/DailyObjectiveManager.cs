@@ -93,6 +93,9 @@ public class DailyObjectiveManager : MonoBehaviour
 
     public event Action<int> OnAllObjectivesCompleted;
 
+    private int totalObjectivesCompleted;
+    public int TotalObjectivesCompleted => totalObjectivesCompleted;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -617,6 +620,8 @@ public class DailyObjectiveManager : MonoBehaviour
 
         objective.rewardClaimed = true;
 
+        totalObjectivesCompleted++;
+
         OnObjectiveCompleted?.Invoke(objective);
 
         if (AreAllObjectivesCompleted())
@@ -774,5 +779,10 @@ public class DailyObjectiveManager : MonoBehaviour
         int max = Mathf.Max(min, range.y);
 
         return UnityEngine.Random.Range(min, max + 1);
+    }
+
+    public void LoadTotalObjectivesCompleted(int total)
+    {
+        totalObjectivesCompleted = total;
     }
 }

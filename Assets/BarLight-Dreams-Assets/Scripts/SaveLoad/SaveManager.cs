@@ -67,9 +67,57 @@ public class SaveManager : MonoBehaviour
         data.totalServedCustomers = DayStatsManager.instance.TotalServedCustomers;
         data.totalAngryCustomers = DayStatsManager.instance.TotalAngryCustomers;
 
+        data.totalObjectivesCompleted = DailyObjectiveManager.instance.TotalObjectivesCompleted;
+
         data.upgrades = UpgradeManager.instance.GetSaveData();
 
         data.tutorialCompleted = TutorialManager.instance != null && TutorialManager.instance.IsTutorialCompleted;
+
+        data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
+        SaveLoadSystem.SaveGame(data, CurrentSlot);
+    }
+
+    public void SaveCompletedGame()
+    {
+        if (CurrentSlot <= 0)
+            return;
+
+        if (EndingManager.instance == null)
+            return;
+
+        GameData data = new GameData();
+
+        data.currentHP = PlayerController.instance.health.CurrentHP;
+
+        data.currentDay = GameClock.instance.CurrentDay;
+        data.currentHour = GameClock.instance.CurrentHour;
+        data.currentMinute = GameClock.instance.CurrentMinute;
+
+        data.currentMoney = MoneyManager.instance.CurrentMoney;
+
+        data.totalMoneyEarned = DayStatsManager.instance.TotalMoneyEarned;
+        data.totalServedCustomers = DayStatsManager.instance.TotalServedCustomers;
+        data.totalAngryCustomers = DayStatsManager.instance.TotalAngryCustomers;
+
+        data.totalObjectivesCompleted = DailyObjectiveManager.instance.TotalObjectivesCompleted;
+
+        data.upgrades = UpgradeManager.instance.GetSaveData();
+
+        data.tutorialCompleted = TutorialManager.instance != null && TutorialManager.instance.IsTutorialCompleted;
+
+        data.gameCompleted = true;
+
+        data.finalScore = EndingManager.instance.FinalScore;
+        data.finalRank = EndingManager.instance.FinalRank;
+
+        data.finalMoney = EndingManager.instance.Money;
+        data.finalCustomers = EndingManager.instance.Customers;
+        data.finalAngry = EndingManager.instance.Angry;
+
+        data.finalTotalUpgradeLevel = EndingManager.instance.TotalUpgradeLevel;
+
+        data.finalTotalObjectivesCompleted = EndingManager.instance.TotalObjectivesCompleted;
 
         data.saveTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 

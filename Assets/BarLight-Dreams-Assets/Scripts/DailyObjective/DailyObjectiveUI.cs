@@ -136,6 +136,9 @@ public class DailyObjectiveUI : MonoBehaviour
 
         panel.SetActive(true);
 
+        UIManager.Instance.LockGameplayInput();
+        UIManager.Instance.LockPauseInput();
+
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 0f;
@@ -180,6 +183,9 @@ public class DailyObjectiveUI : MonoBehaviour
                     {
                         panelRect.localScale = Vector3.one;
                     }
+
+                    UIManager.Instance.UnlockGameplayInput();
+                    UIManager.Instance.UnlockPauseInput();
                 });
         }
         else
